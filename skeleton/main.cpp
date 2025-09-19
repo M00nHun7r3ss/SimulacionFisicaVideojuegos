@@ -30,6 +30,9 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
+// PRACTICA 0
+RenderItem* sp1 = NULL;
+
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -54,7 +57,21 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	}
+
+
+	// PRACTICA 0
+	//Creamos la geometria de la esfera (con radio 0)
+	PxGeometry* sphereGeo = new PxSphereGeometry(1.0);
+	//Creamos la forma con la geometria
+	PxShape* sphere0 = CreateShape(*sphereGeo, gMaterial);
+	//Creamos el transform, y el color
+	PxTransform* tr = new PxTransform(PxVec3(0.0f, 0.0f, 0.0f));
+	Vector4* color = new Vector4{ 1.0, 1.0, 1.0, 1.0 };
+	//Renderizamos la esfera
+	sp1 = new RenderItem(sphere0, tr, *color);
+	//La registramos
+	RegisterRenderItem(sp1);
+}
 
 
 // Function to configure what happens in each step of physics
@@ -66,6 +83,8 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+
 }
 
 // Function to clean data
@@ -78,6 +97,11 @@ void cleanupPhysics(bool interactive)
 	gScene->release();
 	gDispatcher->release();
 	// -----------------------------------------------------
+
+	// PRACTICA 0
+	//La desregistramos
+	DeregisterRenderItem(sp1);
+
 	gPhysics->release();	
 	PxPvdTransport* transport = gPvd->getTransport();
 	gPvd->release();
