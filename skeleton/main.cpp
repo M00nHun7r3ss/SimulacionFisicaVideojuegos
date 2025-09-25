@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "Vector3D.h"
+
 std::string display_text = "This is a test";
 
 
@@ -32,6 +34,9 @@ ContactReportCallback gContactReportCallback;
 
 // PRACTICA 0
 RenderItem* sp1 = NULL;
+RenderItem* spX = NULL;
+RenderItem* spY = NULL;
+RenderItem* spZ = NULL;
 
 
 // Initialize physics engine
@@ -65,12 +70,47 @@ void initPhysics(bool interactive)
 	//Creamos la forma con la geometria
 	PxShape* sphere0 = CreateShape(*sphereGeo, gMaterial);
 	//Creamos el transform, y el color
-	PxTransform* tr = new PxTransform(PxVec3(0.0f, 0.0f, 0.0f));
+	Vector3D pos(0.0, 0.0, 0.0);
+	PxTransform* tr = new PxTransform(PxVec3(pos.getX(), pos.getY(), pos.getZ()));
 	Vector4* color = new Vector4{ 1.0, 1.0, 1.0, 1.0 };
 	//Renderizamos la esfera
 	sp1 = new RenderItem(sphere0, tr, *color);
 	//La registramos
 	RegisterRenderItem(sp1);
+
+	//---- Eje rojo x
+	//Creamos la forma con la geometria
+	PxShape* sphereX = CreateShape(*sphereGeo, gMaterial);
+	Vector3D posX(10.0, 0.0, 0.0);
+	PxTransform* trX = new PxTransform(PxVec3(posX.getX(), posX.getY(), posX.getZ()));
+	Vector4* rojo = new Vector4{ 1.0, 0.0, 0.0, 1.0 };
+	//Renderizamos la esfera
+	spX = new RenderItem(sphereX, trX, *rojo);
+	//La registramos
+	RegisterRenderItem(spX);
+
+	//---- Eje verde y
+	//Creamos la forma con la geometria
+	PxShape* sphereY = CreateShape(*sphereGeo, gMaterial);
+	Vector3D posY(0, 10.0, 0);
+	PxTransform* trY = new PxTransform(PxVec3(posY.getX(), posY.getY(), posY.getZ()));
+	Vector4* verde = new Vector4{ 0.0, 1.0, 0.0, 1.0 };
+	//Renderizamos la esfera
+	spY = new RenderItem(sphereY, trY, *verde);
+	//La registramos
+	RegisterRenderItem(spY);
+
+	//---- Eje azul z
+	//Creamos la forma con la geometria
+	PxShape* sphereZ = CreateShape(*sphereGeo, gMaterial);
+	Vector3D posZ(0.0, 0.0, 10.0);
+	PxTransform* trZ = new PxTransform(PxVec3(posZ.getX(), posZ.getY(), posZ.getZ()));
+	Vector4* azul = new Vector4{ 0.0, 0.0, 1.0, 1.0 };
+	//Renderizamos la esfera
+	spZ = new RenderItem(sphereZ, trZ, *azul);
+	//La registramos
+	RegisterRenderItem(spZ);
+
 }
 
 
@@ -99,8 +139,11 @@ void cleanupPhysics(bool interactive)
 	// -----------------------------------------------------
 
 	// PRACTICA 0
-	//La desregistramos
+	//Las desregistramos
 	DeregisterRenderItem(sp1);
+	DeregisterRenderItem(spX);
+	DeregisterRenderItem(spY);
+	DeregisterRenderItem(spZ);
 
 	gPhysics->release();	
 	PxPvdTransport* transport = gPvd->getTransport();
