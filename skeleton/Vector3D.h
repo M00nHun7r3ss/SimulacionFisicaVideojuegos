@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector> //para el vector en si
 #include <iostream> //input output consola 
 #include <cmath> //operaciones matematicas
@@ -12,8 +14,11 @@ public:
 	//Constructora con valores
 	Vector3D(double x, double y, double z);
 
+	//Destructora 
+	~Vector3D();
+
 	//Modulo + normalizar
-	double modulo();
+	double magnitude();
 
 	//Operador =
 	Vector3D operator= (const Vector3D& newV);
@@ -28,10 +33,10 @@ public:
 	Vector3D operator* (const Vector3D& v1);
 
 	//Producto escalar
-	double productoEscalar (const Vector3D& v1);
+	double dotProduct (const Vector3D& v1);
 
 	//Producto vector por escalar
-	Vector3D productoEscalarVector(double escalar);
+	Vector3D ScalarProduct(double escalar);
 
 	//Getters
 	double getX();

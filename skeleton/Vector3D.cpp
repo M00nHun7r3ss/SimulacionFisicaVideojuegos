@@ -6,8 +6,11 @@ Vector3D::Vector3D() : _x(0), _y(0), _z(0) {}
 //Constructora con valores
 Vector3D::Vector3D(double x, double y, double z) : _x(x), _y(y), _z(z) {}
 
+//Destructora
+Vector3D::~Vector3D() {}
+
 //Modulo + normalizar
-double Vector3D::modulo()
+double Vector3D::magnitude()
 {
 	//Devolvemos modulo
 	double m = std::sqrt(_x * _x + _y * _y + _z * _z);
@@ -77,13 +80,13 @@ Vector3D Vector3D::operator*(const Vector3D& v1)
 }
 
 //Producto escalar
-double Vector3D::productoEscalar(const Vector3D& v1)
+double Vector3D::dotProduct(const Vector3D& v1)
 {
 	//Multiplicamos y sumamos todas las componentes
 	return _x * v1._x + _y * v1._y + _z * v1._z;
 }
 
-Vector3D Vector3D::productoEscalarVector(double escalar)
+Vector3D Vector3D::ScalarProduct(double escalar)
 {
 	//Multiplicamos cada componente por el escalar
 	_x *= escalar;
