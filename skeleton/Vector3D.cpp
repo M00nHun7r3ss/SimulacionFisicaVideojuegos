@@ -21,7 +21,7 @@ double Vector3D::modulo()
 }
 
 //Operador =
-Vector3D Vector3D::operator=(const Vector3D newV)
+Vector3D Vector3D::operator=(const Vector3D& newV)
 {
 	//Asignamos los valores nuevos
 	_x = newV._x;
@@ -32,7 +32,7 @@ Vector3D Vector3D::operator=(const Vector3D newV)
 }
 
 //Operador +
-Vector3D Vector3D::operator+(const Vector3D v1)
+Vector3D Vector3D::operator+(const Vector3D& v1)
 {
 	//Sumamos
 	_x += v1._x;
@@ -43,7 +43,7 @@ Vector3D Vector3D::operator+(const Vector3D v1)
 }
 
 //Operador -
-Vector3D Vector3D::operator-(const Vector3D v1)
+Vector3D Vector3D::operator-(const Vector3D& v1)
 {
 	//Restamos
 	_x -= v1._x;
@@ -54,7 +54,7 @@ Vector3D Vector3D::operator-(const Vector3D v1)
 }
 
 //Operador * (Producto vectorial)
-Vector3D Vector3D::operator*(const Vector3D v1)
+Vector3D Vector3D::operator*(const Vector3D& v1)
 {
 	//Producto vectorial
 	/*
@@ -77,7 +77,7 @@ Vector3D Vector3D::operator*(const Vector3D v1)
 }
 
 //Producto escalar
-double Vector3D::productoEscalar(const Vector3D v1)
+double Vector3D::productoEscalar(const Vector3D& v1)
 {
 	//Multiplicamos y sumamos todas las componentes
 	return _x * v1._x + _y * v1._y + _z * v1._z;

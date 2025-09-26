@@ -16,19 +16,19 @@ public:
 	double modulo();
 
 	//Operador =
-	Vector3D operator= (const Vector3D newV);
+	Vector3D operator= (const Vector3D& newV);
 
 	//Operador +
-	Vector3D operator+ (const Vector3D v1);
+	Vector3D operator+ (const Vector3D& v1);
 
 	//Operador -
-	Vector3D operator- (const Vector3D v1);
+	Vector3D operator- (const Vector3D& v1);
 
 	//Operador * (Producto vectorial)
-	Vector3D operator* (const Vector3D v1);
+	Vector3D operator* (const Vector3D& v1);
 
 	//Producto escalar
-	double productoEscalar (const Vector3D v1);
+	double productoEscalar (const Vector3D& v1);
 
 	//Producto vector por escalar
 	Vector3D productoEscalarVector(double escalar);
