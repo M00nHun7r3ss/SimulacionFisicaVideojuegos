@@ -20,10 +20,10 @@ public:
 	void integrateEuler(double t);
 
 	//1.1.b Integracion con Euler Semiimplicito
-	//void integrateSemiEuler(double t);
+	void integrateSemiEuler(double t);
 
 	//1.1.c Integracion con Verlet
-	//void integrateVerlet(double t);
+	void integrateVerlet(double t);
 
 	//Getters
 	RenderItem* getRenderItem();

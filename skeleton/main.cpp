@@ -11,9 +11,9 @@
 #include <iostream>
 
 #include "Vector3D.h" //Practica 0
+#include "Particle.h" //Practica 1.1
 
-std::string display_text = "This is a test";
-
+std::string display_text = "";
 
 using namespace physx;
 
@@ -37,6 +37,10 @@ RenderItem* sp1 = NULL;
 RenderItem* spX = NULL;
 RenderItem* spY = NULL;
 RenderItem* spZ = NULL;
+
+//Practica 1.1
+RenderItem* p = NULL;
+Particle particle = Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(1.0, 0.0, 0.0));
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -64,6 +68,7 @@ void initPhysics(bool interactive)
 
 #pragma region Practica 0
 
+	/*
 	// PRACTICA 0
 	//Creamos la geometria de la esfera (con radio 0)
 	PxGeometry* sphereGeo = new PxSphereGeometry(1.0);
@@ -111,8 +116,22 @@ void initPhysics(bool interactive)
 	//La registramos
 	RegisterRenderItem(spZ);
 
+	*/
 #pragma endregion
 	
+#pragma region Practica 1.1
+
+	//Particle particle = Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(1.0, 0.0, 0.0));
+	//Creamos la geometria de la esfera (con radio 0)
+	PxGeometry* sphereGeo = new PxSphereGeometry(1.0);
+	//Creamos la forma con la geometria
+	PxShape* sphere0 = CreateShape(*sphereGeo, gMaterial);
+	PxTransform* trP = new PxTransform(PxVec3(particle.getPos().x, particle.getPos().y, particle.getPos().z));
+	p = new RenderItem(sphere0, trP, particle.getColor());
+	particle.setRenderItem(p);
+	RegisterRenderItem(p);
+
+#pragma endregion
 
 }
 
@@ -126,7 +145,9 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	
+
+	//Actualizar la posicion con los integrate...
+	particle.integrateEuler(0.3);
 }
 
 // Function to clean data
@@ -141,11 +162,14 @@ void cleanupPhysics(bool interactive)
 	// -----------------------------------------------------
 
 	// PRACTICA 0
-	//Las desregistramos
-	DeregisterRenderItem(sp1);
-	DeregisterRenderItem(spX);
-	DeregisterRenderItem(spY);
-	DeregisterRenderItem(spZ);
+	////Las desregistramos
+	//DeregisterRenderItem(sp1);
+	//DeregisterRenderItem(spX);
+	//DeregisterRenderItem(spY);
+	//DeregisterRenderItem(spZ);
+
+	// PRACTICA 1.1
+	DeregisterRenderItem(p);
 
 	gPhysics->release();	
 	PxPvdTransport* transport = gPvd->getTransport();

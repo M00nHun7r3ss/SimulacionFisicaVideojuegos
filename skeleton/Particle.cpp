@@ -1,7 +1,7 @@
 #include "Particle.h"
 
 
-Particle::Particle(PxVec3 pos, PxVec3 vel) : _pos(pos), _v(vel), _color(1.0, 1.0, 1.0, 1.0), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.5), _duration(5.0) {}
+Particle::Particle(PxVec3 pos, PxVec3 vel) : _pos(pos), _v(vel), _color(1.0, 1.0, 1.0, 1.0), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0) {}
 
 //Destructora
 Particle::~Particle() {}
@@ -25,6 +25,45 @@ void Particle::integrateEuler(double t)
 	_pos = _pos + _v * t;
 	_v += _a * t;
 	_v *= pow(_dump, t);
+
+}
+
+void Particle::integrateSemiEuler(double t)
+{
+	//MRU
+	////x1 = x0 + v0 * t;
+	//_pos += _v * t;
+
+	//MRUA
+	////v1 = v0 + a * t
+	////x1 = x0 + v0 * t;
+	//_v += _a * t;
+	//_pos += _v * t;
+
+	//Dumping
+	////v1 = v0 + a * t
+	////v1 = v1 * d^t
+	////x1 = x0 + v0 * t;
+	_v += _a * t;
+	_v *= pow(_dump, t);
+	_pos = _pos + _v * t;
+}
+
+void Particle::integrateVerlet(double t)
+{
+	//MRUA
+	////v1 = v0 + a * t
+	////x1 = x0 + v0 * t;
+	//_v += _a * t;
+	//_pos += _v * t;
+
+	//Dumping
+	////v1 = v0 + a * t
+	////v1 = v1 * d^t
+	////x1 = x0 + v0 * t;
+	_v += _a * t;
+	_v *= pow(_dump, t);
+	_pos = _pos + _v * t;
 
 }
 
