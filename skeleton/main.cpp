@@ -11,7 +11,6 @@
 #include <iostream>
 
 #include "Vector3D.h" //Practica 0
-#include "Particle.h" //Practica 1.1
 
 std::string display_text = "This is a test";
 
@@ -39,10 +38,6 @@ RenderItem* spX = NULL;
 RenderItem* spY = NULL;
 RenderItem* spZ = NULL;
 
-//Practica 1.1
-RenderItem* p = NULL;
-
-
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -69,69 +64,54 @@ void initPhysics(bool interactive)
 
 #pragma region Practica 0
 
-	//// PRACTICA 0
-	////Creamos la geometria de la esfera (con radio 0)
-	//PxGeometry* sphereGeo = new PxSphereGeometry(1.0);
-	////Creamos la forma con la geometria
-	//PxShape* sphere0 = CreateShape(*sphereGeo, gMaterial);
-	////Creamos el transform, y el color
-	//Vector3D pos(0.0, 0.0, 0.0);
-	//PxTransform* tr = new PxTransform(PxVec3(pos.getX(), pos.getY(), pos.getZ()));
-	//Vector4* color = new Vector4{ 1.0, 1.0, 1.0, 1.0 };
-	////Renderizamos la esfera
-	//sp1 = new RenderItem(sphere0, tr, *color);
-	////La registramos
-	//RegisterRenderItem(sp1);
-
-	////---- Eje rojo x
-	////Creamos la forma con la geometria
-	//PxShape* sphereX = CreateShape(*sphereGeo, gMaterial);
-	//Vector3D posX(10.0, 0.0, 0.0);
-	//PxTransform* trX = new PxTransform(PxVec3(posX.getX(), posX.getY(), posX.getZ()));
-	//Vector4* rojo = new Vector4{ 1.0, 0.0, 0.0, 1.0 };
-	////Renderizamos la esfera
-	//spX = new RenderItem(sphereX, trX, *rojo);
-	////La registramos
-	//RegisterRenderItem(spX);
-
-	////---- Eje verde y
-	////Creamos la forma con la geometria
-	//PxShape* sphereY = CreateShape(*sphereGeo, gMaterial);
-	//Vector3D posY(0, 10.0, 0);
-	//PxTransform* trY = new PxTransform(PxVec3(posY.getX(), posY.getY(), posY.getZ()));
-	//Vector4* verde = new Vector4{ 0.0, 1.0, 0.0, 1.0 };
-	////Renderizamos la esfera
-	//spY = new RenderItem(sphereY, trY, *verde);
-	////La registramos
-	//RegisterRenderItem(spY);
-
-	////---- Eje azul z
-	////Creamos la forma con la geometria
-	//PxShape* sphereZ = CreateShape(*sphereGeo, gMaterial);
-	//Vector3D posZ(0.0, 0.0, 10.0);
-	//PxTransform* trZ = new PxTransform(PxVec3(posZ.getX(), posZ.getY(), posZ.getZ()));
-	//Vector4* azul = new Vector4{ 0.0, 0.0, 1.0, 1.0 };
-	////Renderizamos la esfera
-	//spZ = new RenderItem(sphereZ, trZ, *azul);
-	////La registramos
-	//RegisterRenderItem(spZ);
-#pragma endregion
-
-#pragma region Practica 1.1
-
-	Particle particle = Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(1.0, 0.0, 0.0));
+	// PRACTICA 0
 	//Creamos la geometria de la esfera (con radio 0)
 	PxGeometry* sphereGeo = new PxSphereGeometry(1.0);
 	//Creamos la forma con la geometria
 	PxShape* sphere0 = CreateShape(*sphereGeo, gMaterial);
-	PxTransform* trP = new PxTransform(PxVec3(particle.getPos().x, particle.getPos().y, particle.getPos().z));
-	p = new RenderItem(sphere0, trP, particle.getColor());
-	particle.setRenderItem(p);
-	RegisterRenderItem(p);
-	particle.integrateEuler(0.1);
+	//Creamos el transform, y el color
+	Vector3D pos(0.0, 0.0, 0.0);
+	PxTransform* tr = new PxTransform(PxVec3(pos.getX(), pos.getY(), pos.getZ()));
+	Vector4* color = new Vector4{ 1.0, 1.0, 1.0, 1.0 };
+	//Renderizamos la esfera
+	sp1 = new RenderItem(sphere0, tr, *color);
+	//La registramos
+	RegisterRenderItem(sp1);
+
+	//---- Eje rojo x
+	//Creamos la forma con la geometria
+	PxShape* sphereX = CreateShape(*sphereGeo, gMaterial);
+	Vector3D posX(10.0, 0.0, 0.0);
+	PxTransform* trX = new PxTransform(PxVec3(posX.getX(), posX.getY(), posX.getZ()));
+	Vector4* rojo = new Vector4{ 1.0, 0.0, 0.0, 1.0 };
+	//Renderizamos la esfera
+	spX = new RenderItem(sphereX, trX, *rojo);
+	//La registramos
+	RegisterRenderItem(spX);
+
+	//---- Eje verde y
+	//Creamos la forma con la geometria
+	PxShape* sphereY = CreateShape(*sphereGeo, gMaterial);
+	Vector3D posY(0, 10.0, 0);
+	PxTransform* trY = new PxTransform(PxVec3(posY.getX(), posY.getY(), posY.getZ()));
+	Vector4* verde = new Vector4{ 0.0, 1.0, 0.0, 1.0 };
+	//Renderizamos la esfera
+	spY = new RenderItem(sphereY, trY, *verde);
+	//La registramos
+	RegisterRenderItem(spY);
+
+	//---- Eje azul z
+	//Creamos la forma con la geometria
+	PxShape* sphereZ = CreateShape(*sphereGeo, gMaterial);
+	Vector3D posZ(0.0, 0.0, 10.0);
+	PxTransform* trZ = new PxTransform(PxVec3(posZ.getX(), posZ.getY(), posZ.getZ()));
+	Vector4* azul = new Vector4{ 0.0, 0.0, 1.0, 1.0 };
+	//Renderizamos la esfera
+	spZ = new RenderItem(sphereZ, trZ, *azul);
+	//La registramos
+	RegisterRenderItem(spZ);
 
 #pragma endregion
-
 	
 
 }
@@ -146,9 +126,6 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-
-	//p->actor.integrateEuler(t);
-
 	
 }
 
@@ -165,13 +142,10 @@ void cleanupPhysics(bool interactive)
 
 	// PRACTICA 0
 	//Las desregistramos
-	//DeregisterRenderItem(sp1);
-	//DeregisterRenderItem(spX);
-	//DeregisterRenderItem(spY);
-	//DeregisterRenderItem(spZ);
-
-	// PRACTICA 1.1
-	DeregisterRenderItem(p);
+	DeregisterRenderItem(sp1);
+	DeregisterRenderItem(spX);
+	DeregisterRenderItem(spY);
+	DeregisterRenderItem(spZ);
 
 	gPhysics->release();	
 	PxPvdTransport* transport = gPvd->getTransport();
