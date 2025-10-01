@@ -147,7 +147,8 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 
 	//Actualizar la posicion con los integrate...
-	particle.integrateEuler(0.3);
+	//particle.integrateEuler(0.3);
+	particle.integrateEuler(t);
 }
 
 // Function to clean data

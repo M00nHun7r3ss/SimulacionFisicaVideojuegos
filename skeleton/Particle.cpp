@@ -1,6 +1,5 @@
 #include "Particle.h"
 
-
 Particle::Particle(PxVec3 pos, PxVec3 vel) : _pos(pos), _v(vel), _color(1.0, 1.0, 1.0, 1.0), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0) {}
 
 //Destructora
@@ -52,18 +51,18 @@ void Particle::integrateSemiEuler(double t)
 void Particle::integrateVerlet(double t)
 {
 	//MRUA
-	////v1 = v0 + a * t
-	////x1 = x0 + v0 * t;
+	////x1 = 2*x0 - x-1 + t^2 * a0;
+	////a1 =
 	//_v += _a * t;
 	//_pos += _v * t;
 
 	//Dumping
+	////x1 = 2*x0 - x-1 + t^2 * a0;
 	////v1 = v0 + a * t
 	////v1 = v1 * d^t
-	////x1 = x0 + v0 * t;
-	_v += _a * t;
-	_v *= pow(_dump, t);
-	_pos = _pos + _v * t;
+	//_v += _a * t;
+	//_v *= pow(_dump, t);
+	//_pos = _pos + _v * t;
 
 }
 
