@@ -1,9 +1,9 @@
 #pragma once
 
 #include <PxPhysicsAPI.h> //Para usar Vector3
-#include "Vector3D.h" //Para cuando lo arregle
 #include "RenderUtils.hpp" //Para RenderItem
-
+#include "Vector3D.h" //TODO: cambiar luego
+ 
 using namespace physx;
 
 
@@ -49,6 +49,7 @@ private:
 
 	RenderItem* _renderItem;
 	Vector4 _color;
+	PxTransform* _transform; //para la posicion, etc...
 	PxVec3 _pos; //Lo usaremos para el RenderItem en m
 	PxVec3 _v; //velocidad en m/s
 	PxVec3 _a; //aceleracion en m/s^2

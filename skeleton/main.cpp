@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <execution>
 
 #include <PxPhysicsAPI.h>
 
@@ -39,8 +40,7 @@ RenderItem* spY = NULL;
 RenderItem* spZ = NULL;
 
 //Practica 1.1
-RenderItem* p = NULL;
-Particle particle = Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(1.0, 0.0, 0.0));
+Particle* particle = NULL;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -121,15 +121,7 @@ void initPhysics(bool interactive)
 	
 #pragma region Practica 1.1
 
-	//Particle particle = Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(1.0, 0.0, 0.0));
-	//Creamos la geometria de la esfera (con radio 0)
-	PxGeometry* sphereGeo = new PxSphereGeometry(1.0);
-	//Creamos la forma con la geometria
-	PxShape* sphere0 = CreateShape(*sphereGeo, gMaterial);
-	PxTransform* trP = new PxTransform(PxVec3(particle.getPos().x, particle.getPos().y, particle.getPos().z));
-	p = new RenderItem(sphere0, trP, particle.getColor());
-	particle.setRenderItem(p);
-	RegisterRenderItem(p);
+	particle = new Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 0.05, 0.0));
 
 #pragma endregion
 
@@ -147,8 +139,11 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 
 	//Actualizar la posicion con los integrate...
-	//particle.integrateEuler(0.3);
-	particle.integrateEuler(t);
+	particle->integrateEuler(0.1);
+	//std::cout << "x: " << particle->getPos().x
+	//<< "y: " << particle->getPos().y
+	//<< "z: " << particle->getPos().z;
+
 }
 
 // Function to clean data
@@ -170,7 +165,7 @@ void cleanupPhysics(bool interactive)
 	//DeregisterRenderItem(spZ);
 
 	// PRACTICA 1.1
-	DeregisterRenderItem(p);
+	delete particle;
 
 	gPhysics->release();	
 	PxPvdTransport* transport = gPvd->getTransport();

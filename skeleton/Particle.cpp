@@ -1,27 +1,40 @@
 #include "Particle.h"
 
-Particle::Particle(PxVec3 pos, PxVec3 vel) : _pos(pos), _v(vel), _color(1.0, 1.0, 1.0, 1.0), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0) {}
+Particle::Particle(PxVec3 pos, PxVec3 vel) : _v(vel), _color(1.0, 1.0, 1.0, 1.0), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0)
+{
+	//Particle particle = Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(1.0, 0.0, 0.0));
+	//Creamos la forma con la geometria
+	PxShape* sphere0 = CreateShape(PxSphereGeometry(1.0));
+
+	_transform = new PxTransform(PxVec3(pos.x, pos.y, pos.z));
+	_renderItem = new RenderItem(sphere0, _transform, _color);
+
+	RegisterRenderItem(_renderItem);
+}
 
 //Destructora
-Particle::~Particle() {}
+Particle::~Particle()
+{
+	DeregisterRenderItem(_renderItem);
+}
 
 void Particle::integrateEuler(double t)
 {
 	//MRU
 	////x1 = x0 + v0 * t;
-	//_pos += _v * t;
+	//_transform->p += _v * t;
 
 	//MRUA
 	////x1 = x0 + v0 * t;
 	////v1 = v0 + a * t
-	//_pos += _v * t;
+	//_transform->p += _v * t;
 	//_v += _a * t;
 
 	//Dumping
 	////x1 = x0 + v0 * t;
 	////v1 = v0 + a * t
 	////v1 = v1 * d^t
-	_pos = _pos + _v * t;
+	_transform->p += _v * t;
 	_v += _a * t;
 	_v *= pow(_dump, t);
 
@@ -31,13 +44,13 @@ void Particle::integrateSemiEuler(double t)
 {
 	//MRU
 	////x1 = x0 + v0 * t;
-	//_pos += _v * t;
+	//_transform->p += _v * t;
 
 	//MRUA
 	////v1 = v0 + a * t
 	////x1 = x0 + v0 * t;
 	//_v += _a * t;
-	//_pos += _v * t;
+	//_transform->p += _v * t;
 
 	//Dumping
 	////v1 = v0 + a * t
@@ -45,7 +58,7 @@ void Particle::integrateSemiEuler(double t)
 	////x1 = x0 + v0 * t;
 	_v += _a * t;
 	_v *= pow(_dump, t);
-	_pos = _pos + _v * t;
+	_transform->p += _v * t;
 }
 
 void Particle::integrateVerlet(double t)
@@ -54,7 +67,7 @@ void Particle::integrateVerlet(double t)
 	////x1 = 2*x0 - x-1 + t^2 * a0;
 	////a1 =
 	//_v += _a * t;
-	//_pos += _v * t;
+	//_transform->p += _v * t;
 
 	//Dumping
 	////x1 = 2*x0 - x-1 + t^2 * a0;
@@ -62,7 +75,7 @@ void Particle::integrateVerlet(double t)
 	////v1 = v1 * d^t
 	//_v += _a * t;
 	//_v *= pow(_dump, t);
-	//_pos = _pos + _v * t;
+	//_transform->p + _v * t;
 
 }
 
@@ -70,7 +83,7 @@ RenderItem* Particle::getRenderItem() { return _renderItem; }
 
 Vector4 Particle::getColor() { return _color; }
 
-PxVec3 Particle::getPos() {	return _pos; }
+PxVec3 Particle::getPos() {	return _transform->p; }
 
 PxVec3 Particle::getV() { return _v; }
 
@@ -86,7 +99,7 @@ void Particle::setRenderItem(RenderItem* newRenderItem) { _renderItem = newRende
 
 void Particle::setColor(Vector4 newColor) { _color = newColor; }
 
-void Particle::setPos(PxVec3 newPos) { _pos = newPos; }
+void Particle::setPos(PxVec3 newPos) { _transform->p = newPos; }
 
 void Particle::setV(PxVec3 newV) { _v = newV; }
 
