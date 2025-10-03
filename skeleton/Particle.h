@@ -11,9 +11,9 @@ class Particle
 {
 public: 
 	//Constructora con velocidad y posicion iniciales
-	Particle(PxVec3 pos, PxVec3 vel);
+	Particle(PxVec3 pos, PxVec3 vel, Vector4 color);
 
-	//Destructora - borrar render item
+	//Destructora
 	~Particle();
 
 	//1.1.a Integracion con Euler
@@ -50,7 +50,6 @@ private:
 	RenderItem* _renderItem;
 	Vector4 _color;
 	PxTransform* _transform; //para la posicion, etc...
-	PxVec3 _pos; //Lo usaremos para el RenderItem en m
 	PxVec3 _v; //velocidad en m/s
 	PxVec3 _a; //aceleracion en m/s^2
 	double _m; //masa en kg

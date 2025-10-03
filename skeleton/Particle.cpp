@@ -1,8 +1,8 @@
 #include "Particle.h"
+#include "Proyectil.h"
 
-Particle::Particle(PxVec3 pos, PxVec3 vel) : _v(vel), _color(1.0, 1.0, 1.0, 1.0), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0)
+Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color) : _v(vel), _color(color), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0)
 {
-	//Particle particle = Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(1.0, 0.0, 0.0));
 	//Creamos la forma con la geometria
 	PxShape* sphere0 = CreateShape(PxSphereGeometry(1.0));
 
@@ -13,10 +13,7 @@ Particle::Particle(PxVec3 pos, PxVec3 vel) : _v(vel), _color(1.0, 1.0, 1.0, 1.0)
 }
 
 //Destructora
-Particle::~Particle()
-{
-	DeregisterRenderItem(_renderItem);
-}
+Particle::~Particle() {}
 
 void Particle::integrateEuler(double t)
 {
@@ -78,6 +75,7 @@ void Particle::integrateVerlet(double t)
 	//_transform->p + _v * t;
 
 }
+
 
 RenderItem* Particle::getRenderItem() { return _renderItem; }
 
