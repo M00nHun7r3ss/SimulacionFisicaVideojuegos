@@ -10,8 +10,14 @@ using namespace physx;
 class Particle
 {
 public: 
-	//Constructora con velocidad y posicion iniciales
+	//Constructora con velocidad y posicion iniciales (Blanca)
+	Particle(PxVec3 pos, PxVec3 vel);
+
+	//Constructora con velocidad, posicion y colores iniciales (De colores)
 	Particle(PxVec3 pos, PxVec3 vel, Vector4 color);
+
+	//Constructora con todos los datos (Especiales)
+	Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa = 1.0, double dumping = 0.999, double duration = 5.0);
 
 	//Destructora
 	~Particle();
@@ -24,6 +30,9 @@ public:
 
 	//1.1.c Integracion con Verlet
 	void integrateVerlet(double t);
+
+	//1.1. Integracion // 0 - Euler,  1 - SemiEuler, 2 - Verlet
+	void integrate(double t, int integrationType);
 
 	//Getters
 	RenderItem* getRenderItem();
@@ -55,10 +64,5 @@ private:
 	double _m; //masa en kg
 	double _dump; //dumping
 	double _duration; //en s (entre 0 y 1, cuanto mas pequenio mas se frena)
-
-	//1. Mov con v constante
-	//2. Mov con a
-	//3. Dumping
-
 };
 

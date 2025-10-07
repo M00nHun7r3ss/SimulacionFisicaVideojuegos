@@ -1,7 +1,32 @@
 #include "Particle.h"
 #include "Proyectil.h"
 
-Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color) : _v(vel), _color(color), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0)
+Particle::Particle(PxVec3 pos, PxVec3 vel) :
+	_v(vel), _color(Vector4(1.0, 1.0, 1.0, 1.0)), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0)
+{
+	//Creamos la forma con la geometria
+	PxShape* sphere0 = CreateShape(PxSphereGeometry(1.0));
+
+	_transform = new PxTransform(PxVec3(pos.x, pos.y, pos.z));
+	_renderItem = new RenderItem(sphere0, _transform, _color);
+
+	RegisterRenderItem(_renderItem);
+}
+
+Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color) :
+	_v(vel), _color(color), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0)
+{
+	//Creamos la forma con la geometria
+	PxShape* sphere0 = CreateShape(PxSphereGeometry(1.0));
+
+	_transform = new PxTransform(PxVec3(pos.x, pos.y, pos.z));
+	_renderItem = new RenderItem(sphere0, _transform, _color);
+
+	RegisterRenderItem(_renderItem);
+}
+
+Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa, double dumping, double duration) :
+	_v(vel), _color(color), _a(acel), _m(masa), _dump(dumping), _duration(duration)
 {
 	//Creamos la forma con la geometria
 	PxShape* sphere0 = CreateShape(PxSphereGeometry(1.0));
@@ -76,6 +101,27 @@ void Particle::integrateVerlet(double t)
 
 }
 
+void Particle::integrate(double t, int integrationType)
+{
+	//Euler
+	if (integrationType == 0)
+	{
+		std::cout << "Integracion por Euler" << std::endl;
+		integrateEuler(t);
+	}
+	//EulerSemimplicito
+	else if (integrationType == 1)
+	{
+		std::cout << "Integracion por Euler Semimplicito" << std::endl;
+		integrateSemiEuler(t);
+	}
+	//Verlet
+	else if (integrationType == 2)
+	{
+		std::cout << "Integracion por Verlet. Sin acabar" << std::endl;
+		integrateVerlet(t);
+	}
+}
 
 RenderItem* Particle::getRenderItem() { return _renderItem; }
 
