@@ -13,7 +13,7 @@
 
 #include "Vector3D.h"  //Practica 0
 #include "Particle.h"  //Practica 1.1
-#include "Proyectil.h" //Practica 1.2
+
 
 std::string display_text = "";
 
@@ -41,12 +41,10 @@ RenderItem* spY = NULL;
 RenderItem* spZ = NULL;
 
 //Practica 1.1
-Particle* particle = NULL;
+Particle* particleSimple = NULL;
+Particle* particleColor = NULL;
+Particle* particleFull = NULL;
 
-//Practica 1.2
-Proyectil* bullet = NULL;
-Proyectil* cannonBall = NULL;
-Proyectil* bubble = NULL;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -127,23 +125,10 @@ void initPhysics(bool interactive)
 	
 #pragma region Practica 1.1
 
-	//particle = new Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 0.05, 0.0));
+	particleSimple = new Particle(PxVec3(0.0, 10.0, 0.0), PxVec3(0.0, 2.5, 0.0));
+	particleColor = new Particle(PxVec3(1.0, 10.0, 0.0), PxVec3(5.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 1.0));
+	particleFull = new Particle(PxVec3(-2.0, 10.0, 0.0), PxVec3(-5.0, 0.0, 0.0), Vector4(0.0, 1.0, 1.0, 1.0), PxVec3(0.0, 0.0, 0.0), 2.0, 0.5, 5.0);
 
-#pragma endregion
-
-#pragma region Practica 1.2
-	//Direccion de la camara
-	PxVec3 dir = PxVec3(GetCamera()->getDir());
-
-	bullet = new Proyectil(PxVec3(0.0, 30.0, 0.0), PxVec3(1.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 0.0), 2.0);
-	//La aceleracion de la bala sera la gravedad
-	bullet->setA(bullet->getGravity());
-	bullet->setV(PxVec3(-1 * dir.x, -1 * dir.y, -1 * dir.z));
-
-
-	cannonBall = new Proyectil(PxVec3(0.0, 50.0, 0.0), PxVec3(1.0, 3.0, 0.0), Vector4(0.0, 1.0, 0.0, 0.0), 2.0);
-	//La aceleracion de la bala sera la gravedad
-	cannonBall->setA(cannonBall->getGravity());
 
 #pragma endregion
 }
@@ -161,17 +146,10 @@ void stepPhysics(bool interactive, double t)
 
 #pragma region Practica 1.1
 
-	////Actualizar la posicion con los integrate...
-	//particle->integrateEuler(0.1);
-	////std::cout << "x: " << particle->getPos().x
-	////<< "y: " << particle->getPos().y
-	////<< "z: " << particle->getPos().z;
-
-#pragma endregion
-
-#pragma region Practica 1.2
-
-	bullet->integrateSemiEuler(0.2);
+	//Actualizar la posicion con los integrate...
+	particleSimple->integrate(t, 0); //EULER
+	particleColor->integrate(t, 1); //SEMIEULER
+	particleFull->integrate(t, 0); //VERLET no esta acabado
 
 #pragma endregion
 
@@ -200,15 +178,12 @@ void cleanupPhysics(bool interactive)
 
 #pragma region Practica 1.1
 
-	//DeregisterRenderItem(particle->getRenderItem());
+	DeregisterRenderItem(particleSimple->getRenderItem());
+	DeregisterRenderItem(particleColor->getRenderItem());
+	DeregisterRenderItem(particleFull->getRenderItem());
 
 #pragma endregion
 
-#pragma region Practica 1.2
-
-	DeregisterRenderItem(bullet->getRenderItem());
-
-#pragma endregion
 
 	gPhysics->release();	
 	PxPvdTransport* transport = gPvd->getTransport();
