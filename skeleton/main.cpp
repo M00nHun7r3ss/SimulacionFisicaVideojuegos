@@ -46,9 +46,9 @@ Particle* particleColor = NULL;
 Particle* particleFull = NULL;
 
 //Practica 1.2
-Proyectil* bullet = NULL; //Velocidad  //Gravedad baja, practicamente 0, porque va recto
-Proyectil* cannonBall = NULL; //Velocidad //Gravedad alta, cae eventualmente
-Proyectil* bubble = NULL; //Velocidad // Gravedad positiva, flotan
+Proyectil* bullet = NULL; 
+Proyectil* cannonBall = NULL;
+Proyectil* bubble = NULL;
 
 
 // Initialize physics engine
@@ -141,15 +141,12 @@ void initPhysics(bool interactive)
 //Direccion de la camara
 PxVec3 dir = PxVec3(GetCamera()->getDir());
 
-bullet = new Proyectil(PxVec3(0.0, 30.0, 0.0), PxVec3(1.0, 0.0, 0.0), Vector4(1.0, 0.0, 0.0, 0.0), 2.0);
-//La aceleracion de la bala sera la gravedad
-bullet->setA(bullet->getGravity());
-bullet->setV(PxVec3(-1 * dir.x, -1 * dir.y, -1 * dir.z));
-
-
-//cannonBall = new Proyectil(PxVec3(0.0, 50.0, 0.0), PxVec3(1.0, 3.0, 0.0), Vector4(0.0, 1.0, 0.0, 0.0), 2.0);
-//La aceleracion de la bala sera la gravedad
-//cannonBall->setA(cannonBall->getGravity());
+//Color rojo. Gravedad baja, practicamente 0, porque va casi recto
+bullet = new Proyectil(PxVec3(0.0, 30.0, -10.0), PxVec3(dir.x * -60.0, dir.y * 0.0, dir.z * 0.0), Vector4(1.0, 0.0, 0.0, 0.0), PxVec3(0.0, -0.05, 0.0));
+//Color verde. Gravedad alta, cae eventualmente
+cannonBall = new Proyectil(PxVec3(-20.0, 30.0, 0.0), PxVec3(dir.x * 0.0, dir.y * -40.0, dir.z * 20.0), Vector4(0.0, 1.0, 0.0, 0.0), PxVec3(0.0, -9.8, 0.0));
+//Color azul. Gravedad positiva, flotan
+bubble = new Proyectil(PxVec3(0.0, 0.0, 0.0), PxVec3(dir.x * 0.0, dir.y * -5.0, dir.z * -0.05), Vector4(0.0, 0.0, 1.0, 0.0), PxVec3(0.0, 0.1, 0.0));
 
 #pragma endregion
 }

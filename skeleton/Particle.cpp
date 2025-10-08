@@ -106,19 +106,19 @@ void Particle::integrate(double t, int integrationType)
 	//Euler
 	if (integrationType == 0)
 	{
-		std::cout << "Integracion por Euler" << std::endl;
+		//std::cout << "Integracion por Euler" << std::endl;
 		integrateEuler(t);
 	}
 	//EulerSemimplicito
 	else if (integrationType == 1)
 	{
-		std::cout << "Integracion por Euler Semimplicito" << std::endl;
+		//std::cout << "Integracion por Euler Semimplicito" << std::endl;
 		integrateSemiEuler(t);
 	}
 	//Verlet
 	else if (integrationType == 2)
 	{
-		std::cout << "Integracion por Verlet. Sin acabar" << std::endl;
+		//std::cout << "Integracion por Verlet. Sin acabar" << std::endl;
 		integrateVerlet(t);
 	}
 }
