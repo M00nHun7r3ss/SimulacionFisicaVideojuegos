@@ -1,0 +1,15 @@
+1. Nace particula en generador particulas (x numero de particulas)
+2. Atributos random - posicion inicial (de la particula y del sistema), velocidad,
+tiempo vida, (aceleracion*), (dumping*), color, tamaño, forma. 
+Con distribuciones de probabilidad
+3. Se extinguen las particulas a las que se les ha acabado el tiempo de vida, o...
+(condiciones extra como la posición, al salir de pantalla, nº max particulas, 
+cambio color)
+4. Se les aplican a las partículas unas fuerzas, y se updatea lo que toque hacer.
+5. Render
+
+
+cascada o fuente. generacion de particulas constantes.
+humo
+
+Para degradado metodo de rgb a rsh

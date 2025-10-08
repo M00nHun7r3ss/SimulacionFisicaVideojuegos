@@ -46,9 +46,9 @@ Particle* particleColor = NULL;
 Particle* particleFull = NULL;
 
 //Practica 1.2
-Proyectil* bullet = NULL;
-Proyectil* cannonBall = NULL;
-Proyectil* bubble = NULL;
+Proyectil* bullet = NULL; //Velocidad  //Gravedad baja, practicamente 0, porque va recto
+Proyectil* cannonBall = NULL; //Velocidad //Gravedad alta, cae eventualmente
+Proyectil* bubble = NULL; //Velocidad // Gravedad positiva, flotan
 
 
 // Initialize physics engine
@@ -147,9 +147,9 @@ bullet->setA(bullet->getGravity());
 bullet->setV(PxVec3(-1 * dir.x, -1 * dir.y, -1 * dir.z));
 
 
-cannonBall = new Proyectil(PxVec3(0.0, 50.0, 0.0), PxVec3(1.0, 3.0, 0.0), Vector4(0.0, 1.0, 0.0, 0.0), 2.0);
+//cannonBall = new Proyectil(PxVec3(0.0, 50.0, 0.0), PxVec3(1.0, 3.0, 0.0), Vector4(0.0, 1.0, 0.0, 0.0), 2.0);
 //La aceleracion de la bala sera la gravedad
-cannonBall->setA(cannonBall->getGravity());
+//cannonBall->setA(cannonBall->getGravity());
 
 #pragma endregion
 }
@@ -175,8 +175,10 @@ void stepPhysics(bool interactive, double t)
 #pragma endregion
 
 #pragma region Practica 1.2
-
+	//Actualizar la posicion con los SemiEuler...
 	bullet->integrate(t, 1);
+	cannonBall->integrate(t, 1);
+	bubble->integrate(t, 1);
 
 #pragma endregion
 
@@ -211,10 +213,12 @@ void cleanupPhysics(bool interactive)
 
 #pragma endregion
 
-
 #pragma region Practica 1.2
 
+	//Los desregistramos
 	DeregisterRenderItem(bullet->getRenderItem());
+	DeregisterRenderItem(cannonBall->getRenderItem());
+	DeregisterRenderItem(bubble->getRenderItem());
 
 #pragma endregion
 

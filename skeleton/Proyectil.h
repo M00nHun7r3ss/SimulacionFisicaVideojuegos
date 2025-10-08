@@ -12,13 +12,20 @@ class Proyectil : public Particle
 {
 public:
 
-	//Constructora con velocidad y posicion iniciales
-	Proyectil(PxVec3 pos, PxVec3 vel, Vector4 color, double masa);
+	//Usara la constructora base de Particle, aniadiendo unicamente la gravedad
+	//Constructora con velocidad y posicion iniciales (Blanca)
+	Proyectil(PxVec3 pos, PxVec3 vel, PxVec3 gravity);
+
+	//Constructora con velocidad, posicion y colores iniciales (De colores)
+	Proyectil(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 gravity);
+
+	//Constructora con todos los datos (Especiales)
+	Proyectil(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, PxVec3 gravity, double masa = 1.0, double dumping = 0.999, double duration = 5.0);
 
 	//Destructora
 	~Proyectil();
 
-	double calculateSimulatedM(); 
+	//double calculateSimulatedM(); 
 
 	//Getters
 	PxVec3 getGravity();
