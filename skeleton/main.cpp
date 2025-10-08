@@ -172,8 +172,7 @@ void stepPhysics(bool interactive, double t)
 #pragma endregion
 
 #pragma region Practica 1.2
-
-	//Actualizar la posicion con SemiEuler
+	//Actualizar la posicion con los SemiEuler...
 	bullet->integrate(t, 1);
 	cannonBall->integrate(t, 1);
 	bubble->integrate(t, 1);
@@ -205,7 +204,6 @@ void cleanupPhysics(bool interactive)
 
 #pragma region Practica 1.1
 
-	//Las desregistramos
 	//DeregisterRenderItem(particleSimple->getRenderItem());
 	//DeregisterRenderItem(particleColor->getRenderItem());
 	//DeregisterRenderItem(particleFull->getRenderItem());
