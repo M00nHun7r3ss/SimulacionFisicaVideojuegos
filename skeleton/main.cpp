@@ -50,6 +50,8 @@ Proyectil* bullet = NULL;
 Proyectil* cannonBall = NULL;
 Proyectil* bubble = NULL;
 
+std::vector<Proyectil*> proyectils;
+
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -139,15 +141,26 @@ void initPhysics(bool interactive)
 #pragma region Practica 1.2
 
 //Direccion de la camara
-PxVec3 dir = PxVec3(GetCamera()->getDir());
+	PxVec3 dir = PxVec3(GetCamera()->getDir());
 
-//Color rojo. Gravedad baja, practicamente 0, porque va casi recto
-bullet = new Proyectil(PxVec3(0.0, 30.0, -10.0), PxVec3(dir.x * -60.0, dir.y * 0.0, dir.z * 0.0), Vector4(1.0, 0.0, 0.0, 0.0), PxVec3(0.0, -0.05, 0.0));
-//Color verde. Gravedad alta, cae eventualmente
-cannonBall = new Proyectil(PxVec3(-20.0, 30.0, 0.0), PxVec3(dir.x * 0.0, dir.y * -40.0, dir.z * 20.0), Vector4(0.0, 1.0, 0.0, 0.0), PxVec3(0.0, -9.8, 0.0));
-//Color azul. Gravedad positiva, flotan
-bubble = new Proyectil(PxVec3(0.0, 0.0, 0.0), PxVec3(dir.x * 0.0, dir.y * -5.0, dir.z * -0.05), Vector4(0.0, 0.0, 1.0, 0.0), PxVec3(0.0, 0.1, 0.0));
+////Color rojo. Gravedad baja, practicamente 0, porque va casi recto
+//bullet = new Proyectil(PxVec3(0.0, 30.0, -10.0), PxVec3(dir.x * -60.0, dir.y * 0.0, dir.z * 0.0), Vector4(1.0, 0.0, 0.0, 0.0), PxVec3(0.0, -0.05, 0.0));
+////Color verde. Gravedad alta, cae eventualmente
+//cannonBall = new Proyectil(PxVec3(-20.0, 30.0, 0.0), PxVec3(dir.x * 0.0, dir.y * -40.0, dir.z * 20.0), Vector4(0.0, 1.0, 0.0, 0.0), PxVec3(0.0, -9.8, 0.0));
+////Color azul. Gravedad positiva, flotan
+//bubble = new Proyectil(PxVec3(0.0, 0.0, 0.0), PxVec3(dir.x * 0.0, dir.y * -15.0, dir.z * -0.05), Vector4(0.0, 0.0, 1.0, 0.0), PxVec3(0.0, 0.1, 0.0));
 
+//Para el vector ilimitado - inicializamos con proyectiles basicos
+	for (int i = 0; i < 20; ++i)
+	{
+		proyectils.push_back(new Proyectil(
+			PxVec3(0, -500, 0),
+			PxVec3(0, 0, 0),
+			Vector4(1, 1, 1, 0),
+			PxVec3(0, -9.8f, 0)
+		));
+		proyectils.back()->setActive(false);
+	}
 #pragma endregion
 }
 
@@ -172,10 +185,29 @@ void stepPhysics(bool interactive, double t)
 #pragma endregion
 
 #pragma region Practica 1.2
-	//Actualizar la posicion con los SemiEuler...
-	bullet->integrate(t, 1);
-	cannonBall->integrate(t, 1);
-	bubble->integrate(t, 1);
+
+	//std::cout << GetCamera()->getDir().x << GetCamera()->getDir().y << GetCamera()->getDir().z << std::endl;
+	////Actualizar la posicion con los SemiEuler...
+	//bullet->integrate(t, 1);
+	//cannonBall->integrate(t, 1);
+	//bubble->integrate(t, 1);
+
+	//Actualizamos
+	for (Proyectil* p : proyectils)
+	{
+		if (p->isActive())
+		{
+			p->integrate(t, 1); // SemiEuler
+			PxVec3 pos = p->getPos();
+			PxVec3 vel = p->getV();
+
+			// Desactivamos si esta fuera del mundo
+			if (pos.x > 150.0 || pos.x < -150.0 || pos.y < -150.0 || pos.y > 150.0)
+			{
+				p->setActive(false);
+			}
+		}
+	}
 
 #pragma endregion
 
@@ -213,9 +245,21 @@ void cleanupPhysics(bool interactive)
 #pragma region Practica 1.2
 
 	//Los desregistramos
-	DeregisterRenderItem(bullet->getRenderItem());
-	DeregisterRenderItem(cannonBall->getRenderItem());
-	DeregisterRenderItem(bubble->getRenderItem());
+	//DeregisterRenderItem(bullet->getRenderItem());
+	//DeregisterRenderItem(cannonBall->getRenderItem());
+	//DeregisterRenderItem(bubble->getRenderItem());
+
+	// Borrar pool de proyectiles
+	for (Proyectil* p : proyectils) {
+		{
+			if (p->getRenderItem() != nullptr)
+			{
+				DeregisterRenderItem(p->getRenderItem());
+				delete p;
+			}
+		}
+	}
+	proyectils.clear();
 
 #pragma endregion
 
@@ -225,7 +269,19 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
+}
+
+void shoot(Proyectil::ProyectilType type)
+{
+	for (Proyectil* p : proyectils)
+	{
+		if (!p->isActive())
+		{
+			p->shoot(type);
+			break;
+		}
 	}
+}
 
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
@@ -234,12 +290,19 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
-	//case 'B': break;
-	case ' ':
-	{
+		//Disparo proyectil bullet
+	case 'Q': 
+		shoot(Proyectil::ProyectilType::Bullet);
 		break;
-	}
-	case 'P':
+		//Disparo proyectil canon ball
+	case 'W':
+		shoot(Proyectil::ProyectilType::CanonBall);
+		break;
+		//Disparo proyectil bubble
+	case 'E':
+		shoot(Proyectil::ProyectilType::Bubble);
+		break;
+	case ' ':
 	{
 		break;
 	}

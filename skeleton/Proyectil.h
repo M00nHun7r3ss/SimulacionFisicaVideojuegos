@@ -22,6 +22,12 @@ public:
 	//Constructora con todos los datos (Especiales)
 	Proyectil(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, PxVec3 gravity, double masa = 1.0, double dumping = 0.999, double duration = 5.0);
 
+	//Diferentes tipos de proyectil
+	enum class ProyectilType { Bullet, CanonBall, Bubble };
+
+	//Disparo
+	void shoot(ProyectilType type);
+
 	//Destructora
 	~Proyectil();
 
@@ -29,13 +35,19 @@ public:
 
 	//Getters
 	PxVec3 getGravity();
+	bool isActive();
 
 	//Setters
 	void setGravity(PxVec3 newGravity);
+	void setActive(bool act);
+
 
 private:
 
 	PxVec3 _g;	 //gravedad en m/s^2
+	ProyectilType _t; //para definir el tipo de proyectil al disparar
+	bool _active = false; //para saber si se ha disparado o no
+
 };
 
 
