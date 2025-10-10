@@ -202,7 +202,7 @@ void stepPhysics(bool interactive, double t)
 			PxVec3 vel = p->getV();
 
 			// Desactivamos si esta fuera del mundo
-			if (pos.x > 150.0 || pos.x < -150.0 || pos.y < -150.0 || pos.y > 150.0)
+			if (pos.x > 150.0 || pos.x < -150.0 || pos.y < -150.0 || pos.y > 150.0 || p->getDuration() <= 0)
 			{
 				p->setActive(false);
 			}

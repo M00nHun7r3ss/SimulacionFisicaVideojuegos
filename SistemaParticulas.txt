@@ -16,3 +16,72 @@ Para degradado metodo de rgb a hsv
 
 Particulas en vector/lista
 
+
+
+//Clase ParticlesSystem -
+Lista de partículas* (o un enum)
+Lista de generadores de particulas* - devuelve lista de partículas y las metemos a la lista de partículas de la situacion
+Update(tiempo) {
+3. Se extinguen las particulas a las que se les ha acabado el tiempo de vida, o...
+(condiciones extra como la posición, al salir de pantalla, nº max particulas, 
+cambio color) y las borra de la lista
+4. Se les aplican a las partículas unas fuerzas (integrate()), y se updatea lo que toque hacer.}
+1. Nace particula en generador particulas (x numero de particulas)
+}
+
+
+clase abstracta generador particulas {
+
+DISTRIBUCION UNIFORME - lluvia
+std::uniform_real_distribution<double> 
+P + R * var - uniforme{0,1}
+
+
+desviacionPos
+desvVel
+DesvTVida
+x = x * media + distribucion(random) * desvP.x
+
+
+
+DISTRIBUCION NORMAL / GAUSS - fuego, niebla...
+std::normal_real_distribution<double> - d{0,1}
+
+virtual generarParticulas() = 0;
+{
+nº de partículas
+probabilidad de generación (o random números de particulas)
+p = partícula modelo
+
+}
+
+
+setOrigin()
+getOrigin()
+setVelMedia()
+getVelMedia()
+setDurationMedia()
+getDurationMedia()
+setProbGeneration() //nº de particulas generadas en cada update()
+getProbGeneration()
+Nº particulas
+}
+
+se crea la partícula base y se otorgan luego los atributos con mis setters super chulos
+
+
+Para generar random en particulas Mersenne 
+std::mt19937 (de 0 a 1 y lo escalo con la variacion)
+
+
+En el integrate() de las partículas ir disminuyendo el tiempo de vida.
+
+
+
+
+
+
+
+
+
+

@@ -56,7 +56,6 @@ void Proyectil::shoot(ProyectilType type)
 		break;
 	}
 
-	
 	getRenderItem()->color = getColor();
 	RegisterRenderItem(getRenderItem());
 }

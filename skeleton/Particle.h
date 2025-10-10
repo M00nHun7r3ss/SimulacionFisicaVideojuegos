@@ -3,6 +3,9 @@
 #include <PxPhysicsAPI.h> //Para usar Vector3
 #include "RenderUtils.hpp" //Para RenderItem
 #include "Vector3D.h" //TODO: cambiar luego
+
+#include <chrono> //Para el delay en la integracion 
+#include <thread>
  
 using namespace physx;
 
@@ -34,6 +37,7 @@ public:
 	double getM();
 	double getDump();
 	double getDuration();
+	bool isActive();
 
 	//Setters
 	void setRenderItem(RenderItem* newParticle);
@@ -44,6 +48,7 @@ public:
 	void setM(double newM);
 	void setDump(double newDump);
 	void setDuration(double newDuration);
+	void setActive(bool act);
 
 private:
 
@@ -55,6 +60,7 @@ private:
 	double _m; //masa en kg
 	double _dump; //dumping
 	double _duration; //en s (entre 0 y 1, cuanto mas pequenio mas se frena)
+	bool _active = false; //para saber si se esta usando
 
 	//1.1.a Integracion con Euler
 	void integrateEuler(double t);

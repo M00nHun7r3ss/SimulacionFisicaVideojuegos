@@ -1,5 +1,4 @@
 #include "Particle.h"
-#include "Proyectil.h"
 
 Particle::Particle(PxVec3 pos, PxVec3 vel) :
 	_v(vel), _color(Vector4(1.0, 1.0, 1.0, 1.0)), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0)
@@ -83,7 +82,7 @@ void Particle::integrateSemiEuler(double t)
 	_transform->p += _v * t;
 }
 
-void Particle::integrateVerlet(double t)
+void Particle::integrateVerlet(double t) //Se resuelve metiendo un pequenio delay
 {
 	//MRUA
 	////x1 = 2*x0 - x-1 + t^2 * a0;
@@ -92,7 +91,7 @@ void Particle::integrateVerlet(double t)
 	//_transform->p += _v * t;
 
 	//Dumping
-	////x1 = 2*x0 - x-1 + t^2 * a0;
+	////x1 = 2*x(0) - x(-1) + t^2 * a(0);
 	////v1 = v0 + a * t
 	////v1 = v1 * d^t
 	//_v += _a * t;
@@ -121,6 +120,30 @@ void Particle::integrate(double t, int integrationType)
 		//std::cout << "Integracion por Verlet. Sin acabar" << std::endl;
 		integrateVerlet(t);
 	}
+
+
+	//Si ya se le ha acabado la vida
+	if (isActive() && getDuration() <= 0)
+	{
+		//Desactivamos la particula
+		setActive(false);
+	}
+	//Si le queda vida
+	else if (getDuration() > 0)
+	{
+		//Quitamos tiempo de vida
+		setDuration(getDuration() - t);
+	}
+	//Si no esta activo
+	else if (!isActive())
+	{
+		std::cout << "desactivar " << _renderItem << std::endl;
+		//DeregisterRenderItem(_renderItem);
+	}
+
+	//Delay de cara a verlet
+	//std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
 }
 
 RenderItem* Particle::getRenderItem() { return _renderItem; }
@@ -139,6 +162,8 @@ double Particle::getDump() { return _dump; }
 
 double Particle::getDuration() { return _duration; }
 
+bool Particle::isActive() { return _active; }
+
 void Particle::setRenderItem(RenderItem* newRenderItem) { _renderItem = newRenderItem; }
 
 void Particle::setColor(Vector4 newColor) { _color = newColor; }
@@ -155,4 +180,5 @@ void Particle::setDump(double newDump) { _dump = newDump; }
 
 void Particle::setDuration(double newDuration) { _duration = newDuration; }
 
+void Particle::setActive(bool newActive) { _active = newActive; }
 
