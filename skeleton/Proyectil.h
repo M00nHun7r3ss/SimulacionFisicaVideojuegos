@@ -34,19 +34,18 @@ public:
 	//double calculateSimulatedM(); 
 
 	//Getters
-	PxVec3 getGravity();
-	bool isActive();
+	inline PxVec3 getGravity() { return _g; }
+	inline bool isActive() { return Particle::isActive();}
 
 	//Setters
-	void setGravity(PxVec3 newGravity);
-	void setActive(bool act);
+	inline void setGravity(PxVec3 newGravity) { _g = newGravity; }
+	inline void setActive(bool act) {Particle::setActive(act);}
 
 
 private:
 
 	PxVec3 _g;	 //gravedad en m/s^2
 	ProyectilType _t; //para definir el tipo de proyectil al disparar
-	bool _active = false; //para saber si se ha disparado o no
 
 };
 

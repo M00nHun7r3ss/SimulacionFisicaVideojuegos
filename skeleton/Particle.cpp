@@ -1,7 +1,7 @@
 #include "Particle.h"
 
 Particle::Particle(PxVec3 pos, PxVec3 vel) :
-	_v(vel), _color(Vector4(1.0, 1.0, 1.0, 1.0)), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0)
+	_v(vel), _color(Vector4(1.0, 1.0, 1.0, 1.0)), _a(PxVec3(0.0, 0.0, 0.0)), _m(1.0), _dump(0.999), _duration(5.0), _active(true)
 {
 	//Creamos la forma con la geometria
 	PxShape* sphere0 = CreateShape(PxSphereGeometry(1.0));
@@ -37,7 +37,21 @@ Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double ma
 }
 
 //Destructora
-Particle::~Particle() {}
+Particle::~Particle()
+{
+	if (_renderItem != nullptr)
+	{
+		DeregisterRenderItem(_renderItem);
+		delete _renderItem;
+		_renderItem = nullptr;
+	}
+
+	if (_transform != nullptr)
+	{
+		delete _transform;
+		_transform = nullptr;
+	}
+}
 
 void Particle::integrateEuler(double t)
 {
@@ -102,43 +116,56 @@ void Particle::integrateVerlet(double t) //Se resuelve metiendo un pequenio dela
 
 void Particle::integrate(double t, int integrationType)
 {
-	//Euler
-	if (integrationType == 0)
+	//Si no está activada no hacemos nada
+	if (!_active) return;
+
+	//Vamos reduciendo el tiempo de vida
+	_duration -= t;
+
+	// Si el tiempo de vida se acabó
+	if (_duration <= 0.0)
 	{
-		//std::cout << "Integracion por Euler" << std::endl;
+		//Lo desactivamos y forzamos vida a 0
+		_duration = 0.0;
+
+		// No borramos los objetos (permitir reutilización desde pool). Sólo desregistramos del render.
+		_active = false;
+
+		// Mover proyectil fuera de la vista
+		if (_transform != nullptr)
+			_transform->p = PxVec3(0, -500, 0);
+
+		if (_renderItem != nullptr)
+		{
+			DeregisterRenderItem(_renderItem);
+
+		}
+
+		return;
+	}
+
+
+	// Si sigue viva, integrar
+	switch (integrationType)
+	{
+		//Euler
+	case 0: {
 		integrateEuler(t);
+		break;
 	}
-	//EulerSemimplicito
-	else if (integrationType == 1)
-	{
-		//std::cout << "Integracion por Euler Semimplicito" << std::endl;
+		//EulerSemimplicito
+	case 1: {
 		integrateSemiEuler(t);
+		break;
 	}
-	//Verlet
-	else if (integrationType == 2)
-	{
-		//std::cout << "Integracion por Verlet. Sin acabar" << std::endl;
+		//Verlet. Sin acabar
+	case 2: {
 		integrateVerlet(t);
+		break;
 	}
-
-
-	//Si ya se le ha acabado la vida
-	if (isActive() && getDuration() <= 0)
-	{
-		//Desactivamos la particula
-		setActive(false);
+	default:{
+		break;
 	}
-	//Si le queda vida
-	else if (getDuration() > 0)
-	{
-		//Quitamos tiempo de vida
-		setDuration(getDuration() - t);
-	}
-	//Si no esta activo
-	else if (!isActive())
-	{
-		std::cout << "desactivar " << _renderItem << std::endl;
-		//DeregisterRenderItem(_renderItem);
 	}
 
 	//Delay de cara a verlet
@@ -146,39 +173,5 @@ void Particle::integrate(double t, int integrationType)
 
 }
 
-RenderItem* Particle::getRenderItem() { return _renderItem; }
 
-Vector4 Particle::getColor() { return _color; }
-
-PxVec3 Particle::getPos() {	return _transform->p; }
-
-PxVec3 Particle::getV() { return _v; }
-
-PxVec3 Particle::getA() { return _a; }
-
-double Particle::getM() { return _m; }
-
-double Particle::getDump() { return _dump; }
-
-double Particle::getDuration() { return _duration; }
-
-bool Particle::isActive() { return _active; }
-
-void Particle::setRenderItem(RenderItem* newRenderItem) { _renderItem = newRenderItem; }
-
-void Particle::setColor(Vector4 newColor) { _color = newColor; }
-
-void Particle::setPos(PxVec3 newPos) { _transform->p = newPos; }
-
-void Particle::setV(PxVec3 newV) { _v = newV; }
-
-void Particle::setA(PxVec3 newA) { _a = newA; }
-
-void Particle::setM(double newM) { _m = newM; }
-
-void Particle::setDump(double newDump) { _dump = newDump; }
-
-void Particle::setDuration(double newDuration) { _duration = newDuration; }
-
-void Particle::setActive(bool newActive) { _active = newActive; }
 

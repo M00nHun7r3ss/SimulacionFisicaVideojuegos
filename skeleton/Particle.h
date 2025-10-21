@@ -29,26 +29,45 @@ public:
 	void integrate(double t, int integrationType);
 
 	//Getters
-	RenderItem* getRenderItem();
-	Vector4 getColor();
-	PxVec3 getPos();
-	PxVec3 getV();
-	PxVec3 getA();
-	double getM();
-	double getDump();
-	double getDuration();
-	bool isActive();
+	inline RenderItem* getRenderItem() { return _renderItem; }
+	inline Vector4 getColor() { return _color; }
+	inline PxVec3 getPos() { return _transform->p; }
+	inline PxVec3 getV() { return _v; }
+	inline PxVec3 getA() { return _a; }
+	inline double getM() { return _m; }
+	inline double getDump() { return _dump; }
+	inline double getDuration() { return _duration; }
+	inline bool isActive() { return _active; }
 
 	//Setters
-	void setRenderItem(RenderItem* newParticle);
-	void setColor(Vector4 newColor);
-	void setPos(PxVec3 newPos);
-	void setV(PxVec3 newV);
-	void setA(PxVec3 newA);
-	void setM(double newM);
-	void setDump(double newDump);
-	void setDuration(double newDuration);
-	void setActive(bool act);
+	inline void setRenderItem(RenderItem* newRenderItem) { _renderItem = newRenderItem; }
+	inline void setColor(Vector4 newColor) { _color = newColor; }
+	inline void setPos(PxVec3 newPos) { _transform->p = newPos; }
+	inline void setV(PxVec3 newV) { _v = newV; }
+	inline void setA(PxVec3 newA) { _a = newA; }
+	inline void setM(double newM) { _m = newM; }
+	inline void setDump(double newDump) { _dump = newDump; }
+	inline void setDuration(double newDuration) { _duration = newDuration; }
+	inline void setActive(bool act) {
+		// Si no hay cambio, no hacemos nada
+		if (_active == act) return;
+
+		//Si no, lo sustituye
+		_active = act;
+
+		if (_renderItem != nullptr)
+		{
+			if (_active)
+			{
+				// Registrar solo si no está registrado
+				RegisterRenderItem(_renderItem);
+			}
+			else
+			{
+				DeregisterRenderItem(_renderItem);
+			}
+		}
+	}
 
 private:
 

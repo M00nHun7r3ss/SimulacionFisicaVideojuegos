@@ -11,6 +11,7 @@
 
 #include <iostream>
 
+#include "Scene.h"
 #include "Vector3D.h"  //Practica 0
 #include "Particle.h"  //Practica 1.1
 #include "Proyectil.h" //Practica 1.2
@@ -34,6 +35,7 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
+
 // PRACTICA 0
 RenderItem* sp1 = NULL;
 RenderItem* spX = NULL;
@@ -51,7 +53,6 @@ Proyectil* cannonBall = NULL;
 Proyectil* bubble = NULL;
 
 std::vector<Proyectil*> proyectils;
-
 
 // Initialize physics engine
 void initPhysics(bool interactive)

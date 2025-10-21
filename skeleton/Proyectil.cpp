@@ -19,14 +19,16 @@ Proyectil::~Proyectil() {}
 
 void Proyectil::shoot(ProyectilType type)
 {
-	//Direccion de la camara
-	PxVec3 dir = PxVec3(GetCamera()->getDir());
 	//El tipo que se pasemos por input
 	_t = type;
+
 	//Desde la camara
 	setPos(GetCamera()->getTransform().p);
-	//Al haberse disparado, esta activo
-	_active = true;
+	//Direccion de la camara
+	PxVec3 dir = PxVec3(GetCamera()->getDir());
+
+	//Iniciamos la duracion
+	setDuration(5.0);
 
 	//Diferentes tipos de proyectil, con distinto color y gravedad
 	switch (type)
@@ -56,14 +58,18 @@ void Proyectil::shoot(ProyectilType type)
 		break;
 	}
 
-	getRenderItem()->color = getColor();
-	RegisterRenderItem(getRenderItem());
+	// Aceleracion de acuerdo a la gravedad
+	setA(getGravity());
+
+	// Actualizar color del RenderItem 
+	if (getRenderItem() != nullptr)
+	{
+		getRenderItem()->color = getColor();
+	}
+
+	// Activamos el proyectil 
+	Particle::setActive(true);
+
+
 }
 
-PxVec3 Proyectil::getGravity() { return _g; }
-
-bool Proyectil::isActive() { return _active; }
-
-void Proyectil::setGravity(PxVec3 newGravity) { _g = newGravity; }
-
-void Proyectil::setActive(bool act) { _active = act; }
