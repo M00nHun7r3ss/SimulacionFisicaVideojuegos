@@ -36,6 +36,18 @@ Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double ma
 	RegisterRenderItem(_renderItem);
 }
 
+Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double size, double masa, double dumping, double duration) :
+	_v(vel), _color(color), _a(acel), _m(masa), _dump(dumping), _duration(duration)
+{
+	//Creamos la forma con la geometria
+	PxShape* sphere0 = CreateShape(PxSphereGeometry(size));
+
+	_transform = new PxTransform(PxVec3(pos.x, pos.y, pos.z));
+	_renderItem = new RenderItem(sphere0, _transform, _color);
+
+	RegisterRenderItem(_renderItem);
+}
+
 //Destructora
 Particle::~Particle()
 {

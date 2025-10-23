@@ -2,6 +2,8 @@
 
 #include <random>
 #include "Particle.h" //Para las particulas
+#include "ParticleSystem.h"
+#include <algorithm>
 
 //Clase Abstracta 
 class ParticleGenerator
@@ -15,7 +17,7 @@ public:
 	~ParticleGenerator();
 
 	//Genera particulas en el sistema
-	virtual void generateParticle() = 0;
+	virtual void generateParticles(ParticleSystem& system, double t) = 0;
 
 	//Getters
 

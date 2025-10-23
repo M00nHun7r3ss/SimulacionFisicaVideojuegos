@@ -22,6 +22,9 @@ public:
 	//Constructora con todos los datos (Especiales)
 	Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa = 1.0, double dumping = 0.999, double duration = 5.0);
 
+	//Constructora todos los datos y tamanio para generador de particulas pequenias
+	Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double size, double masa = 1.0, double dumping = 0.999, double duration = 5.0);
+
 	//Destructora
 	~Particle();
 

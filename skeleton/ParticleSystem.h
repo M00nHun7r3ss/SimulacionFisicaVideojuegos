@@ -21,6 +21,8 @@ public:
 
 private:
 
+	// gravedad por defecto
+	const PxVec3 GRAVITY = PxVec3(0.0f, -10.0f, 0.0f);
 	std::vector<Particle*> _particles;
 	std::vector<ParticleGenerator*> _generators;
 };
