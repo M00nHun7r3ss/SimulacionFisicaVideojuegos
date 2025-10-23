@@ -36,7 +36,7 @@ Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double ma
 	RegisterRenderItem(_renderItem);
 }
 
-Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double size, double masa, double dumping, double duration) :
+Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa, double dumping, double duration, double size) :
 	_v(vel), _color(color), _a(acel), _m(masa), _dump(dumping), _duration(duration)
 {
 	//Creamos la forma con la geometria

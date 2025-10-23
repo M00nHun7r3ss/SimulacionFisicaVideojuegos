@@ -27,6 +27,3 @@ private:
 	std::vector<ParticleGenerator*> _generators;
 };
 
-//list Particle*
-//list ParticleGenerator*
-

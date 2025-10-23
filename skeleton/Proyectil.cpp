@@ -13,7 +13,7 @@ Proyectil::Proyectil(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 gravity) :
 }
 
 Proyectil::Proyectil(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, PxVec3 gravity, double masa, double dumping, double duration) :
-	Particle(pos, vel, color, gravity, masa, dumping, duration), _g(gravity) {}
+	Particle(pos, vel, color, gravity, masa, dumping, duration, 1.0), _g(gravity) {}
 
 Proyectil::~Proyectil() {}
 
