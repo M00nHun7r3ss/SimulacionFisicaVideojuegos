@@ -19,11 +19,11 @@ public:
 	//Constructora con velocidad, posicion y colores iniciales (De colores)
 	Particle(PxVec3 pos, PxVec3 vel, Vector4 color);
 
-	//Constructora con todos los datos (Especiales)
+	//Constructora con todos los datos (Especiales) - Lo dejamos de usar por la aceleracion
 	Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa = 1.0, double dumping = 0.999, double duration = 5.0);
 
 	//Constructora todos los datos y tamanio para generador de particulas pequenias
-	Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa = 1.0, double dumping = 0.999, double duration = 5.0, double size);
+	Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa = 1.0, double dumping = 0.999, double duration = 5.0, double size = 1.0);
 
 	//Destructora
 	~Particle();
@@ -71,6 +71,11 @@ public:
 			}
 		}
 	}
+
+	//Para aniadir fuerzas al comienzo del frame
+	void addForce();
+	//Para quitar fuerzas al final del frame
+	void clearForce();
 
 private:
 

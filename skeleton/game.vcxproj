@@ -256,9 +256,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GaussParticleGenerator.cpp" />
+    <ClCompile Include="GravityForce.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleForceRegister.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Proyectil.cpp" />
@@ -267,12 +270,16 @@
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="UniformParticleGenerator.cpp" />
+    <ClCompile Include="WindForce.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="GaussParticleGenerator.h" />
+    <ClInclude Include="GravityForce.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleForceRegister.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Proyectil.h" />
@@ -282,6 +289,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="UniformParticleGenerator.h" />
     <ClInclude Include="Vector3D.h" />
+    <ClInclude Include="WindForce.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

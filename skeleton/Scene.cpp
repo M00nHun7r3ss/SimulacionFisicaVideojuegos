@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include <iostream>
+#include "ParticleForceRegister.h"
 
 void Scene::init()
 {

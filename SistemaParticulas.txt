@@ -85,19 +85,28 @@ En el integrate() de las partículas ir disminuyendo el tiempo de vida.
 -------------- PRACTICA FUERZAS ----------------
 ////////////////////////////////////////////////
 
+Particle.h: 
+Añadir masa (o su inverso)
+No tener aceleración inicial
+Método AddForce() - se actualiza al principio de cada ciclo 
+Método ClearForce() - al final de cada ciclo, se limpian las fuerzas que hay
+
+Clase Abstracta ForceGenerator
+Para crear las diferentes fuerzas
+
+Cada partícula tiene una fuerza diferente. ForceParticleRegister - lista de fuerza-partícula para un registro.
+Saber qué fuerzas tiene cada partícula y que partículas se ven aportadas por cada fuerza
+Update() - se actualizan las fuerzas de cada partícula y se le envia al AddForce()
 
 
+FUERZAS
+	- Gravedad
+	- Viento
+	- Torbellino
+	- Explosión
 
 
-
-
-
-
-
-
-
-
-
+El sistema de partículas tiene una referencia a las fuerzas que se le aplican a esas partículas.
 
 
 
