@@ -152,7 +152,7 @@ void initPhysics(bool interactive)
 //bubble = new Proyectil(PxVec3(0.0, 0.0, 0.0), PxVec3(dir.x * 0.0, dir.y * -15.0, dir.z * -0.05), Vector4(0.0, 0.0, 1.0, 0.0), PxVec3(0.0, 0.1, 0.0));
 
 //Para el vector ilimitado - inicializamos con proyectiles basicos
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < 20; i++)
 	{
 		proyectils.push_back(new Proyectil(
 			PxVec3(0, -500, 0),
@@ -162,6 +162,12 @@ void initPhysics(bool interactive)
 		));
 		proyectils.back()->setActive(false);
 	}
+#pragma endregion
+
+#pragma region Practica 2
+
+
+
 #pragma endregion
 }
 
