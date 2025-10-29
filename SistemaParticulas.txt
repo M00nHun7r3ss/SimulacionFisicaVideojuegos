@@ -110,16 +110,74 @@ El sistema de partículas tiene una referencia a las fuerzas que se le aplican a
 
 
 
+////////////////////////////////////////////////
+-------------- PRACTICA MUELLES ----------------
+////////////////////////////////////////////////
+
+2 generadores de fuerza
+Usar Hooke
+Muelle unido a x: if x == pared, es una part que se mueve y otra que no. 
+
+   A /\/\/\/\/\/\ B
+
+a sufre una fuerza segun lo que esta estirado el muelle
+b sufre una fuerza segun la distancia de b-a
+
+Include forcegenerator
+
+Construct(k, distancia reposo, particula* 2)
+
+-x * k 
+update force - vector que une b y a (ya esta negado)
+crea fuerza
+
+defino distancia y normalizo (modulo)
+delta es distancia - longitud reposo
+
+fuerza = distancia * delta * k
+
+y devolvemos la fuerza
+
+Para dos particulas creamos 2 generadores de fuerza de este muelle
+
+PARA A Y OBJETO ESTATICO
+
+Construct(k, distancia reposo, vEC 3 POS)
+Para esto creamos un solo generador de fuerza de este muelle
+
+
+Añadir dumping (el de integrar)
+
+
+Muelle camara??? - afecta a camara, pero al muelle no. 
+Es la cam la que tiene el generador
 
 
 
+////////////////////////////////////////////////
+------------ PRACTICA FLOTABILIDAD -------------
+////////////////////////////////////////////////
+ARQUIMEDAS: volumen desplazado = volumen sumergido
+	    VOLUMEN * DENSIDAD 
 
 
+Construct (altura, volumen, densidad)
 
+updateForce(particula)
 
+altura, volumen, densidad liquido, gravedad
 
+h - getPos.y
+h0 - altura del objeto en agua
 
+ver la cantidad de inmesion
+inmersion =
 
+h - h0 > 0.5 * altura ----- inmers = 0
+h0 - h >  0.5 * altura ---- inmers = 1
+else inmersion = h0- h / altura + 0.5
+
+fuerza.y = densidad * volumen * inmersion * gravedad
 
 
 
