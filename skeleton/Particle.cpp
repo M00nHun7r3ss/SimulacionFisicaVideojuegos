@@ -65,6 +65,16 @@ Particle::~Particle()
 	}
 }
 
+void Particle::addForce(const PxVec3& force)
+{
+	_allForces += force;
+}
+
+void Particle::clearForce()
+{
+	_allForces = PxVec3(0, 0, 0);
+}
+
 void Particle::integrateEuler(double t)
 {
 	//MRU
@@ -156,6 +166,10 @@ void Particle::integrate(double t, int integrationType)
 		return;
 	}
 
+	//Teniendo en cuenta las fuerzas
+	//Aceleracion = Fuerza / masa
+	_a = _allForces / _m;
+
 
 	// Si sigue viva, integrar
 	switch (integrationType)
@@ -183,6 +197,9 @@ void Particle::integrate(double t, int integrationType)
 	//Delay de cara a verlet
 	//std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
+
+	//Despues de integrar, borramos las fuerzas
+	clearForce();
 }
 
 

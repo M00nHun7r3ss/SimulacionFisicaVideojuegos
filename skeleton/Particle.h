@@ -75,7 +75,7 @@ public:
 	}
 
 	//Para aniadir fuerzas al comienzo del frame
-	void addForce();
+	void addForce(const PxVec3& force);
 	//Para quitar fuerzas al final del frame
 	void clearForce();
 
@@ -91,6 +91,8 @@ private:
 	double _duration; //en s (entre 0 y 1, cuanto mas pequenio mas se frena)
 	double _size; //tamanio en m
 	bool _active = false; //para saber si se esta usando
+
+	PxVec3 _allForces; // Sumatorio de fuerzas en N
 
 	//1.1.a Integracion con Euler
 	void integrateEuler(double t);

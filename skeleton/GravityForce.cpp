@@ -1,9 +1,26 @@
-//#include "GravityForce.h"
-//
-//GravityForce::GravityForce(double mass1, double mass2, double radius) :
-//	ForceGenerator(mass1), _mass2(mass2), _radius(radius)
-//{
-//	_force->x = G * (_mass * _mass2) / pow(_radius, 2);
-//	_force->y = G * (_mass * _mass2) / pow(_radius, 2);
-//	_force->z = G * (_mass * _mass2) / pow(_radius, 2);
-//}
+#include "GravityForce.h"
+
+GravityForce::GravityForce(double mass2, PxVec3& pos2) :
+	_mass2(mass2), _pos2(pos2)
+{
+}
+
+void GravityForce::updateForce(Particle* p, double t)
+{
+	//Radio distancia entre particulas
+	PxVec3 radiusDir = _pos2 - p->getPos();
+	double distance = radiusDir.magnitude();
+
+	//Evitamos divisiones por 0
+	if (distance < 0.001) return;
+
+	//Normalizamos la direccion de la fuerza
+	radiusDir.normalize();
+
+	//Calculamos la fuerza
+	PxVec3 force = radiusDir * (G * p->getM() * _mass2 / (distance * distance));
+
+	//Aniadimos la fuerza a la particula
+	p->addForce(force);
+
+}
