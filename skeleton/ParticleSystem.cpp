@@ -3,7 +3,7 @@
 
 #include "ParticleGenerator.h"
 
-ParticleSystem::ParticleSystem() 
+ParticleSystem::ParticleSystem() : _useGravity(true)
 {
 	// Reservamos espacio inicial
 	_particles.reserve(200);
@@ -48,8 +48,11 @@ void ParticleSystem::update(double t)
 	{
 		if (p->isActive())
 		{
-			// Aplicar gravedad
-			p->setA(GRAVITY);
+			// Aplicar gravedad solo si este sistema la usa
+			if (_useGravity)
+				p->setA(GRAVITY);
+			else
+				p->setA(PxVec3(0)); // sin aceleración
 
 			// Integrar movimiento 
 			p->integrate(t, 1);

@@ -27,6 +27,10 @@ public:
 	// Getters
 	inline int numParticles() const { return _particles.size(); }
 	inline int numGenerators() const { return _generators.size(); }
+	inline bool getUseGravity() const { return _useGravity; }
+
+	// Setters
+	inline void setUseGravity(bool newGravity) { _useGravity = newGravity; }
 
 	// Limpiar particulas en desuso
 	void deleteDeadParticles();
@@ -38,6 +42,7 @@ protected:
 
 	// gravedad por defecto
 	const PxVec3 GRAVITY = PxVec3(0.0f, -10.0f, 0.0f);
+	bool _useGravity; //Por si queremos desactivarla
 	std::vector<Particle*> _particles;
 	std::vector<ParticleGenerator*> _generators;
 

@@ -62,15 +62,15 @@ std::vector<Proyectil*> proyectils;
 // Sistemas de partículas
 //Manguera
 ParticleSystem* hoseSystem = nullptr;
-////Niebla
-//ParticleSystem* fogSystem = nullptr;
-////Fuente
-//ParticleSystem* fountainSystem = nullptr;
+//Niebla
+ParticleSystem* fogSystem = nullptr;
+//Fuego
+ParticleSystem* fireSystem = nullptr;
 
 // Generadores
 ParticleGenerator* hoseGenerator = nullptr;
-//ParticleGenerator* fogGenerator = nullptr;
-//ParticleGenerator* fountainGenerator = nullptr;
+ParticleGenerator* fogGenerator = nullptr;
+ParticleGenerator* fireGenerator = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -184,12 +184,30 @@ void initPhysics(bool interactive)
 
 #pragma region Practica 2
 
-	//Manguera - Gaussiano
-	hoseSystem = new ParticleSystem(); 
-	hoseGenerator = new GaussParticleGenerator(PxVec3(0.0, 5.0, 0.0), PxVec3(0.0, 15.0, 0.0), PxVec3(0.01, 5.0, 0.01), 5);
-	hoseGenerator->setDuration(2.0);
-	hoseGenerator->setProbability(1.0);        
-	hoseSystem->addGenerator(hoseGenerator);
+	////Manguera - Gaussiano
+	//hoseSystem = new ParticleSystem(); 
+	//hoseGenerator = new GaussParticleGenerator(PxVec3(0.0, 5.0, 0.0), PxVec3(0.0, 15.0, 0.0), PxVec3(0.01, 5.0, 0.01), 5);
+	//hoseSystem->setUseGravity(true);
+	//hoseGenerator->setDuration(2.0);
+	//hoseGenerator->setProbability(1.0);        
+	//hoseSystem->addGenerator(hoseGenerator);
+
+	////Niebla - Uniforme
+	//fogSystem = new ParticleSystem();
+	//fogGenerator = new UniformParticleGenerator(PxVec3(0, 5, 0), 50, 
+	//	PxVec3(-10, 0, -10), PxVec3(10, 10, 10), 
+	//	PxVec3(-0.3, -0.3, -0.3), PxVec3(0.3, 0.3, 0.3));
+	//fogSystem->setUseGravity(false);
+	//fogGenerator->setDuration(5.0);
+	//fogGenerator->setProbability(0.9);
+	//fogSystem->addGenerator(fogGenerator);
+
+	//Fuego - Gaussiano
+	fireSystem = new ParticleSystem();
+	fireGenerator = new GaussParticleGenerator(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 5.0, 0.0), PxVec3(1.0, 1.0, 1.0), 10);
+	fireSystem->setUseGravity(false);
+	fireGenerator->setProbability(0.8);
+	fireSystem->addGenerator(fireGenerator);
 
 
 #pragma endregion
@@ -245,7 +263,10 @@ void stepPhysics(bool interactive, double t)
 #pragma region Practica 2
 
 	//Actualizamos el sistema
-	hoseSystem->update(t);
+	//hoseSystem->update(t);
+	//fogSystem->update(t);
+	fireSystem->update(t);
+
 #pragma endregion
 
 }
@@ -303,7 +324,9 @@ void cleanupPhysics(bool interactive)
 #pragma region Practica 2
 
 	//Los borra
-	delete hoseSystem;
+	//delete hoseSystem;
+	//delete fogSystem;
+	delete fireSystem;
 
 #pragma endregion
 
