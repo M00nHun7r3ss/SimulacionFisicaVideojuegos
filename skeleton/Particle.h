@@ -40,6 +40,7 @@ public:
 	inline double getM() { return _m; }
 	inline double getDump() { return _dump; }
 	inline double getDuration() { return _duration; }
+	inline double getSize() { return _size; }
 	inline bool isActive() { return _active; }
 
 	//Setters
@@ -51,6 +52,7 @@ public:
 	inline void setM(double newM) { _m = newM; }
 	inline void setDump(double newDump) { _dump = newDump; }
 	inline void setDuration(double newDuration) { _duration = newDuration; }
+	inline void setSize(double newSize) { _size = newSize; }
 	inline void setActive(bool act) {
 		// Si no hay cambio, no hacemos nada
 		if (_active == act) return;
@@ -87,6 +89,7 @@ private:
 	double _m; //masa en kg
 	double _dump; //dumping
 	double _duration; //en s (entre 0 y 1, cuanto mas pequenio mas se frena)
+	double _size; //tamanio en m
 	bool _active = false; //para saber si se esta usando
 
 	//1.1.a Integracion con Euler

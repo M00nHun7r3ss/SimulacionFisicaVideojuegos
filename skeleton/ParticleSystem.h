@@ -28,18 +28,18 @@ public:
 	inline int numParticles() const { return _particles.size(); }
 	inline int numGenerators() const { return _generators.size(); }
 
+	// Limpiar particulas en desuso
+	void deleteDeadParticles();
 
-private:
+	// Reactivar particulas en desuso
+	Particle* reactivateDeadParticles();
+
+protected:
 
 	// gravedad por defecto
 	const PxVec3 GRAVITY = PxVec3(0.0f, -10.0f, 0.0f);
 	std::vector<Particle*> _particles;
 	std::vector<ParticleGenerator*> _generators;
 
-	// Limpiar particulas en desuso
-	void deleteDeadParticles();
-
-	// Reactivar particulas en desuso
-	Particle* reactivateDeadParticles();
 };
 

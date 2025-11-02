@@ -14,7 +14,7 @@ public:
 	ParticleGenerator();
 
 	//Destructora
-	virtual ~ParticleGenerator() = 0;
+	virtual ~ParticleGenerator() {};
 
 	//Genera particulas en el sistema
 	virtual void generateParticles(ParticleSystem& system, double t) = 0;

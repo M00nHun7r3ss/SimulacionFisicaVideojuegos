@@ -15,6 +15,10 @@
 #include "Vector3D.h"  //Practica 0
 #include "Particle.h"  //Practica 1.1
 #include "Proyectil.h" //Practica 1.2
+#include "ParticleGenerator.h" //Practica 2
+#include "GaussParticleGenerator.h" //Practica 2
+#include "UniformParticleGenerator.h" //Practica 2
+#include "ParticleSystem.h" //Practica 2
 
 std::string display_text = "";
 
@@ -53,6 +57,20 @@ Proyectil* cannonBall = NULL;
 Proyectil* bubble = NULL;
 
 std::vector<Proyectil*> proyectils;
+
+//Practica 2
+// Sistemas de partículas
+//Manguera
+ParticleSystem* hoseSystem = nullptr;
+////Niebla
+//ParticleSystem* fogSystem = nullptr;
+////Fuente
+//ParticleSystem* fountainSystem = nullptr;
+
+// Generadores
+ParticleGenerator* hoseGenerator = nullptr;
+//ParticleGenerator* fogGenerator = nullptr;
+//ParticleGenerator* fountainGenerator = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -166,6 +184,12 @@ void initPhysics(bool interactive)
 
 #pragma region Practica 2
 
+	//Manguera - Gaussiano
+	hoseSystem = new ParticleSystem(); 
+	hoseGenerator = new GaussParticleGenerator(PxVec3(0.0, 5.0, 0.0), PxVec3(0.0, 15.0, 0.0), PxVec3(0.01, 5.0, 0.01), 5);
+	hoseGenerator->setDuration(2.0);
+	hoseGenerator->setProbability(1.0);        
+	hoseSystem->addGenerator(hoseGenerator);
 
 
 #pragma endregion
@@ -218,6 +242,12 @@ void stepPhysics(bool interactive, double t)
 
 #pragma endregion
 
+#pragma region Practica 2
+
+	//Actualizamos el sistema
+	hoseSystem->update(t);
+#pragma endregion
+
 }
 
 // Function to clean data
@@ -267,6 +297,13 @@ void cleanupPhysics(bool interactive)
 		}
 	}
 	proyectils.clear();
+
+#pragma endregion
+
+#pragma region Practica 2
+
+	//Los borra
+	delete hoseSystem;
 
 #pragma endregion
 

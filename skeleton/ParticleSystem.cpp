@@ -16,7 +16,7 @@ ParticleSystem::ParticleSystem()
 			PxVec3(0, 0, 0),
 			Vector4(1, 1, 1, 0));
 		//Empiezan inactivas
-		_particles.back()->setActive(false);
+		p->setActive(false);
 		//Las aniade al pool
 		addParticle(p);
 	}
@@ -27,8 +27,9 @@ ParticleSystem::~ParticleSystem()
 	//Vaciamos las particulas y las desactivamos
 	for (Particle* p : _particles)
 	{
+		if (p != nullptr) p->setActive(false);
+
 		delete p;
-		p->setActive(false);
 	}
 	_particles.clear();
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "ParticleGenerator.h"
 
-class GaussParticleGenerator : ParticleGenerator
+class GaussParticleGenerator : public ParticleGenerator
 {
 public:
 
@@ -9,7 +9,7 @@ public:
     GaussParticleGenerator(PxVec3 pos, PxVec3 medVel, PxVec3 desvVel, int nParticles);
 
     //Destructora
-    ~GaussParticleGenerator();
+    ~GaussParticleGenerator() override;
 
     //Genera particulas en el sistema
     void generateParticles(ParticleSystem& system, double t) override;

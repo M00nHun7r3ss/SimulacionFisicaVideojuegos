@@ -4,6 +4,10 @@ UniformParticleGenerator::UniformParticleGenerator() :
 	_minPos(-1.5), _maxPos(1.5), _minVel(-2.0), _maxVel(2.0)
 {}
 
+UniformParticleGenerator::~UniformParticleGenerator()
+{
+}
+
 void UniformParticleGenerator::generateParticles(ParticleSystem & system, double t)
 {
     //Sacamos la distribucion uniforme para la posicion, la velocidad y la probabilidad de aparicion
@@ -22,6 +26,7 @@ void UniformParticleGenerator::generateParticles(ParticleSystem & system, double
         PxVec3 vel = _vel + PxVec3(distVel(_mersenneRandom), distVel(_mersenneRandom), distVel(_mersenneRandom));
 
         //Y la aniade al sistema
-        //system.addParticle(pos, vel, Vector4(1, 1, 1, 1), PxVec3(0, -9.8f, 0), 0.1, 1.0, 0.999, _duration);
+        Particle* p = new Particle(pos, vel, Vector4(1, 1, 1, 1), PxVec3(0, -9.8f, 0), 0.1, 1.0, 0.999, _duration);
+        system.addParticle(p);
     }
 }

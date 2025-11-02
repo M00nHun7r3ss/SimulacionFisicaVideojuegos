@@ -6,7 +6,7 @@ class UniformParticleGenerator : public ParticleGenerator
 public:
     UniformParticleGenerator();
 
-    ~UniformParticleGenerator();
+    ~UniformParticleGenerator() override;
 
     void generateParticles(ParticleSystem& system, double t) override;
 

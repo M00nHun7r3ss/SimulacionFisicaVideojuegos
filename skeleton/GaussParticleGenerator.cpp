@@ -7,6 +7,10 @@ GaussParticleGenerator::GaussParticleGenerator(PxVec3 pos, PxVec3 medVel, PxVec3
     _nParticles = nParticles;
 }
 
+GaussParticleGenerator::~GaussParticleGenerator()
+{
+}
+
 void GaussParticleGenerator::generateParticles(ParticleSystem& system, double t)
 {
     //Sacamos la distribucion normal para los tres ejes
@@ -21,12 +25,25 @@ void GaussParticleGenerator::generateParticles(ParticleSystem& system, double t)
     {
         // si no hay probabilidad suficiente, no hay particula nueva
         if (distProb(_mersenneRandom) > _probability)
-            return;
+            continue;
 
         //Calcula la posicion y la velocidad de la particula nueva
         PxVec3 vel(distX(_mersenneRandom), distY(_mersenneRandom), distZ(_mersenneRandom));
 
         //Y la aniade al sistema
-        //system.addParticle(_pos, vel, Vector4(1, 1, 1, 1), PxVec3(0, -9.8f, 0), 0.1f, 1.0f, 0.999f, 3.0f);
+        Particle* p = system.reactivateDeadParticles();
+        if (p != nullptr)
+        {
+            p->setPos(_pos);
+            p->setV(vel);
+            p->setColor(Vector4(1, 1, 1, 1));
+            p->setA(PxVec3(0, -9.8f, 0));
+            p->setM(0.1f);
+            p->setDump(0.999f);
+            p->setDuration(2.0f);
+            p->setSize(0.1);
+            p->setActive(true);
+
+        }
     }
 }
