@@ -7,6 +7,9 @@ GravityForce::GravityForce(double mass2, PxVec3& pos2) :
 
 void GravityForce::updateForce(Particle* p, double t)
 {
+	//Si no hay particula a la que aplicarlo, no hace nada
+	if (p == nullptr || !p->isActive()) return;
+
 	//Radio distancia entre particulas
 	PxVec3 radiusDir = _pos2 - p->getPos();
 	double distance = radiusDir.magnitude();

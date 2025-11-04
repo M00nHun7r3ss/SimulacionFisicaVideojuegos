@@ -39,20 +39,29 @@ ParticleSystem::~ParticleSystem()
 		delete g;
 	}
 	_generators.clear();
+
+	//Vaciamos las fuerzas
+	clearForces();
 }
 
 void ParticleSystem::update(double t)
 {
+	//Aplicamos las fuerzas
+	_forceRegister.update(t);
+
 	//1. Actualizar las existentes
 	for (Particle* p : _particles)
 	{
 		if (p->isActive())
 		{
-			// Aplicar gravedad solo si este sistema la usa
-			if (_useGravity)
-				p->setA(GRAVITY);
-			else
-				p->setA(PxVec3(0)); // sin aceleración
+			//// Aplicar gravedad solo si este sistema la usa
+			//if (_useGravity)
+			//	p->setA(GRAVITY);
+			//else
+			//	p->setA(PxVec3(0)); // sin aceleración
+
+			//if (_useGravity)
+			//	p->addForce(GRAVITY * p->getM());
 
 			// Integrar movimiento 
 			p->integrate(t, 1);
@@ -87,6 +96,21 @@ void ParticleSystem::addGenerator(ParticleGenerator* g)
 		//Aniadimos el generador al sistema
 		_generators.push_back(g);
 	}
+}
+
+void ParticleSystem::addForceGenerator(ForceGenerator* fGen)
+{
+	//Aniadimos el generador de fuerzas a cada particula del sistema
+	for (Particle* p : _particles)
+	{
+		_forceRegister.add(p, fGen);
+	}
+}
+
+void ParticleSystem::clearForces()
+{
+	//Vaciamos las fuerzas del sistema
+	_forceRegister.clearRegister();
 }
 
 void ParticleSystem::deleteDeadParticles()

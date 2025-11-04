@@ -2,6 +2,8 @@
 
 #include <vector> //Para el vector de particulas
 #include "Particle.h" //Para las particulas
+#include "ParticleForceRegister.h" //Para las fuerzas
+#include "ForceGenerator.h"
 
 class ParticleGenerator; //Para los generadores
 
@@ -20,9 +22,13 @@ public:
 	//3. Crear particulas nuevas
 	void update(double t);
 
-	// Anidir elementos
+	// Aniadir elementos
 	void addParticle(Particle* p);
 	void addGenerator(ParticleGenerator* g);
+
+	// Gestionar fuerzas
+	void addForceGenerator(ForceGenerator* fGen);
+	void clearForces();
 
 	// Getters
 	inline int numParticles() const { return _particles.size(); }
@@ -40,11 +46,13 @@ public:
 
 protected:
 
-	// gravedad por defecto
+	//Gravedad por defecto
 	const PxVec3 GRAVITY = PxVec3(0.0f, -10.0f, 0.0f);
 	bool _useGravity; //Por si queremos desactivarla
 	std::vector<Particle*> _particles;
 	std::vector<ParticleGenerator*> _generators;
 
+	//Para gestionar las fuerzas
+	ParticleForceRegister _forceRegister;
 };
 

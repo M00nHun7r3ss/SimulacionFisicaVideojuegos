@@ -17,8 +17,10 @@
 #include "Proyectil.h" //Practica 1.2
 #include "ParticleGenerator.h" //Practica 2
 #include "GaussParticleGenerator.h" //Practica 2
+#include "GravityForce.h"
 #include "UniformParticleGenerator.h" //Practica 2
 #include "ParticleSystem.h" //Practica 2
+#include "WindForce.h"
 
 std::string display_text = "";
 
@@ -182,7 +184,7 @@ void initPhysics(bool interactive)
 	}
 #pragma endregion
 
-#pragma region Practica 2
+#pragma region Practica 2 y Practica 3
 
 	////Manguera - Gaussiano
 	//hoseSystem = new ParticleSystem(); 
@@ -192,23 +194,30 @@ void initPhysics(bool interactive)
 	//hoseGenerator->setProbability(1.0);        
 	//hoseSystem->addGenerator(hoseGenerator);
 
-	////Niebla - Uniforme
-	//fogSystem = new ParticleSystem();
-	//fogGenerator = new UniformParticleGenerator(PxVec3(0, 5, 0), 50, 
-	//	PxVec3(-10, 0, -10), PxVec3(10, 10, 10), 
-	//	PxVec3(-0.3, -0.3, -0.3), PxVec3(0.3, 0.3, 0.3));
-	//fogSystem->setUseGravity(false);
-	//fogGenerator->setDuration(5.0);
-	//fogGenerator->setProbability(0.9);
-	//fogSystem->addGenerator(fogGenerator);
+	//Niebla - Uniforme
+	fogSystem = new ParticleSystem();
+	fogGenerator = new UniformParticleGenerator(PxVec3(0, 5, 0), 50, 
+		PxVec3(-10, 0, -10), PxVec3(10, 10, 10), 
+		PxVec3(-0.3, -0.3, -0.3), PxVec3(0.3, 0.3, 0.3));
+	fogSystem->setUseGravity(false);
+	fogGenerator->setDuration(5.0);
+	fogGenerator->setProbability(0.9);
+	fogSystem->addGenerator(fogGenerator);
+	//PRACTICA 3 - FUERZAS DE VIENTO
+	WindForce* wind = new WindForce(PxVec3(5.0, 0.0, 0.0), 0.2, 0.0,
+		PxVec3(-10, 0, -10), PxVec3(10, 10, 10));
+	fogSystem->addForceGenerator(wind);
 
-	//Fuego - Gaussiano
-	fireSystem = new ParticleSystem();
-	fireGenerator = new GaussParticleGenerator(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 5.0, 0.0), PxVec3(1.0, 1.0, 1.0), 10);
-	fireSystem->setUseGravity(false);
-	fireGenerator->setProbability(0.8);
-	fireSystem->addGenerator(fireGenerator);
 
+	////Fuego - Gaussiano
+	//fireSystem = new ParticleSystem();
+	//fireGenerator = new GaussParticleGenerator(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 5.0, 0.0), PxVec3(1.0, 1.0, 1.0), 10);
+	////fireSystem->setUseGravity(false);
+	//fireGenerator->setProbability(0.8);
+	//fireSystem->addGenerator(fireGenerator);
+	////PRACTICA 3 - FUERZAS DE GRAVEDAD, PERO INVERSA
+	//GravityForce* inverseGravity = new GravityForce(0.2, PxVec3(0, -500, 0));
+	//fireSystem->addForceGenerator(inverseGravity);
 
 #pragma endregion
 }
@@ -264,8 +273,8 @@ void stepPhysics(bool interactive, double t)
 
 	//Actualizamos el sistema
 	//hoseSystem->update(t);
-	//fogSystem->update(t);
-	fireSystem->update(t);
+	fogSystem->update(t);
+	//fireSystem->update(t);
 
 #pragma endregion
 
@@ -325,8 +334,8 @@ void cleanupPhysics(bool interactive)
 
 	//Los borra
 	//delete hoseSystem;
-	//delete fogSystem;
-	delete fireSystem;
+	delete fogSystem;
+	//delete fireSystem;
 
 #pragma endregion
 
