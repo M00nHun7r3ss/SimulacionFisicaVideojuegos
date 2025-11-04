@@ -20,6 +20,7 @@
 #include "GravityForce.h"
 #include "UniformParticleGenerator.h" //Practica 2
 #include "ParticleSystem.h" //Practica 2
+#include "WhirlwindForce.h"
 #include "WindForce.h"
 
 std::string display_text = "";
@@ -203,15 +204,20 @@ void initPhysics(bool interactive)
 	fogGenerator->setDuration(5.0);
 	fogGenerator->setProbability(0.9);
 	fogSystem->addGenerator(fogGenerator);
-	//PRACTICA 3 - FUERZAS DE VIENTO
+	////PRACTICA 3 - FUERZAS DE VIENTO
+	////Viento simple
 	//WindForce* basicWind = new WindForce(PxVec3(5.0, 0.0, 0.0), 0.2, 0.0,
 	//	PxVec3(-10, 0, -10), PxVec3(10, 10, 10));
 	//fogSystem->addForceGenerator(basicWind);
+	////Viento avanzado
+	//WindForce* advancedWind = new WindForce(PxVec3(5.0, 0.0, 0.0), 1.2, 0.5, 0.1,
+	//	PxVec3(-10, 0, -10), PxVec3(10, 10, 10));
+	//fogSystem->addForceGenerator(advancedWind);
 
-	WindForce* advancedWind = new WindForce(PxVec3(5.0, 0.0, 0.0), 1.2, 0.5, 0.1,
-		PxVec3(-10, 0, -10), PxVec3(10, 10, 10));
-	fogSystem->addForceGenerator(advancedWind);
-
+	////PRACTICA 3 - FUERZAS DE VIENTO - TORBELLINO
+	WhirlwindForce* whirlwind = new WhirlwindForce(PxVec3(0.0, 5.0, 0.0), 0.9,
+		15.0, 1.2, 0.5, 0.2);
+	fogSystem->addForceGenerator(whirlwind);
 
 	////Fuego - Gaussiano
 	//fireSystem = new ParticleSystem();

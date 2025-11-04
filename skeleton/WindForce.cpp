@@ -34,8 +34,10 @@ void WindForce::updateForce(Particle* p, double t)
 	//------ fin viento basico
 
 	//Si queremos el viento avanzado descomentar esto
+	//Calculamos la direccion del movimiento
 	PxVec3 direction = speedDiff.getNormalized();
 
+	//Calculo de la fuerza
 	PxVec3 force = direction * (0.5 * _airDensity * _dragCoef * _area 
 		* speedDiff.magnitude() * speedDiff.magnitude());
 

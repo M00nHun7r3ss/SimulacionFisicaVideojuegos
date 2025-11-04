@@ -18,9 +18,10 @@ public:
 	//Destructora
 	~WindForce() {}
 
+	//Actualizacion de fuer<as
 	void updateForce(Particle* p, double t) override;
 
-private:
+protected:
 
 	PxVec3 _windSpeed; //velocidad del viento
 	double _k1; //Intensidad
