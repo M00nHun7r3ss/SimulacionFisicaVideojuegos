@@ -12,10 +12,10 @@ class ForceGenerator
 public:
 
 	//Constructora con masa y fuerza inicial
-	ForceGenerator();
+	ForceGenerator() {}
 
 	//Destructora
-	virtual ~ForceGenerator();
+	virtual ~ForceGenerator() {}
 
 	//Actualiza la fuerza de la particula p
 	virtual void updateForce(Particle* p, double t) = 0;

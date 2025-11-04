@@ -7,21 +7,47 @@
     <ClCompile Include="Render\Render.cpp">
       <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="callbacks.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="Proyectil.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="ParticleGenerator.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="UniformParticleGenerator.cpp" />
-    <ClCompile Include="GaussParticleGenerator.cpp" />
-    <ClCompile Include="ForceGenerator.cpp" />
-    <ClCompile Include="ParticleForceRegister.cpp" />
-    <ClCompile Include="GravityForce.cpp" />
-    <ClCompile Include="WindForce.cpp" />
-    <ClCompile Include="WhirlwindForce.cpp" />
+    <ClCompile Include="ParticleForceRegister.cpp">
+      <Filter>Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="GravityForce.cpp">
+      <Filter>Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="WhirlwindForce.cpp">
+      <Filter>Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="WindForce.cpp">
+      <Filter>Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="GaussParticleGenerator.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleGenerator.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Proyectil.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformParticleGenerator.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtils.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -31,25 +57,63 @@
     <ClInclude Include="Render\Render.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="Vector3D.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="Proyectil.h" />
-    <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="ParticleGenerator.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="UniformParticleGenerator.h" />
-    <ClInclude Include="GaussParticleGenerator.h" />
-    <ClInclude Include="ForceGenerator.h" />
-    <ClInclude Include="ParticleForceRegister.h" />
-    <ClInclude Include="GravityForce.h" />
-    <ClInclude Include="WindForce.h" />
-    <ClInclude Include="WhirlwindForce.h" />
+    <ClInclude Include="ForceGenerator.h">
+      <Filter>Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleForceRegister.h">
+      <Filter>Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="GravityForce.h">
+      <Filter>Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="WhirlwindForce.h">
+      <Filter>Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="WindForce.h">
+      <Filter>Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="GaussParticleGenerator.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleGenerator.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Proyectil.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformParticleGenerator.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtils.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
       <UniqueIdentifier>{d04b4f9f-5a69-465e-8070-25c6d0bcd3c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Forces">
+      <UniqueIdentifier>{c8570ab2-fee3-4aaa-919e-c59344cd540a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{58c952d9-120d-48a5-9036-7c3a158014c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{2d6d44db-8f76-4364-88a7-0b6c51c2ac18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

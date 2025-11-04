@@ -1,9 +1,5 @@
 #include "ParticleForceRegister.h"
 
-ParticleForceRegister::ParticleForceRegister()
-{
-}
-
 ParticleForceRegister::~ParticleForceRegister()
 {
 	//Elimina el registro entero

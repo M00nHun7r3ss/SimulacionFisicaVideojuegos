@@ -256,7 +256,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
-    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GaussParticleGenerator.cpp" />
     <ClCompile Include="GravityForce.cpp" />
     <ClCompile Include="main.cpp" />
@@ -269,6 +268,7 @@
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="UniformParticleGenerator.cpp" />
     <ClCompile Include="WhirlwindForce.cpp" />
     <ClCompile Include="WindForce.cpp" />
@@ -288,6 +288,7 @@
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="UniformParticleGenerator.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="WhirlwindForce.h" />

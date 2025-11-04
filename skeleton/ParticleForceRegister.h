@@ -9,7 +9,7 @@ class ParticleForceRegister
 {
 public:
 	//Constructora
-	ParticleForceRegister();
+	ParticleForceRegister() {}
 
 	//Destructora
 	~ParticleForceRegister();

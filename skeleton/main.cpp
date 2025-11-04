@@ -11,17 +11,18 @@
 
 #include <iostream>
 
+#include "SceneManager.h" //GESTION DE ESCENAS
 #include "Scene.h"
 #include "Vector3D.h"  //Practica 0
 #include "Particle.h"  //Practica 1.1
 #include "Proyectil.h" //Practica 1.2
 #include "ParticleGenerator.h" //Practica 2
 #include "GaussParticleGenerator.h" //Practica 2
-#include "GravityForce.h"
 #include "UniformParticleGenerator.h" //Practica 2
 #include "ParticleSystem.h" //Practica 2
-#include "WhirlwindForce.h"
-#include "WindForce.h"
+#include "GravityForce.h"//Practica 3
+#include "WindForce.h" //Practica 3
+#include "WhirlwindForce.h" //Practica 3
 
 std::string display_text = "";
 
@@ -75,6 +76,9 @@ ParticleGenerator* hoseGenerator = nullptr;
 ParticleGenerator* fogGenerator = nullptr;
 ParticleGenerator* fireGenerator = nullptr;
 
+SceneManager* gSceneManager = NULL;
+
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -98,6 +102,16 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+
+	/*
+	 * // Crear y registrar las escenas disponibles
+    gSceneManager.addScene(new FogScene());
+
+    // Activar la primera escena (la de niebla)
+    gSceneManager.setActive(0);
+	 */
+
+
 
 #pragma region Practica 0
 
@@ -243,6 +257,9 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
+	//// Actualiza la escena activa
+	//gSceneManager.update(t);
+
 #pragma region Practica 1.1
 
 	////Actualizar la posicion con los integrate...
@@ -300,6 +317,8 @@ void cleanupPhysics(bool interactive)
 	gScene->release();
 	gDispatcher->release();
 	// -----------------------------------------------------
+
+	//gSceneManager.cleanup();
 
 #pragma region Practica 0
 
@@ -392,6 +411,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		break;
 	}
+		//Las escenas llevan numeros
+	case '0':
+		gSceneManager.setActive(0); // Niebla
+		break;
+		// case '1': gSceneManager.setActive(1); // Fuego, por ejemplo
+		// case '2': gSceneManager.setActive(2); // Torbellino
 	default:
 		break;
 	}
