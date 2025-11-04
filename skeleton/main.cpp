@@ -204,9 +204,13 @@ void initPhysics(bool interactive)
 	fogGenerator->setProbability(0.9);
 	fogSystem->addGenerator(fogGenerator);
 	//PRACTICA 3 - FUERZAS DE VIENTO
-	WindForce* wind = new WindForce(PxVec3(5.0, 0.0, 0.0), 0.2, 0.0,
+	//WindForce* basicWind = new WindForce(PxVec3(5.0, 0.0, 0.0), 0.2, 0.0,
+	//	PxVec3(-10, 0, -10), PxVec3(10, 10, 10));
+	//fogSystem->addForceGenerator(basicWind);
+
+	WindForce* advancedWind = new WindForce(PxVec3(5.0, 0.0, 0.0), 1.2, 0.5, 0.1,
 		PxVec3(-10, 0, -10), PxVec3(10, 10, 10));
-	fogSystem->addForceGenerator(wind);
+	fogSystem->addForceGenerator(advancedWind);
 
 
 	////Fuego - Gaussiano

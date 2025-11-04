@@ -5,6 +5,11 @@ WindForce::WindForce(PxVec3& sWind, double k1, double k2, const PxVec3& minArea,
 {
 }
 
+WindForce::WindForce(PxVec3& sWind, double density, double dragCoef, double area, const PxVec3& minArea, const PxVec3& maxArea)
+	: _windSpeed(sWind), _airDensity(density), _dragCoef(dragCoef), _area(area), _areaMin(minArea), _areaMax(maxArea)
+{
+}
+
 void WindForce::updateForce(Particle* p, double t)
 {
 	//Lo mismo de siempre. Si no hay particula o esta inactiva, no hacemos nada
@@ -18,10 +23,25 @@ void WindForce::updateForce(Particle* p, double t)
 
 	//Diferencia de velocidades
 	PxVec3 speedDiff = _windSpeed - p->getV();
+	//Si no hay diferencia, el viento no hace nada
+	if (speedDiff.magnitude() == 0) return;
 
-	//Calculo de la fuerza
-	PxVec3 force = _k1 * speedDiff + _k2 * speedDiff.magnitude() * speedDiff;
+	//Si queremos el viento basico descomentar esto
+
+	////Calculo de la fuerza
+	//PxVec3 force = _k1 * speedDiff + _k2 * speedDiff.magnitude() * speedDiff;
+
+	//------ fin viento basico
+
+	//Si queremos el viento avanzado descomentar esto
+	PxVec3 direction = speedDiff.getNormalized();
+
+	PxVec3 force = direction * (0.5 * _airDensity * _dragCoef * _area 
+		* speedDiff.magnitude() * speedDiff.magnitude());
+
+	//------ fin viento avanzado
 
 	//Aplicamos la fuerza
 	p->addForce(force);
+
 }
