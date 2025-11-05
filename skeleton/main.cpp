@@ -11,18 +11,23 @@
 
 #include <iostream>
 
-#include "SceneManager.h" //GESTION DE ESCENAS
+//GESTION DE ESCENAS
+#include "SceneManager.h" 
 #include "Scene.h"
-#include "Vector3D.h"  //Practica 0
-#include "Particle.h"  //Practica 1.1
-#include "Proyectil.h" //Practica 1.2
-#include "ParticleGenerator.h" //Practica 2
-#include "GaussParticleGenerator.h" //Practica 2
-#include "UniformParticleGenerator.h" //Practica 2
-#include "ParticleSystem.h" //Practica 2
-#include "GravityForce.h"//Practica 3
-#include "WindForce.h" //Practica 3
-#include "WhirlwindForce.h" //Practica 3
+//PRACTICA 0
+#include "Vector3D.h"
+//PRACTICA 1
+#include "Particle.h" 
+//PRACTICA 2
+#include "Proyectil.h" 
+#include "ParticleGenerator.h" 
+#include "GaussParticleGenerator.h" 
+#include "UniformParticleGenerator.h" 
+#include "ParticleSystem.h" 
+//PRACTICA 3
+#include "GravityForce.h"
+#include "WindForce.h" 
+#include "WhirlwindForce.h" 
 
 std::string display_text = "";
 
@@ -76,8 +81,12 @@ ParticleGenerator* hoseGenerator = nullptr;
 ParticleGenerator* fogGenerator = nullptr;
 ParticleGenerator* fireGenerator = nullptr;
 
+//GESTION DE ESCENAS
 SceneManager* gSceneManager = NULL;
-
+Scene0* scene0 = NULL;
+Scene1* scene1 = NULL;
+Scene2* scene2 = NULL;
+Scene3* scene3 = NULL;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -103,14 +112,23 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	/*
-	 * // Crear y registrar las escenas disponibles
-    gSceneManager.addScene(new FogScene());
 
-    // Activar la primera escena (la de niebla)
-    gSceneManager.setActive(0);
-	 */
+	//Creamos escenas
+	gSceneManager = new SceneManager();
+	//scene0 = new Scene0(gMaterial);
+	//scene1 = new Scene1();
+	//scene2 = new Scene2();
+	scene3 = new Scene3(gMaterial);
 
+	//Las aniadimos en el manager
+ //   gSceneManager->addScene(scene0);
+	//gSceneManager->addScene(scene1);
+	//gSceneManager->addScene(scene2);
+	gSceneManager->addScene(scene3);
+
+    // Activar la primera escena
+    gSceneManager->setActive(0);
+	 
 
 
 #pragma region Practica 0
@@ -210,14 +228,14 @@ void initPhysics(bool interactive)
 	//hoseSystem->addGenerator(hoseGenerator);
 
 	//Niebla - Uniforme
-	fogSystem = new ParticleSystem();
-	fogGenerator = new UniformParticleGenerator(PxVec3(0, 5, 0), 50, 
-		PxVec3(-10, 0, -10), PxVec3(10, 10, 10), 
-		PxVec3(-0.3, -0.3, -0.3), PxVec3(0.3, 0.3, 0.3));
-	fogSystem->setUseGravity(false);
-	fogGenerator->setDuration(5.0);
-	fogGenerator->setProbability(0.9);
-	fogSystem->addGenerator(fogGenerator);
+	//fogSystem = new ParticleSystem();
+	//fogGenerator = new UniformParticleGenerator(PxVec3(0, 5, 0), 50, 
+	//	PxVec3(-10, 0, -10), PxVec3(10, 10, 10), 
+	//	PxVec3(-0.3, -0.3, -0.3), PxVec3(0.3, 0.3, 0.3));
+	//fogSystem->setUseGravity(false);
+	//fogGenerator->setDuration(5.0);
+	//fogGenerator->setProbability(0.9);
+	//fogSystem->addGenerator(fogGenerator);
 	////PRACTICA 3 - FUERZAS DE VIENTO
 	////Viento simple
 	//WindForce* basicWind = new WindForce(PxVec3(5.0, 0.0, 0.0), 0.2, 0.0,
@@ -229,9 +247,9 @@ void initPhysics(bool interactive)
 	//fogSystem->addForceGenerator(advancedWind);
 
 	////PRACTICA 3 - FUERZAS DE VIENTO - TORBELLINO
-	WhirlwindForce* whirlwind = new WhirlwindForce(PxVec3(0.0, 5.0, 0.0), 0.9,
-		15.0, 1.2, 0.5, 0.2);
-	fogSystem->addForceGenerator(whirlwind);
+	//WhirlwindForce* whirlwind = new WhirlwindForce(PxVec3(0.0, 5.0, 0.0), 0.9,
+	//	15.0, 1.2, 0.5, 0.2);
+	//fogSystem->addForceGenerator(whirlwind);
 
 	////Fuego - Gaussiano
 	//fireSystem = new ParticleSystem();
@@ -257,8 +275,8 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	//// Actualiza la escena activa
-	//gSceneManager.update(t);
+	// Actualiza la escena activa
+	gSceneManager->update(t);
 
 #pragma region Practica 1.1
 
@@ -300,7 +318,7 @@ void stepPhysics(bool interactive, double t)
 
 	//Actualizamos el sistema
 	//hoseSystem->update(t);
-	fogSystem->update(t);
+	//fogSystem->update(t);
 	//fireSystem->update(t);
 
 #pragma endregion
@@ -318,7 +336,10 @@ void cleanupPhysics(bool interactive)
 	gDispatcher->release();
 	// -----------------------------------------------------
 
-	//gSceneManager.cleanup();
+	//Borramos el manager
+	gSceneManager->cleanup();
+	delete gSceneManager;
+	gSceneManager = nullptr;
 
 #pragma region Practica 0
 
@@ -363,7 +384,7 @@ void cleanupPhysics(bool interactive)
 
 	//Los borra
 	//delete hoseSystem;
-	delete fogSystem;
+	//delete fogSystem;
 	//delete fireSystem;
 
 #pragma endregion
@@ -413,10 +434,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 		//Las escenas llevan numeros
 	case '0':
-		gSceneManager.setActive(0); // Niebla
+		gSceneManager->setActive(0); // Practica 0
 		break;
-		// case '1': gSceneManager.setActive(1); // Fuego, por ejemplo
-		// case '2': gSceneManager.setActive(2); // Torbellino
+	case '1':
+		gSceneManager->setActive(1); // Practica 1
+		break;
+	case '2':
+		gSceneManager->setActive(2); // Practica 2 y 3
+		break;
+
 	default:
 		break;
 	}

@@ -13,7 +13,7 @@
 class Scene
 {
 public:
-	Scene();
+	Scene() {}
 	virtual ~Scene() {} 
 
 	virtual void init() = 0; //En initPhysics()
@@ -50,6 +50,7 @@ class Scene1 : public Scene
 {
 public:
 	Scene1() = default;
+	~Scene1() {}
 	void init() override;
 	void update(double t) override;
 	void cleanup() override;
@@ -73,6 +74,7 @@ class Scene2 : public Scene
 {
 public:
 	Scene2() = default;
+	~Scene2() {}
 	void init() override;
 	void update(double t) override;
 	void cleanup() override;
@@ -104,12 +106,20 @@ private:
 class Scene3 : public Scene
 {
 public:
-	Scene3() = default;
+	Scene3(PxMaterial* material);
+	~Scene3() {}
 	void init() override;
 	void update(double t) override;
 	void cleanup() override;
 
 private:
+	PxMaterial* gMaterial = NULL;
+
+	//Plano de la base
+	RenderItem* base1 = NULL;
+
+	//Player
+	Particle* player = NULL;
 
 };
 

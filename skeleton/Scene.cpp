@@ -245,3 +245,33 @@ void Scene2::cleanup()
 	//fireSystem = nullptr;
 }
 
+// ---- SCENE 3 - PRACTICA INTERMEDIA ----
+Scene3::Scene3(PxMaterial* material) : gMaterial(material)
+{}
+
+void Scene3::init()
+{
+
+	//Plano base del nivel
+	//Creamos la geometria del plano
+	PxGeometry* boxGeo = new PxBoxGeometry(50 / 2, 5 / 2, 50 / 2);
+	//Creamos la forma con la geometria
+	PxShape* box = CreateShape(*boxGeo, gMaterial);
+	//Creamos el transform, y el color
+	Vector3D pos(50.0, 40.0, -20.0);
+	PxTransform* tr = new PxTransform(PxVec3(pos.getX(), pos.getY(), pos.getZ()));
+	Vector4* color = new Vector4{ 1.0, 1.0, 1.0, 1.0 };
+	//Renderizamos la base
+	base1 = new RenderItem(box, tr, *color);
+	//La registramos
+	RegisterRenderItem(base1);
+
+}
+
+void Scene3::update(double t)
+{
+}
+
+void Scene3::cleanup()
+{
+}
