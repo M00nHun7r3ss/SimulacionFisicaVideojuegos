@@ -1,13 +1,23 @@
 #include "Scene.h"
 #include <iostream>
 
+void Scene::enterScene()
+{
+	init();
+}
+
+void Scene::exitScene()
+{
+	cleanup();
+}
+
 // --- ESCENAS HIJAS ---
 // Scene0, Scene1, Scene2 ... 
 
+// ---- SCENE 0 ----
 Scene0::Scene0(PxMaterial* material) : Scene(), gMaterial(material)
 {}
 
-// ---- SCENE 0 ----
 void Scene0::init()
 {
 	// PRACTICA 0
@@ -275,3 +285,4 @@ void Scene3::update(double t)
 void Scene3::cleanup()
 {
 }
+

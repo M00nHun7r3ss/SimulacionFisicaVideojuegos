@@ -101,6 +101,6 @@ private:
 	void integrateSemiEuler(double t);
 
 	//1.1.c Integracion con Verlet
-	void integrateVerlet(double t);
+	//void integrateVerlet(double t);
 };
 

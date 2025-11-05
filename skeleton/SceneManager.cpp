@@ -2,49 +2,58 @@
 
 SceneManager::~SceneManager()
 {
-    //Borra las escenas del vector
-    for (Scene* s : scenes) 
-    {
-        delete s;
-    }
+    //Limpia todo
+    cleanup();
 }
 
 void SceneManager::addScene(Scene* s)
 {
     //Aniade escena al vector
-    scenes.push_back(s);
+    _scenes.push_back(s);
 }
 
 void SceneManager::setActive(int index)
 {
     //Cambia la escena actual
-    if (index >= 0 && index < scenes.size()) {
+    if (index >= 0 && index < _scenes.size()) {
         //Quita la de ahora, si la hay
-        if (activeScene != nullptr) 
+        if (_activeScene != nullptr) 
         {
-            activeScene->cleanup();
+            _activeScene->exitScene();
         }
         //Pone la nueva
-        activeScene = scenes[index];
+        _activeScene = _scenes[index];
         //Inicializa la nueva
-        activeScene->init();
+        _activeScene->enterScene();
     }
 }
 
 void SceneManager::update(double t)
 {
     //Actualiza la escena
-    if (activeScene != nullptr) 
+    if (_activeScene != nullptr) 
     {
-        activeScene->update(t);
+        _activeScene->update(t);
     }
 }
 
 void SceneManager::cleanup()
 {
-    //Limpia la escena
-    if (activeScene != nullptr)
+    //Borra las escenas del vector
+    for (Scene* s : _scenes)
     {
-        activeScene->cleanup();
+        //Si hay escena
+        if (s != nullptr)
+        {
+            //Limpia 
+            s->cleanup();
+            //Borra
+            delete s;
+        }
     }
+
+    //Vacía el vector de escneas
+    _scenes.clear();
+    //La actual pasa a ser nula
+    _activeScene = nullptr;
 }

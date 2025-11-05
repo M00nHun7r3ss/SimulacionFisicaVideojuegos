@@ -20,6 +20,9 @@ public:
 	virtual void update(double t) = 0; //En stepPhysics()
 	virtual void cleanup() = 0; //En cleanupPhysicis()
 
+	virtual void enterScene(); //Al entrar en una escena
+	virtual void exitScene(); //Al salir de una escena
+
 };
 
 // --- ESCENAS HIJAS ---

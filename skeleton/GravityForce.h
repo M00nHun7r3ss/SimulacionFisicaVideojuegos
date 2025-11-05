@@ -15,7 +15,7 @@ public:
 
 private:
 
-	const double G = pow(6.67384, -11); //m^3 / kg * s^2
+	const double G = 6.67384e-11;; //m^3 / kg * s^2
 	double _mass2;
 	PxVec3 _pos2;
 };

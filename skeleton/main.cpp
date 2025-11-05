@@ -83,10 +83,6 @@ ParticleGenerator* fireGenerator = nullptr;
 
 //GESTION DE ESCENAS
 SceneManager* gSceneManager = NULL;
-Scene0* scene0 = NULL;
-Scene1* scene1 = NULL;
-Scene2* scene2 = NULL;
-Scene3* scene3 = NULL;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -115,16 +111,12 @@ void initPhysics(bool interactive)
 
 	//Creamos escenas
 	gSceneManager = new SceneManager();
-	//scene0 = new Scene0(gMaterial);
-	//scene1 = new Scene1();
-	//scene2 = new Scene2();
-	scene3 = new Scene3(gMaterial);
 
 	//Las aniadimos en el manager
- //   gSceneManager->addScene(scene0);
-	//gSceneManager->addScene(scene1);
-	//gSceneManager->addScene(scene2);
-	gSceneManager->addScene(scene3);
+	//gSceneManager->addScene(new Scene0(gMaterial));
+	//gSceneManager->addScene(new Scene1());
+	//gSceneManager->addScene(new Scene2());
+	gSceneManager->addScene(new Scene3(gMaterial));
 
     // Activar la primera escena
     gSceneManager->setActive(0);

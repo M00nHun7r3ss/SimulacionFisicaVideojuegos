@@ -22,8 +22,8 @@ public:
 	//Constructora con todos los datos (Especiales)
 	Proyectil(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, PxVec3 gravity, double masa = 1.0, double dumping = 0.999, double duration = 5.0);
 
-	//Diferentes tipos de proyectil
-	enum class ProyectilType { Bullet, CanonBall, Bubble };
+	//Diferentes tipos de proyectil //CanonBall no funciona bien
+	enum class ProyectilType { Bullet, /*CanonBall,*/ Bubble };
 
 	//Disparo
 	void shoot(ProyectilType type);
@@ -31,7 +31,8 @@ public:
 	//Destructora
 	~Proyectil();
 
-	//double calculateSimulatedM(); 
+	//Escalado de velocidad segun masa
+	double calculateSimulatedMandV(double mReal, double vReal);
 
 	//Getters
 	inline PxVec3 getGravity() { return _g; }

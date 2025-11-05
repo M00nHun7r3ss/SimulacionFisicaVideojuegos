@@ -26,7 +26,7 @@ public:
 
 private:
     //vector general
-    std::vector<Scene*> scenes;
+    std::vector<Scene*> _scenes;
     //escena actual
-    Scene* activeScene = nullptr;
+    Scene* _activeScene = nullptr;
 };

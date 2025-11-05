@@ -118,23 +118,23 @@ void Particle::integrateSemiEuler(double t)
 	_transform->p += _v * t;
 }
 
-void Particle::integrateVerlet(double t) //Se resuelve metiendo un pequenio delay
-{
-	//MRUA
-	////x1 = 2*x0 - x-1 + t^2 * a0;
-	////a1 =
-	//_v += _a * t;
-	//_transform->p += _v * t;
-
-	//Dumping
-	////x1 = 2*x(0) - x(-1) + t^2 * a(0);
-	////v1 = v0 + a * t
-	////v1 = v1 * d^t
-	//_v += _a * t;
-	//_v *= pow(_dump, t);
-	//_transform->p + _v * t;
-
-}
+//void Particle::integrateVerlet(double t) //Se resuelve metiendo un pequenio delay
+//{
+//	//MRUA
+//	////x1 = 2*x0 - x-1 + t^2 * a0;
+//	////a1 =
+//	//_v += _a * t;
+//	//_transform->p += _v * t;
+//
+//	//Dumping
+//	////x1 = 2*x(0) - x(-1) + t^2 * a(0);
+//	////v1 = v0 + a * t
+//	////v1 = v1 * d^t
+//	//_v += _a * t;
+//	//_v *= pow(_dump, t);
+//	//_transform->p + _v * t;
+//
+//}
 
 void Particle::integrate(double t, int integrationType)
 {
@@ -170,7 +170,6 @@ void Particle::integrate(double t, int integrationType)
 	//Aceleracion = Fuerza / masa
 	_a = _allForces / _m;
 
-
 	// Si sigue viva, integrar
 	switch (integrationType)
 	{
@@ -184,11 +183,11 @@ void Particle::integrate(double t, int integrationType)
 		integrateSemiEuler(t);
 		break;
 	}
-		//Verlet. Sin acabar
-	case 2: {
-		integrateVerlet(t);
-		break;
-	}
+	//	//Verlet. Sin acabar
+	//case 2: {
+	//	integrateVerlet(t);
+	//	break;
+	//}
 	default:{
 		break;
 	}
