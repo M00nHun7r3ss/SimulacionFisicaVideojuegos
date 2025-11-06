@@ -3,7 +3,7 @@
 
 #include "ParticleGenerator.h"
 
-ParticleSystem::ParticleSystem() : _useGravity(true)
+ParticleSystem::ParticleSystem() : _useGravity(true), _paused(true)
 {
 	// Reservamos espacio inicial
 	_particles.reserve(200);
@@ -76,6 +76,16 @@ void ParticleSystem::update(double t)
 	{
 		g->generateParticles(*this, t);
 	}
+
+	//Gestion de la pausa
+	//if (_paused)
+	//{
+	//	for (Particle* p : _particles)
+	//	{
+	//		p->setPos(PxVec3(0, -100, 0));
+	//		
+	//	}
+	//}
 }
 
 void ParticleSystem::addParticle(Particle* p)
@@ -129,11 +139,11 @@ void ParticleSystem::deleteDeadParticles()
 			}
 		}
 	}
-
 }
 
 Particle* ParticleSystem::reactivateDeadParticles()
 {
+
 	//Desactivamos las particulas que ya no valen
 	for (Particle* p : _particles)
 	{
@@ -145,4 +155,5 @@ Particle* ParticleSystem::reactivateDeadParticles()
 
 	//Si todas estan vivas, no devuelve nada
 	return nullptr;
+	
 }

@@ -215,9 +215,9 @@ void Scene2::init()
 	//	PxVec3(-10, 0, -10), PxVec3(10, 10, 10));
 	//fogSystem->addForceGenerator(basicWind);
 	////Viento avanzado
-	//WindForce* advancedWind = new WindForce(PxVec3(5.0, 0.0, 0.0), 1.2, 0.5, 0.1,
+	//WindForce* _advancedWind = new WindForce(PxVec3(5.0, 0.0, 0.0), 1.2, 0.5, 0.1,
 	//	PxVec3(-10, 0, -10), PxVec3(10, 10, 10));
-	//fogSystem->addForceGenerator(advancedWind);
+	//fogSystem->addForceGenerator(_advancedWind);
 
 	////PRACTICA 3 - FUERZAS DE VIENTO - TORBELLINO
 	WhirlwindForce* whirlwind = new WhirlwindForce(PxVec3(0.0, 5.0, 0.0), 0.9,
@@ -225,14 +225,14 @@ void Scene2::init()
 	fogSystem->addForceGenerator(whirlwind);
 
 	////Fuego - Gaussiano
-	//fireSystem = new ParticleSystem();
-	//fireGenerator = new GaussParticleGenerator(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 5.0, 0.0), PxVec3(1.0, 1.0, 1.0), 10);
-	////fireSystem->setUseGravity(false);
-	//fireGenerator->setProbability(0.8);
-	//fireSystem->addGenerator(fireGenerator);
+	//_fireSystem = new ParticleSystem();
+	//_fireGenerator = new GaussParticleGenerator(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 5.0, 0.0), PxVec3(1.0, 1.0, 1.0), 10);
+	////_fireSystem->setUseGravity(false);
+	//_fireGenerator->setProbability(0.8);
+	//_fireSystem->addGenerator(_fireGenerator);
 	////PRACTICA 3 - FUERZAS DE GRAVEDAD, PERO INVERSA
-	//GravityForce* inverseGravity = new GravityForce(0.2, PxVec3(0, -500, 0));
-	//fireSystem->addForceGenerator(inverseGravity);
+	//GravityForce* _inverseGravity = new GravityForce(0.2, PxVec3(0, -500, 0));
+	//_fireSystem->addForceGenerator(_inverseGravity);
 
 }
 
@@ -241,7 +241,7 @@ void Scene2::update(double t)
 	//Actualizamos el sistema
 	//hoseSystem->update(t);
 	fogSystem->update(t);
-	//fireSystem->update(t);
+	//_fireSystem->update(t);
 }
 
 void Scene2::cleanup()
@@ -251,13 +251,38 @@ void Scene2::cleanup()
 	//hoseSystem = nullptr;
 	delete fogSystem;
 	fogSystem = nullptr;
-	//delete fireSystem;
-	//fireSystem = nullptr;
+	//delete _fireSystem;
+	//_fireSystem = nullptr;
 }
 
 // ---- SCENE 3 - PRACTICA INTERMEDIA ----
 Scene3::Scene3(PxMaterial* material) : gMaterial(material)
-{}
+{
+	for (int i = 0; i < 20; i++)
+	{
+		proyectils.push_back(new Proyectil(
+			PxVec3(0, -500, 0),
+			PxVec3(0, 0, 0),
+			Vector4(0, 1, 0, 0),
+			PxVec3(0, -9.8f, 0)
+		));
+		proyectils.back()->setActive(false);
+	}
+
+	//Para el vector ilimitado - inicializamos con proyectiles basicos
+	for (int i = 0; i < 1; i++)
+	{
+		_canonProyectils.push_back(new Proyectil(
+			PxVec3(0, -500, 0),
+			PxVec3(0, 0, 0),
+			Vector4(0, 1, 0, 0),
+			PxVec3(0, -9.8f, 0)
+		));
+		_canonProyectils.back()->setActive(false);
+	}
+
+	_shootingDuration = 500;
+}
 
 void Scene3::init()
 {
@@ -294,18 +319,18 @@ void Scene3::init()
 	_windCanon->color = Vector4(0.2, 0.2, 0.5, 1.0);
 
 	//Niebla - Uniforme
-	airSystem = new ParticleSystem();
-	airGenerator = new UniformParticleGenerator(PxVec3(15.0, 22.0, -10.0), 10,
+	_airSystem = new ParticleSystem();
+	_airGenerator = new UniformParticleGenerator(PxVec3(15.0, 22.0, -10.0), 10,
 		PxVec3(15.0, 20.0, -12.0), PxVec3(40.0, 24.0, -8.0),
 		PxVec3(-0.3, -0.3, -0.3), PxVec3(0.3, 0.3, 0.3));
-	airSystem->setUseGravity(false);
-	airGenerator->setDuration(1.0);
-	airGenerator->setProbability(0.9);
-	airSystem->addGenerator(airGenerator);
+	_airSystem->setUseGravity(false);
+	_airGenerator->setDuration(1.0);
+	_airGenerator->setProbability(0.9);
+	_airSystem->addGenerator(_airGenerator);
 	//Viento avanzado
-	advancedWind = new WindForce(PxVec3(10.0, 0.0, 0.0), 1.2, 0.5, 0.1,
+	_advancedWind = new WindForce(PxVec3(10.0, 0.0, 0.0), 1.2, 0.5, 0.1,
 		PxVec3(-100.0, 0.0, -100.0), PxVec3(100.0, 50.0, 100.0));
-	airSystem->addForceGenerator(advancedWind);
+	_airSystem->addForceGenerator(_advancedWind);
 
 	// ---------- CANION DE FUEGO ----------
 	//Creamos la geometria del plano
@@ -321,33 +346,44 @@ void Scene3::init()
 	_fireCanon->color = Vector4(0.5, 0.2, 0.2, 1.0);
 
 	//Fuego - Gaussiano
-	fireSystem = new ParticleSystem();
-	fireGenerator = new GaussParticleGenerator(PxVec3(60.0, 45.0, -5.0),
+	_fireSystem = new ParticleSystem();
+	_fireGenerator = new GaussParticleGenerator(PxVec3(60.0, 45.0, -5.0),
 		PxVec3(0.0, 3.0, 0.0), PxVec3(1.0, 1.0, 1.0), 10);
-	//fireSystem->setUseGravity(false);
-	fireGenerator->setProbability(0.8);
-	fireSystem->addGenerator(fireGenerator);
-	inverseGravity = new GravityForce(0.2, PxVec3(0, -500, 0));
-	fireSystem->addForceGenerator(inverseGravity);
+	//_fireSystem->setUseGravity(false);
+	_fireGenerator->setProbability(0.8);
+	_fireSystem->addGenerator(_fireGenerator);
+	_inverseGravity = new GravityForce(0.2, PxVec3(0, -500, 0));
+	_fireSystem->addForceGenerator(_inverseGravity);
 
 	// ---------- JUGADOR ----------
 	_player = new Particle(PxVec3(50.0, 44.0, -10.0), PxVec3(0.0, 0.0, 0.0), 
 		Vector4(1.0, 0.0, 0.0, 1.0),5.0);
+	//Jugador
+	//_playerSystem = new ParticleSystem();
+	//_playerGenerator = new UniformParticleGenerator(PxVec3(50.0, 44.0, -10.0), 1,
+	//	PxVec3(50.0, 44.0, -10.0), PxVec3(50.0, 44.0, -10.0),
+	//	PxVec3(0.0, -10.0, 0.0), PxVec3(20.0, 20.0, 20.0));
+	//_playerGenerator->setProbability(0.8);
+	//_playerSystem->addGenerator(_playerGenerator);
+	//gravity = new GravityForce(0.2, PxVec3(0, 10, 0));
+	//_playerSystem->addForceGenerator(gravity);
 
 	// ---------- DISPAROS ----------
 	//Direccion de la camara
 	PxVec3 dir = PxVec3(GetCamera()->getDir());
-	//Para el vector ilimitado - inicializamos con proyectiles basicos
-	for (int i = 0; i < 20; i++)
-	{
-		proyectils.push_back(new Proyectil(
-			PxVec3(0, -500, 0),
-			PxVec3(0, 0, 0),
-			Vector4(0, 1, 0, 0),
-			PxVec3(0, -9.8f, 0)
-		));
-		proyectils.back()->setActive(false);
-	}
+
+	// ---------- CANION ENEMIGO ----------
+	//Creamos la geometria del plano
+	PxShape* boxGeo3 = CreateShape(*box1, gMaterial);
+	//Creamos el transform, y el color
+	Vector3D pos3(45.0, 45.0, -25.0);
+	PxTransform* tr3 = new PxTransform(PxVec3(pos3.getX(), pos3.getY(), pos3.getZ()));
+	Vector4* color3 = new Vector4{ 0.0, 1.0, 1.0, 1.0 };
+	//Renderizamos la base
+	_bulletCanon = new RenderItem(boxGeo3, tr3, *color3);
+	//La registramos
+	RegisterRenderItem(_bulletCanon);
+
 
 }
 
@@ -357,8 +393,15 @@ void Scene3::update(double t)
 	//_player->setA(PxVec3(0.0, -9.8, 0.0));
 
 	//Actualizamos los sistemas de particulas y las fuerzas
-	if (windActive)	airSystem->update(t);
-	if (fireActive) fireSystem->update(t);
+	if (_windActive) 
+	{
+		_airSystem->update(t);
+	}
+	if (_fireActive)
+	{
+		_fireSystem->update(t);
+	}
+	//_playerSystem->update(t);
 
 	//Lo movemos
 	_player->integrate(t, 1);
@@ -390,15 +433,54 @@ void Scene3::update(double t)
 		}
 	}
 
+	//Actualizamos balas
+	for (Proyectil* p : _canonProyectils)
+	{
+		if (p->isActive())
+		{
+			p->integrate(t, 1); // SemiEuler
+			PxVec3 pos = p->getPos();
+			PxVec3 vel = p->getV();
+
+			// Desactivamos si esta fuera del mundo
+			if (pos.x > 150.0 || pos.x < -150.0 || pos.y < -150.0 || pos.y > 150.0 || p->getDuration() <= 0)
+			{
+				p->setActive(false);
+			}
+		}
+	}
+
+	//Vamos reduciendo tiempo
+	while (_shootingDuration > 0)
+	{
+		_shootingDuration -= t;
+	}
+
+	bool shoot = false; //No ha disparado
+	//Si se acaba
+	if (_shootingDuration <= 0 && !shoot)
+	{
+		//Disparamos
+		shootEnemyCanon(Proyectil::ProyectilType::Bullet, PxVec3(45.0, 45.0, -25.0), PxVec3(1.0, 0.0, 0.0));
+		//Ya ha disparado
+		shoot = true;
+		//reseteamos el tiempo
+		_shootingDuration = 3000;
+
+	}
+
+	shoot = false;
+
+
 }
 
 void Scene3::cleanup()
 {
 	//Borramos los sistemas
-	delete airSystem;
-	airSystem = nullptr;
-	delete fireSystem;
-	fireSystem = nullptr;
+	delete _airSystem;
+	_airSystem = nullptr;
+	delete _fireSystem;
+	_fireSystem = nullptr;
 
 	// Borrar pool de proyectiles
 	for (Proyectil* p : proyectils) {
@@ -411,6 +493,18 @@ void Scene3::cleanup()
 		}
 	}
 	proyectils.clear();
+
+	// Borrar pool de proyectiles
+	for (Proyectil* p : _canonProyectils) {
+		{
+			if (p->getRenderItem() != nullptr)
+			{
+				DeregisterRenderItem(p->getRenderItem());
+				delete p;
+			}
+		}
+	}
+	_canonProyectils.clear();
 }
 
 void Scene3::handleKey(unsigned char key, const PxTransform& camera)
@@ -448,22 +542,37 @@ void Scene3::handleKey(unsigned char key, const PxTransform& camera)
 
 	case 'E':
 		//Activar y desactivar canion de viento
-		windActive = !windActive;
+		_windActive = !_windActive;
 
-		if (!windActive) _windCanon->color = Vector4(0.2, 0.2, 0.5, 1.0);
-		else _windCanon->color = Vector4(0.0, 0.0, 1.0, 1.0);
+		if (!_windActive)
+		{
+			_windCanon->color = Vector4(0.2, 0.2, 0.5, 1.0);
+			_airSystem->setPaused(true);
+		}
+		else
+		{
+			_windCanon->color = Vector4(0.0, 0.0, 1.0, 1.0);
+			_airSystem->setPaused(false);
+		}
 		
 		break;
 
 	case 'R':
 		//Activar y desactivar canion de fuego
-		fireActive = !fireActive;
+		_fireActive = !_fireActive;
 
-		if (!fireActive) _fireCanon->color = Vector4(0.5, 0.2, 0.2, 1.0);
-		else _fireCanon->color = Vector4(1.0, 0.0, 0.0, 1.0);
+		if (!_fireActive)
+		{
+			_fireCanon->color = Vector4(0.5, 0.2, 0.2, 1.0);
+			_fireSystem->setPaused(true);
+		}
+		else
+		{
+			_fireCanon->color = Vector4(1.0, 0.0, 0.0, 1.0);
+			_fireSystem->setPaused(false);
+		}
+
 		break;
-
-
 
 	default:
 		break;
@@ -494,4 +603,17 @@ void Scene3::shootFromPlace(Proyectil::ProyectilType type, PxVec3 position, PxVe
 		}
 	}
 }
+
+void Scene3::shootEnemyCanon(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction)
+{
+	for (Proyectil* p : _canonProyectils)
+	{
+		if (!p->isActive())
+		{
+			p->shootFromPlace(type, position, direction);
+			break;
+		}
+	}
+}
+
 

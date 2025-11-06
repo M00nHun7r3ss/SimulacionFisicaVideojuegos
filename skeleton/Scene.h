@@ -127,6 +127,8 @@ public:
 
 	void shootFromCamera(Proyectil::ProyectilType type) override;
 	void shootFromPlace(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction) override;
+	void shootEnemyCanon(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction);
+
 
 private:
 	PxMaterial* gMaterial = NULL;
@@ -138,9 +140,9 @@ private:
 	Particle* _player = NULL;
 	//ParticleSystem* _playerSystem = NULL;
 	//UniformParticleGenerator* _playerGenerator = NULL;
+	//GravityForce* gravity = NULL;
 
 	//Disparos
-	Proyectil* bullet = NULL;
 	std::vector<Proyectil*> proyectils;
 
 	//Caniones de fuerzas
@@ -148,20 +150,25 @@ private:
 	RenderItem* _fireCanon = NULL;
 	// Sistemas de partículas
 	//Aire
-	ParticleSystem* airSystem = NULL;
+	ParticleSystem* _airSystem = NULL;
 	//Fuego
-	ParticleSystem* fireSystem = NULL;
+	ParticleSystem* _fireSystem = NULL;
 
 	//Generadores
-	ParticleGenerator* airGenerator = NULL;
-	ParticleGenerator* fireGenerator = NULL;
+	ParticleGenerator* _airGenerator = NULL;
+	ParticleGenerator* _fireGenerator = NULL;
 
 	//Fuerzas
-	GravityForce* inverseGravity = NULL;
-	WindForce* advancedWind = NULL;
+	GravityForce* _inverseGravity = NULL;
+	WindForce* _advancedWind = NULL;
 
 	//Activar y desactivar
-	bool windActive = false;
-	bool fireActive = false;
+	bool _windActive = false;
+	bool _fireActive = false;
+
+	//Canion enemigo
+	RenderItem* _bulletCanon = NULL;
+	std::vector<Proyectil*> _canonProyectils;
+	int _shootingDuration;
 };
 

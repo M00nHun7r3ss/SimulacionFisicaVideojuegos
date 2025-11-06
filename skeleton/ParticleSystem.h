@@ -34,16 +34,19 @@ public:
 	inline int numParticles() const { return _particles.size(); }
 	inline int numGenerators() const { return _generators.size(); }
 	inline bool getUseGravity() const { return _useGravity; }
+	inline bool getPaused() const { return _paused; }
 
 	// Setters
 	inline void setNumParticles(int numParticles) { _particles.resize(numParticles); }
 	inline void setUseGravity(bool newGravity) { _useGravity = newGravity; }
+	inline void setPaused(bool pause) { _paused = pause; }
 
 	// Limpiar particulas en desuso
 	void deleteDeadParticles();
 
 	// Reactivar particulas en desuso
 	Particle* reactivateDeadParticles();
+
 
 protected:
 
@@ -55,5 +58,8 @@ protected:
 
 	//Para gestionar las fuerzas
 	ParticleForceRegister _forceRegister;
+
+	//Para la pausa del sistema
+	bool _paused;
 };
 

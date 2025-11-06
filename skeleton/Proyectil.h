@@ -52,8 +52,4 @@ private:
 };
 
 
-//Direccion de la camara 
-//velAuxiliar * direccion
-
-
 
