@@ -6,6 +6,10 @@ UniformParticleGenerator::UniformParticleGenerator(PxVec3 pos, int nParticles, P
     _pos = pos;
     _nParticles = nParticles;
 
+    _modelParticle = new Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 0.0, 0.0),
+        Vector4(1.0, 1.0, 1.0, 1.0), PxVec3(0.0, 0.0, 0.0), 1.0,
+        0.999, 5, 0.1);
+
 }
 
 UniformParticleGenerator::~UniformParticleGenerator()
@@ -36,19 +40,18 @@ void UniformParticleGenerator::generateParticles(ParticleSystem & system, double
         PxVec3 vel = _vel + PxVec3(distVelX(_mersenneRandom), distVelY(_mersenneRandom), distVelZ(_mersenneRandom));
 
         //Y la aniade al sistema
-        //Y la aniade al sistema
-        Particle* p = system.reactivateDeadParticles();
-        if (p != nullptr)
+        _modelParticle = system.reactivateDeadParticles();
+        if (_modelParticle != nullptr)
         {
-            p->setPos(pos);
-            p->setV(vel);
-            p->setColor(Vector4(0.9, 0.9, 0.9, 0.25));
-            p->setA(PxVec3(0, 0, 0));
-            p->setM(0.1f);
-            p->setDump(0.999f);
-            p->setDuration(2.0f);
-            p->setSize(0.05);
-            p->setActive(true);
+            _modelParticle->setPos(pos);
+            _modelParticle->setV(vel);
+            _modelParticle->setColor(Vector4(0.9, 0.9, 0.9, 0.25));
+            _modelParticle->setA(PxVec3(0, 0, 0));
+            _modelParticle->setM(0.1f);
+            _modelParticle->setDump(0.999f);
+            _modelParticle->setDuration(2.0f);
+            _modelParticle->setSize(0.05);
+            _modelParticle->setActive(true);
 
         }
     }

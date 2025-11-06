@@ -35,6 +35,9 @@ public:
 
 protected:
 
+	//Particula modelo
+	Particle* _modelParticle;
+
 	int _nParticles;
 	PxVec3 _pos;
 	PxVec3 _vel;

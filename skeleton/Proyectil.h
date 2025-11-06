@@ -25,14 +25,15 @@ public:
 	//Diferentes tipos de proyectil //CanonBall no funciona bien
 	enum class ProyectilType { Bullet, /*CanonBall,*/ Bubble };
 
-	//Disparo
-	void shoot(ProyectilType type);
+	//Disparo desde camera y desde un lugar (ya sea el player u otro sitio)
+	void shootFromCamera(ProyectilType type);
+	void shootFromPlace(ProyectilType type, PxVec3 positionSpawn, PxVec3 direction);
 
 	//Destructora
 	~Proyectil();
 
 	//Escalado de velocidad segun masa
-	double calculateSimulatedMandV(double mReal, double vReal);
+	void calculateSimulatedMandV(double mReal, double vReal);
 
 	//Getters
 	inline PxVec3 getGravity() { return _g; }
@@ -50,9 +51,6 @@ private:
 
 };
 
-
-//Para cuando hagamos fuerzas
-//0.5* mReal * vReal^2 = 0.5 * mReal * vReal^2
 
 //Direccion de la camara 
 //velAuxiliar * direccion

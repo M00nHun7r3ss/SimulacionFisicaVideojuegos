@@ -48,6 +48,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="ExplosionForce.cpp">
+      <Filter>Forces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplosionForce.h">
+      <Filter>Forces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

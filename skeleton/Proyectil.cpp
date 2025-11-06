@@ -20,7 +20,7 @@ Proyectil::Proyectil(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, PxVec3 
 
 Proyectil::~Proyectil() {}
 
-double Proyectil::calculateSimulatedMandV(double mReal, double vReal)
+void Proyectil::calculateSimulatedMandV(double mReal, double vReal)
 {
 	// 0.5 * mReal * vReal^2 = 0.5 * mSim * vSim^2
 	// => vSim = vReal * sqrt(mReal / mSim)
@@ -35,7 +35,7 @@ double Proyectil::calculateSimulatedMandV(double mReal, double vReal)
 	setV(dir * vSim);
 }
 
-void Proyectil::shoot(ProyectilType type)
+void Proyectil::shootFromCamera(ProyectilType type)
 {
 	//El tipo que se pasemos por input
 	_t = type;
@@ -58,7 +58,8 @@ void Proyectil::shoot(ProyectilType type)
 		case ProyectilType::Bullet:
 			mReal = 0.05;
 			vReal = 300;
-			setColor(Vector4(1.0, 0.0, 0.0, 1.0));
+			setColor(Vector4(0.0, 1.0, 0.0, 1.0));
+			setSize(0.5);
 		//Con la direccion de la camara
 			setV(60.0 * dir);
 			setGravity(PxVec3(0.0, -0.0005, 0.0));
@@ -81,6 +82,72 @@ void Proyectil::shoot(ProyectilType type)
 			setV(10.0 * dir);
 			setGravity(PxVec3(0.0, 2.0, 0.0));
 			setA(getGravity());
+		break;
+	}
+
+	// Aceleracion de acuerdo a la gravedad
+	setA(getGravity());
+
+	// Velocidad de acuerdo a la masa
+	calculateSimulatedMandV(mReal, vReal);
+
+	// Actualizar color del RenderItem 
+	if (getRenderItem() != nullptr)
+	{
+		getRenderItem()->color = getColor();
+	}
+
+	// Activamos el proyectil 
+	Particle::setActive(true);
+}
+
+void Proyectil::shootFromPlace(ProyectilType type, PxVec3 positionSpawn, PxVec3 direction)
+{
+	//El tipo que se pasemos por input
+	_t = type;
+
+	//Desde la camara
+	setPos(positionSpawn);
+	//Direccion de la camara
+	PxVec3 dir = direction;
+
+	//Iniciamos la duracion
+	setDuration(5.0);
+
+	// Variables reales para el escalado de velocidad
+	double mReal;   // masa real en kg
+	double vReal;  // velocidad real en m/s
+
+	//Diferentes tipos de proyectil, con distinto color y gravedad
+	switch (type)
+	{
+	case ProyectilType::Bullet:
+		mReal = 0.05;
+		vReal = 300;
+		setColor(Vector4(0.0, 1.0, 0.0, 1.0));
+		setSize(0.5);
+		//Con la direccion de la camara
+		setV(60.0 * dir);
+		setGravity(PxVec3(0.0, -0.0005, 0.0));
+		setA(getGravity());
+		break;
+
+		//case ProyectilType::CanonBall:
+		//	setColor(Vector4(0.0, 1.0, 0.0, 1.0));
+		//	//Con la direccion de la camara
+		//	setV(40.0 * dir + PxVec3(0.0f, 20.0f, 0.0f));
+		//	setGravity(PxVec3(0.0, -9.8, 0.0));
+		//	setA(getGravity());
+		//break;
+
+	case ProyectilType::Bubble:
+		mReal = 0.001;
+		vReal = 5;
+		setColor(Vector4(0.0, 0.0, 1.0, 1.0));
+		//Con la direccion de la camara
+		setV(10.0 * dir);
+		setGravity(PxVec3(0.0, 2.0, 0.0));
+		setA(getGravity());
 		break;
 	}
 

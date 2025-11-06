@@ -23,6 +23,14 @@ public:
 	virtual void enterScene(); //Al entrar en una escena
 	virtual void exitScene(); //Al salir de una escena
 
+	//Gestiona el input de escenas concretas
+	virtual void handleKey(unsigned char key, const PxTransform& camera) {} //En keyPress()
+
+	//Gestiona los disparos desde camera
+	virtual void shootFromCamera(Proyectil::ProyectilType type) {} //en el handleKey de cada escena
+	//Gestiona los disparos desde una posicion
+	virtual void shootFromPlace(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction) {} //en el handleKey de cada escena
+
 };
 
 // --- ESCENAS HIJAS ---
@@ -115,14 +123,45 @@ public:
 	void update(double t) override;
 	void cleanup() override;
 
+	void handleKey(unsigned char key, const PxTransform& camera) override;
+
+	void shootFromCamera(Proyectil::ProyectilType type) override;
+	void shootFromPlace(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction) override;
+
 private:
 	PxMaterial* gMaterial = NULL;
 
 	//Plano de la base
-	RenderItem* base1 = NULL;
+	RenderItem* _base1 = NULL;
 
 	//Player
-	Particle* player = NULL;
+	Particle* _player = NULL;
+	//ParticleSystem* _playerSystem = NULL;
+	//UniformParticleGenerator* _playerGenerator = NULL;
 
+	//Disparos
+	Proyectil* bullet = NULL;
+	std::vector<Proyectil*> proyectils;
+
+	//Caniones de fuerzas
+	RenderItem* _windCanon = NULL;
+	RenderItem* _fireCanon = NULL;
+	// Sistemas de partículas
+	//Aire
+	ParticleSystem* airSystem = NULL;
+	//Fuego
+	ParticleSystem* fireSystem = NULL;
+
+	//Generadores
+	ParticleGenerator* airGenerator = NULL;
+	ParticleGenerator* fireGenerator = NULL;
+
+	//Fuerzas
+	GravityForce* inverseGravity = NULL;
+	WindForce* advancedWind = NULL;
+
+	//Activar y desactivar
+	bool windActive = false;
+	bool fireActive = false;
 };
 

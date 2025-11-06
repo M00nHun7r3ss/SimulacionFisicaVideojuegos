@@ -5,6 +5,10 @@ GaussParticleGenerator::GaussParticleGenerator(PxVec3 pos, PxVec3 medVel, PxVec3
 {
     _pos = pos;
     _nParticles = nParticles;
+
+    _modelParticle = new Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 0.0, 0.0), 
+        Vector4(1.0, 1.0, 1.0, 1.0), PxVec3(0.0, 0.0, 0.0), 1.0, 
+        0.999, 5, 0.1);
 }
 
 GaussParticleGenerator::~GaussParticleGenerator()
@@ -31,18 +35,18 @@ void GaussParticleGenerator::generateParticles(ParticleSystem& system, double t)
         PxVec3 vel(distX(_mersenneRandom), distY(_mersenneRandom), distZ(_mersenneRandom));
 
         //Y la aniade al sistema
-        Particle* p = system.reactivateDeadParticles();
-        if (p != nullptr)
+        _modelParticle = system.reactivateDeadParticles();
+        if (_modelParticle != nullptr)
         {
-            p->setPos(_pos);
-            p->setV(vel);
-            p->setColor(Vector4(1, 1, 1, 1));
-            p->setA(PxVec3(0, -9.8f, 0));
-            p->setM(0.1f);
-            p->setDump(0.999f);
-            p->setDuration(2.0f);
-            p->setSize(0.1);
-            p->setActive(true);
+            _modelParticle->setPos(_pos);
+            _modelParticle->setV(vel);
+            _modelParticle->setColor(Vector4(1, 1, 1, 1));
+            _modelParticle->setA(PxVec3(0, -9.8f, 0));
+            _modelParticle->setM(0.1f);
+            _modelParticle->setDump(0.999f);
+            _modelParticle->setDuration(2.0f);
+            _modelParticle->setSize(0.1);
+            _modelParticle->setActive(true);
 
         }
     }

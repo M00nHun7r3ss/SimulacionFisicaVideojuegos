@@ -36,6 +36,7 @@ public:
 	inline bool getUseGravity() const { return _useGravity; }
 
 	// Setters
+	inline void setNumParticles(int numParticles) { _particles.resize(numParticles); }
 	inline void setUseGravity(bool newGravity) { _useGravity = newGravity; }
 
 	// Limpiar particulas en desuso

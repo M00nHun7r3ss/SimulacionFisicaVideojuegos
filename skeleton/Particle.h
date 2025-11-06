@@ -19,11 +19,15 @@ public:
 	//Constructora con velocidad, posicion y colores iniciales (De colores)
 	Particle(PxVec3 pos, PxVec3 vel, Vector4 color);
 
+	//Constructora para PLAYER
+	Particle(PxVec3 pos, PxVec3 vel, Vector4 color, double masa);
+
 	//Constructora con todos los datos (Especiales) - Lo dejamos de usar por la aceleracion
 	Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa = 1.0, double dumping = 0.999, double duration = 5.0);
 
 	//Constructora todos los datos y tamanio para generador de particulas pequenias
 	Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa = 1.0, double dumping = 0.999, double duration = 5.0, double size = 1.0);
+
 
 	//Destructora
 	~Particle();
@@ -42,6 +46,7 @@ public:
 	inline double getDuration() { return _duration; }
 	inline double getSize() { return _size; }
 	inline bool isActive() { return _active; }
+	inline PxVec3 getDirection() { return _direction; }
 
 	//Setters
 	inline void setRenderItem(RenderItem* newRenderItem) { _renderItem = newRenderItem; }
@@ -53,6 +58,7 @@ public:
 	inline void setDump(double newDump) { _dump = newDump; }
 	inline void setDuration(double newDuration) { _duration = newDuration; }
 	inline void setSize(double newSize) { _size = newSize; }
+	inline void setDirection(PxVec3 newDir) { _direction = newDir; }
 	inline void setActive(bool act) {
 		// Si no hay cambio, no hacemos nada
 		if (_active == act) return;
@@ -91,6 +97,7 @@ private:
 	double _duration; //en s (entre 0 y 1, cuanto mas pequenio mas se frena)
 	double _size; //tamanio en m
 	bool _active = false; //para saber si se esta usando
+	PxVec3 _direction; //Para determinar la orientacion para el disparo
 
 	PxVec3 _allForces; // Sumatorio de fuerzas en N
 

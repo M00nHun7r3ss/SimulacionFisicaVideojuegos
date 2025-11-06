@@ -261,8 +261,10 @@ Scene3::Scene3(PxMaterial* material) : gMaterial(material)
 
 void Scene3::init()
 {
+	//Colocamos camera
+	//GetCamera()->setDir(PxVec3(50.0, 40.0, -20.0));
 
-	//Plano base del nivel
+	// ---------- PLANO BASE ----------
 	//Creamos la geometria del plano
 	PxGeometry* boxGeo = new PxBoxGeometry(50 / 2, 5 / 2, 50 / 2);
 	//Creamos la forma con la geometria
@@ -272,17 +274,224 @@ void Scene3::init()
 	PxTransform* tr = new PxTransform(PxVec3(pos.getX(), pos.getY(), pos.getZ()));
 	Vector4* color = new Vector4{ 1.0, 1.0, 1.0, 1.0 };
 	//Renderizamos la base
-	base1 = new RenderItem(box, tr, *color);
+	_base1 = new RenderItem(box, tr, *color);
 	//La registramos
-	RegisterRenderItem(base1);
+	RegisterRenderItem(_base1);
+
+	// ---------- CANION DE AIRE ----------
+	//Creamos la geometria del plano
+	PxGeometry* box1 = new PxBoxGeometry(5 / 2, 5 / 2, 5 / 2);
+	//Creamos la forma con la geometria
+	PxShape* boxShape = CreateShape(*box1, gMaterial);
+	//Creamos el transform, y el color
+	Vector3D pos1(30.0, 45.0, -20.0);
+	PxTransform* tr1 = new PxTransform(PxVec3(pos1.getX(), pos1.getY(), pos1.getZ()));
+	Vector4* color1 = new Vector4{ 0.0, 0.0, 1.0, 1.0 };
+	//Renderizamos la base
+	_windCanon = new RenderItem(boxShape, tr1, *color1);
+	//La registramos
+	RegisterRenderItem(_windCanon);
+	_windCanon->color = Vector4(0.2, 0.2, 0.5, 1.0);
+
+	//Niebla - Uniforme
+	airSystem = new ParticleSystem();
+	airGenerator = new UniformParticleGenerator(PxVec3(15.0, 22.0, -10.0), 10,
+		PxVec3(15.0, 20.0, -12.0), PxVec3(40.0, 24.0, -8.0),
+		PxVec3(-0.3, -0.3, -0.3), PxVec3(0.3, 0.3, 0.3));
+	airSystem->setUseGravity(false);
+	airGenerator->setDuration(1.0);
+	airGenerator->setProbability(0.9);
+	airSystem->addGenerator(airGenerator);
+	//Viento avanzado
+	advancedWind = new WindForce(PxVec3(10.0, 0.0, 0.0), 1.2, 0.5, 0.1,
+		PxVec3(-100.0, 0.0, -100.0), PxVec3(100.0, 50.0, 100.0));
+	airSystem->addForceGenerator(advancedWind);
+
+	// ---------- CANION DE FUEGO ----------
+	//Creamos la geometria del plano
+	PxGeometry* box2 = new PxBoxGeometry(5 / 2, 5 / 2, 5 / 2);
+	//Creamos el transform, y el color
+	Vector3D pos2(60.0, 45.0, -5.0);
+	PxTransform* tr2 = new PxTransform(PxVec3(pos2.getX(), pos2.getY(), pos2.getZ()));
+	Vector4* color2 = new Vector4{ 1.0, 0.0, 0.0, 1.0 };
+	//Renderizamos la base
+	_fireCanon = new RenderItem(boxShape, tr2, *color2);
+	//La registramos
+	RegisterRenderItem(_fireCanon);
+	_fireCanon->color = Vector4(0.5, 0.2, 0.2, 1.0);
+
+	//Fuego - Gaussiano
+	fireSystem = new ParticleSystem();
+	fireGenerator = new GaussParticleGenerator(PxVec3(60.0, 45.0, -5.0),
+		PxVec3(0.0, 3.0, 0.0), PxVec3(1.0, 1.0, 1.0), 10);
+	//fireSystem->setUseGravity(false);
+	fireGenerator->setProbability(0.8);
+	fireSystem->addGenerator(fireGenerator);
+	inverseGravity = new GravityForce(0.2, PxVec3(0, -500, 0));
+	fireSystem->addForceGenerator(inverseGravity);
+
+	// ---------- JUGADOR ----------
+	_player = new Particle(PxVec3(50.0, 44.0, -10.0), PxVec3(0.0, 0.0, 0.0), 
+		Vector4(1.0, 0.0, 0.0, 1.0),5.0);
+
+	// ---------- DISPAROS ----------
+	//Direccion de la camara
+	PxVec3 dir = PxVec3(GetCamera()->getDir());
+	//Para el vector ilimitado - inicializamos con proyectiles basicos
+	for (int i = 0; i < 20; i++)
+	{
+		proyectils.push_back(new Proyectil(
+			PxVec3(0, -500, 0),
+			PxVec3(0, 0, 0),
+			Vector4(0, 1, 0, 0),
+			PxVec3(0, -9.8f, 0)
+		));
+		proyectils.back()->setActive(false);
+	}
 
 }
 
 void Scene3::update(double t)
 {
+	//Forzamos una gravedad mal hecha //No va porque en integrate se usa Aceleracion con fuerzas
+	//_player->setA(PxVec3(0.0, -9.8, 0.0));
+
+	//Actualizamos los sistemas de particulas y las fuerzas
+	if (windActive)	airSystem->update(t);
+	if (fireActive) fireSystem->update(t);
+
+	//Lo movemos
+	_player->integrate(t, 1);
+
+	// El jugador no puede atravesar el plano (no hay colisines aun)
+	// Si baja de la altura del plano
+	if (_player->getPos().y < 44.0) {
+
+		//Forzamos que este a la altura del plano
+		_player->setPos(PxVec3(_player->getPos().x, 44.0, _player->getPos().z));
+		//Y anulamos la velocidad en vertical
+		_player->setV(PxVec3(_player->getV().x, 0.0, _player->getV().z));
+	}
+
+	//Actualizamos balas
+	for (Proyectil* p : proyectils)
+	{
+		if (p->isActive())
+		{
+			p->integrate(t, 1); // SemiEuler
+			PxVec3 pos = p->getPos();
+			PxVec3 vel = p->getV();
+
+			// Desactivamos si esta fuera del mundo
+			if (pos.x > 150.0 || pos.x < -150.0 || pos.y < -150.0 || pos.y > 150.0 || p->getDuration() <= 0)
+			{
+				p->setActive(false);
+			}
+		}
+	}
+
 }
 
 void Scene3::cleanup()
 {
+	//Borramos los sistemas
+	delete airSystem;
+	airSystem = nullptr;
+	delete fireSystem;
+	fireSystem = nullptr;
+
+	// Borrar pool de proyectiles
+	for (Proyectil* p : proyectils) {
+		{
+			if (p->getRenderItem() != nullptr)
+			{
+				DeregisterRenderItem(p->getRenderItem());
+				delete p;
+			}
+		}
+	}
+	proyectils.clear();
+}
+
+void Scene3::handleKey(unsigned char key, const PxTransform& camera)
+{
+	switch (toupper(key))
+	{
+		//Izquierda
+	case 'A':
+		_player->setPos(_player->getPos() + PxVec3(-0.1, 0.0, 0.0));
+		_player->setDirection(PxVec3(-1.0, 0.0, 0.0));
+		break;
+		//Derecha
+	case 'D':
+		_player->setPos(_player->getPos() + PxVec3(0.1, 0.0, 0.0));
+		_player->setDirection(PxVec3(1.0, 0.0, 0.0));
+		break;
+		//Salto
+	case 'W':
+		//Si esta en el suelo
+		if (_player->getPos().y >= 44 && _player->getPos().y < 45)
+		{
+			_player->setPos(_player->getPos() + PxVec3(0.0, 10.0, 0.0));
+		}
+		break;
+
+	case 'Q':
+		// disparar desde camara
+		shootFromCamera(Proyectil::ProyectilType::Bullet);
+		break;
+
+	case 'S':
+		//Disparar al frente
+		shootFromPlace(Proyectil::ProyectilType::Bullet, _player->getPos(), _player->getDirection());
+		break;
+
+	case 'E':
+		//Activar y desactivar canion de viento
+		windActive = !windActive;
+
+		if (!windActive) _windCanon->color = Vector4(0.2, 0.2, 0.5, 1.0);
+		else _windCanon->color = Vector4(0.0, 0.0, 1.0, 1.0);
+		
+		break;
+
+	case 'R':
+		//Activar y desactivar canion de fuego
+		fireActive = !fireActive;
+
+		if (!fireActive) _fireCanon->color = Vector4(0.5, 0.2, 0.2, 1.0);
+		else _fireCanon->color = Vector4(1.0, 0.0, 0.0, 1.0);
+		break;
+
+
+
+	default:
+		break;
+	}
+
+}
+
+void Scene3::shootFromCamera(Proyectil::ProyectilType type)
+{
+	for (Proyectil* p : proyectils)
+	{
+		if (!p->isActive())
+		{
+			p->shootFromCamera(type);
+			break;
+		}
+	}
+}
+
+void Scene3::shootFromPlace(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction)
+{
+	for (Proyectil* p : proyectils)
+	{
+		if (!p->isActive())
+		{
+			p->shootFromPlace(type, position, direction);
+			break;
+		}
+	}
 }
 
