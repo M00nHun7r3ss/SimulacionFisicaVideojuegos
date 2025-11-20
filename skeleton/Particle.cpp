@@ -27,7 +27,7 @@ Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color) :
 }
 
 Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, double masa) :
-	_v(vel), _color(color), _a(PxVec3(0.0, 0.0, 0.0)),
+	_v(vel), _color(color), _a(PxVec3(0.0, 0.0, 0.0)), _duration(5.0),
 	_m(masa), _dump(0.999), _size(2.0), _direction(PxVec3(1.0, 0.0, 0.0))
 {
 	//Creamos la forma con la geometria
@@ -40,7 +40,7 @@ Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, double masa) :
 }
 
 Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double masa, double dumping, double duration) :
-	_v(vel), _color(color), _a(acel),
+	_v(vel), _color(color), _a(acel), _duration(duration),
 	_m(masa), _size(2.0), _dump(dumping), _direction(PxVec3(1.0, 0.0, 0.0))
 {
 	// Creamos la forma con la geometria
@@ -64,8 +64,6 @@ Particle::Particle(PxVec3 pos, PxVec3 vel, Vector4 color, PxVec3 acel, double ma
 
 	RegisterRenderItem(_renderItem);
 }
-
-
 
 //Destructora
 Particle::~Particle()

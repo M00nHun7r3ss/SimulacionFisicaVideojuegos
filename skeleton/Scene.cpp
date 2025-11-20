@@ -1,6 +1,8 @@
 #include "Scene.h"
 #include <iostream>
 
+#include "HierarchyParticleGenerator.h"
+
 void Scene::enterScene()
 {
 	init();
@@ -176,17 +178,53 @@ void Scene1::cleanup()
 
 	// Borrar pool de proyectiles
 	for (Proyectil* p : proyectils) {
+		
+		if (p->getRenderItem() != nullptr)
 		{
-			if (p->getRenderItem() != nullptr)
-			{
-				DeregisterRenderItem(p->getRenderItem());
-				delete p;
-			}
+			//DeregisterRenderItem(p->getRenderItem());
+			delete p;
 		}
+		
 	}
 	proyectils.clear();
 
 #pragma endregion
+}
+
+void Scene1::handleKey(unsigned char key, const PxTransform& camera)
+{
+	switch (toupper(key))
+	{
+	case 'Q':
+		// disparar desde camara
+		shootFromCamera(Proyectil::ProyectilType::Bullet);
+		break;
+
+	case 'W':
+		//Disparar al frente
+		shootFromCamera(Proyectil::ProyectilType::Bubble);
+		break;
+
+	//case 'E':
+	//	//Disparar al frente
+	//	shootFromCamera(Proyectil::ProyectilType::CanonBall);
+	//	break;
+
+	default:
+		break;
+	}
+}
+
+void Scene1::shootFromCamera(Proyectil::ProyectilType type)
+{
+	for (Proyectil* p : proyectils)
+	{
+		if (!p->isActive())
+		{
+			p->shootFromCamera(type);
+			break;
+		}
+	}
 }
 
 // ---- SCENE 2 ----
@@ -384,7 +422,11 @@ void Scene3::init()
 	//La registramos
 	RegisterRenderItem(_bulletCanon);
 
+	fireworksSystem = new ParticleSystem();
+	fireworksGenerator = new HierarchyParticleGenerator(PxVec3(50, 40, 0));
+	fireworksSystem->addGenerator(fireworksGenerator);
 
+	//explosionSystem = new ParticleSystem();
 }
 
 void Scene3::update(double t)
@@ -471,6 +513,7 @@ void Scene3::update(double t)
 
 	shoot = false;
 
+	fireworksSystem->update(t);
 
 }
 

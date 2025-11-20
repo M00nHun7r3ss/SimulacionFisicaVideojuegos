@@ -66,6 +66,10 @@ public:
 	void update(double t) override;
 	void cleanup() override;
 
+	void handleKey(unsigned char key, const PxTransform& camera) override;
+
+	void shootFromCamera(Proyectil::ProyectilType type) override;
+
 private:
 	//Practica 1.1
 	Particle* particleSimple = NULL;
@@ -99,11 +103,17 @@ private:
 	ParticleSystem* fogSystem = NULL;
 	//Fuego
 	ParticleSystem* fireSystem = NULL;
+	//Fuegos artificiales
+	ParticleSystem* fireworksSystem = NULL;
+	//Explosion
+	ParticleSystem* explosionSystem = NULL;
 
 	// Generadores
 	ParticleGenerator* hoseGenerator = NULL;
 	ParticleGenerator* fogGenerator = NULL;
 	ParticleGenerator* fireGenerator = NULL;
+	ParticleGenerator* fireworksGenerator = NULL;
+	ParticleGenerator* explosionGenerator = NULL;
 
 	//Practica 3
 	GravityForce* inverseGravity = NULL;
@@ -170,5 +180,14 @@ private:
 	RenderItem* _bulletCanon = NULL;
 	std::vector<Proyectil*> _canonProyectils;
 	int _shootingDuration;
+
+
+	//Fuegos artificiales
+	ParticleSystem* fireworksSystem = NULL;
+	//Explosion
+	ParticleSystem* explosionSystem = NULL;
+
+	ParticleGenerator* fireworksGenerator = NULL;
+	ParticleGenerator* explosionGenerator = NULL;
 };
 

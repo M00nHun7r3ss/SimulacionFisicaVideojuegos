@@ -51,6 +51,7 @@
     <ClCompile Include="ExplosionForce.cpp">
       <Filter>Forces</Filter>
     </ClCompile>
+    <ClCompile Include="HierarchyParticleGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="ExplosionForce.h">
       <Filter>Forces</Filter>
     </ClInclude>
+    <ClInclude Include="HierarchyParticleGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
