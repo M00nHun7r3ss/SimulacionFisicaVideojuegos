@@ -422,11 +422,23 @@ void Scene3::init()
 	//La registramos
 	RegisterRenderItem(_bulletCanon);
 
+	//Fuegos artificiales
 	fireworksSystem = new ParticleSystem();
 	fireworksGenerator = new HierarchyParticleGenerator(PxVec3(50, 40, 0));
 	fireworksSystem->addGenerator(fireworksGenerator);
 
-	//explosionSystem = new ParticleSystem();
+	//Explosion
+	explosionSystem = new ParticleSystem();
+	explosionGenerator = new UniformParticleGenerator(PxVec3(5.0, 5.0, 5.0), 10,
+		PxVec3(-5.0, -5.0, -5.0), PxVec3(15.0, 15.0, 15.0),
+		PxVec3(-2, -2, -2), PxVec3(2,2,2));
+	explosionSystem->setUseGravity(false);
+	explosionGenerator->setDuration(1.0);
+	explosionGenerator->setProbability(0.9);
+	explosionSystem->addGenerator(explosionGenerator);
+	//Viento avanzado
+	_explosion = new ExplosionForce(PxVec3(5.0, 5.0, 5.0), 50, 10, 5);
+	explosionSystem->addForceGenerator(_explosion);
 }
 
 void Scene3::update(double t)
@@ -514,6 +526,7 @@ void Scene3::update(double t)
 	shoot = false;
 
 	fireworksSystem->update(t);
+	explosionSystem->update(t);
 
 }
 

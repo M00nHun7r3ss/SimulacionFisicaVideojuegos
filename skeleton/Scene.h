@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ExplosionForce.h"
 #include "Particle.h"  //Practica 1.1
 #include "Proyectil.h" //Practica 1.2
 #include "ParticleGenerator.h" //Practica 2
@@ -120,6 +121,7 @@ private:
 	WindForce* basicWind = NULL;
 	WindForce* advancedWind = NULL;
 	WhirlwindForce* whirlwind = NULL;
+	ExplosionForce* explosion = NULL;
 
 };
 
@@ -171,6 +173,7 @@ private:
 	//Fuerzas
 	GravityForce* _inverseGravity = NULL;
 	WindForce* _advancedWind = NULL;
+	ExplosionForce* _explosion = NULL;
 
 	//Activar y desactivar
 	bool _windActive = false;
