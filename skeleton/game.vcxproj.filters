@@ -51,7 +51,15 @@
     <ClCompile Include="ExplosionForce.cpp">
       <Filter>Forces</Filter>
     </ClCompile>
-    <ClCompile Include="HierarchyParticleGenerator.cpp" />
+    <ClCompile Include="HierarchyParticleGenerator.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="SpringForceGenerator.cpp">
+      <Filter>Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="FixedSpringForceGenerator.cpp">
+      <Filter>Forces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -108,7 +116,15 @@
     <ClInclude Include="ExplosionForce.h">
       <Filter>Forces</Filter>
     </ClInclude>
-    <ClInclude Include="HierarchyParticleGenerator.h" />
+    <ClInclude Include="HierarchyParticleGenerator.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="SpringForceGenerator.h">
+      <Filter>Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedSpringForceGenerator.h">
+      <Filter>Forces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
