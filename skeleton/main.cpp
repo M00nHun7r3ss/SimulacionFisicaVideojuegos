@@ -80,10 +80,7 @@ void initPhysics(bool interactive)
 	gSceneManager = new SceneManager();
 
 	//Las aniadimos en el manager
-	//gSceneManager->addScene(new Scene0(gMaterial));
-	//gSceneManager->addScene(new Scene1());
-	//gSceneManager->addScene(new Scene2());
-	gSceneManager->addScene(new Scene3(gMaterial));
+	gSceneManager->addScene(new Scene0(gMaterial));
 
     // Activar la primera escena
     gSceneManager->setActive(0);
@@ -144,16 +141,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 		//Las escenas llevan numeros
 	case '0':
-		gSceneManager->setActive(0); // Practica 0
-		break;
-	case '1':
-		gSceneManager->setActive(1); // Practica 1
-		break;
-	case '2':
-		gSceneManager->setActive(2); // Practica 2 y 3
-		break;
-	case '3':
-		gSceneManager->setActive(3); // Proyecto Intemedio
+		gSceneManager->setActive(0); // Practica 4
 		break;
 
 	default:

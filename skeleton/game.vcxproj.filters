@@ -60,6 +60,9 @@
     <ClCompile Include="FixedSpringForceGenerator.cpp">
       <Filter>Forces</Filter>
     </ClCompile>
+    <ClCompile Include="SolidsGenerator.cpp">
+      <Filter>SolidsRigid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -125,6 +128,9 @@
     <ClInclude Include="FixedSpringForceGenerator.h">
       <Filter>Forces</Filter>
     </ClInclude>
+    <ClInclude Include="SolidsGenerator.h">
+      <Filter>SolidsRigid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
@@ -138,6 +144,9 @@
     </Filter>
     <Filter Include="Scenes">
       <UniqueIdentifier>{2d6d44db-8f76-4364-88a7-0b6c51c2ac18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SolidsRigid">
+      <UniqueIdentifier>{ac7ea985-c8c4-4e4a-bc72-960b92421e8f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

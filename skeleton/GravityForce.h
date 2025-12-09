@@ -5,7 +5,7 @@ class GravityForce : public ForceGenerator
 {
 public:
 	//Constructora
-	GravityForce(double mass2, PxVec3& pos2);
+	GravityForce(const PxVec3& gravedad);
 
 	//Destructora
 	~GravityForce() {}
@@ -15,9 +15,12 @@ public:
 
 private:
 
-	const double G = 6.67384e-11;; //m^3 / kg * s^2
-	double _mass2;
-	PxVec3 _pos2;
+	//Ley de Gravedad Universal
+	//const double G = 6.67384e-11;; //m^3 / kg * s^2
+	//double _mass2;
+	//PxVec3 _pos2;
+
+	PxVec3 _g;
 };
 
 

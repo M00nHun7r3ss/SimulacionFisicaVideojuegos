@@ -10,6 +10,9 @@
 #include "GravityForce.h"//Practica 3
 #include "WindForce.h" //Practica 3
 #include "WhirlwindForce.h" //Practica 3
+#include "FixedSpringForceGenerator.h" //Practica 4
+#include "SpringForceGenerator.h" //Practica 4
+
 
 class Scene
 {
@@ -35,9 +38,11 @@ public:
 };
 
 // --- ESCENAS HIJAS ---
+// Para ver las anteriores practicas basta con volver a los commits concretos.
+//	Voy a dejar aqui solo las escenas en las que estoy trabajando
 // Scene0, Scene1, Scene2 ...
 
-//Practica 0
+//Practica 4
 class Scene0 : public Scene
 {
 public:
@@ -47,150 +52,28 @@ public:
 	void update(double t) override;
 	void cleanup() override;
 
-private:
-	// PRACTICA 0
-	RenderItem* sp1 = NULL;
-	RenderItem* spX = NULL;
-	RenderItem* spY = NULL;
-	RenderItem* spZ = NULL;
-
-	PxMaterial* gMaterial = NULL;
-};
-
-//Practica 1
-class Scene1 : public Scene
-{
-public:
-	Scene1() = default;
-	~Scene1() {}
-	void init() override;
-	void update(double t) override;
-	void cleanup() override;
-
 	void handleKey(unsigned char key, const PxTransform& camera) override;
 
-	void shootFromCamera(Proyectil::ProyectilType type) override;
-
 private:
-	//Practica 1.1
-	Particle* particleSimple = NULL;
-	Particle* particleColor = NULL;
-	Particle* particleFull = NULL;
-
-	//Practica 1.2
-	Proyectil* bullet = NULL;
-	Proyectil* cannonBall = NULL;
-	Proyectil* bubble = NULL;
-
-	std::vector<Proyectil*> proyectils;
-};
-
-//Practica 2 y 3
-class Scene2 : public Scene
-{
-public:
-	Scene2() = default;
-	~Scene2() {}
-	void init() override;
-	void update(double t) override;
-	void cleanup() override;
-
-private:
-	//Practica 2
-	// Sistemas de partículas
-	//Manguera
-	ParticleSystem* hoseSystem = NULL;
-	//Niebla
-	ParticleSystem* fogSystem = NULL;
-	//Fuego
-	ParticleSystem* fireSystem = NULL;
-	//Fuegos artificiales
-	ParticleSystem* fireworksSystem = NULL;
-	//Explosion
-	ParticleSystem* explosionSystem = NULL;
-
-	// Generadores
-	ParticleGenerator* hoseGenerator = NULL;
-	ParticleGenerator* fogGenerator = NULL;
-	ParticleGenerator* fireGenerator = NULL;
-	ParticleGenerator* fireworksGenerator = NULL;
-	ParticleGenerator* explosionGenerator = NULL;
-
-	//Practica 3
-	GravityForce* inverseGravity = NULL;
-	WindForce* basicWind = NULL;
-	WindForce* advancedWind = NULL;
-	WhirlwindForce* whirlwind = NULL;
-	ExplosionForce* explosion = NULL;
-
-};
-
-//Practica Intermedia
-class Scene3 : public Scene
-{
-public:
-	Scene3(PxMaterial* material);
-	~Scene3() {}
-	void init() override;
-	void update(double t) override;
-	void cleanup() override;
-
-	void handleKey(unsigned char key, const PxTransform& camera) override;
-
-	void shootFromCamera(Proyectil::ProyectilType type) override;
-	void shootFromPlace(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction) override;
-	void shootEnemyCanon(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction);
-
-
-private:
+	//Practica 4
 	PxMaterial* gMaterial = NULL;
-
-	//Plano de la base
-	RenderItem* _base1 = NULL;
-
-	//Player
-	Particle* _player = NULL;
-	//ParticleSystem* _playerSystem = NULL;
-	//UniformParticleGenerator* _playerGenerator = NULL;
-	//GravityForce* gravity = NULL;
-
-	//Disparos
-	std::vector<Proyectil*> proyectils;
-
-	//Caniones de fuerzas
-	RenderItem* _windCanon = NULL;
-	RenderItem* _fireCanon = NULL;
-	// Sistemas de partículas
-	//Aire
-	ParticleSystem* _airSystem = NULL;
-	//Fuego
-	ParticleSystem* _fireSystem = NULL;
-
-	//Generadores
-	ParticleGenerator* _airGenerator = NULL;
-	ParticleGenerator* _fireGenerator = NULL;
 
 	//Fuerzas
-	GravityForce* _inverseGravity = NULL;
-	WindForce* _advancedWind = NULL;
-	ExplosionForce* _explosion = NULL;
+	FixedSpringForceGenerator* _FixedSpringForce = NULL;
+	SpringForceGenerator* _SpringForce = NULL;
+	GravityForce* _gravityForce = NULL;
 
-	//Activar y desactivar
-	bool _windActive = false;
-	bool _fireActive = false;
+	//FIXED - PARTICLE
+	PxVec3 _fixedPos;
+	float _kFixed;
+	float _restLengthFixed;
+	RenderItem* _fixedObject = NULL;
+	Particle* a = NULL;
 
-	//Canion enemigo
-	RenderItem* _bulletCanon = NULL;
-	std::vector<Proyectil*> _canonProyectils;
-	int _shootingDuration;
+	//PARTICLE - PARTICLE
+	float _k;
+	float _restLength;
+	Particle* b = NULL;
+	ParticleSystem* _particleSystem;
 
-
-	//Fuegos artificiales
-	ParticleSystem* fireworksSystem = NULL;
-	//Explosion
-	ParticleSystem* explosionSystem = NULL;
-
-	ParticleGenerator* fireworksGenerator = NULL;
-	ParticleGenerator* explosionGenerator = NULL;
 };
-

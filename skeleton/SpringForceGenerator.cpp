@@ -31,6 +31,8 @@ void SpringForceGenerator::updateForce(Particle* p, double dt)
     dir.normalize();  
 
     float delta = dist - _restLength;
+    //No habra estiramiento si esta comprimida
+    if (delta <= 0) return;
 
     // F = k * delta * dir
     PxVec3 force = dir * (delta * _k);
