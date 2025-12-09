@@ -75,5 +75,7 @@ private:
 	float _restLength;
 	Particle* b = NULL;
 	ParticleSystem* _particleSystem;
+	UniformParticleGenerator* _aGenerator;
+	UniformParticleGenerator* _bGenerator;
 
 };

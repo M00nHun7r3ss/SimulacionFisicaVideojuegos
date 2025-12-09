@@ -51,6 +51,18 @@ void Scene0::init()
 	_particleSystem->addParticle(b);
 	_particleSystem->setPaused(false);
 
+	_aGenerator = new UniformParticleGenerator(PxVec3(0, 40, 0), 1,
+		PxVec3(0, 40, 0), PxVec3(0, 40, 0),
+	PxVec3(0.0, -10.0, 0.0), PxVec3(0.0, 10.0, 0.0));
+	_aGenerator->setProbability(1);
+	_particleSystem->addGenerator(_aGenerator);
+
+	_bGenerator = new UniformParticleGenerator(PxVec3(10, 40, 0), 1,
+		PxVec3(10, 40, 0), PxVec3(10, 40, 0),
+		PxVec3(0.0, -10.0, 0.0), PxVec3(0.0, 10.0, 0.0));
+	_bGenerator->setProbability(1);
+	_particleSystem->addGenerator(_bGenerator);
+
 	// ---------- MUELLE FIJO - PARTICULA ----------
 	_FixedSpringForce = new FixedSpringForceGenerator(_fixedPos, _kFixed, _restLengthFixed);
 	_particleSystem->addForceGenerator(_FixedSpringForce);
