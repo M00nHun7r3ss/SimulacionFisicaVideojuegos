@@ -117,6 +117,15 @@ void ParticleSystem::addForceGenerator(ForceGenerator* fGen)
 	}
 }
 
+void ParticleSystem::removeForceGenerator(ForceGenerator* fGen)
+{
+	//Aniadimos el generador de fuerzas a cada particula del sistema
+	for (Particle* p : _particles)
+	{
+		_forceRegister.remove(p, fGen);
+	}
+}
+
 void ParticleSystem::clearForces()
 {
 	//Vaciamos las fuerzas del sistema

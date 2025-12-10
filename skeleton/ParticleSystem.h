@@ -28,6 +28,7 @@ public:
 
 	// Gestionar fuerzas
 	void addForceGenerator(ForceGenerator* fGen);
+	void removeForceGenerator(ForceGenerator* fGen);
 	void clearForces();
 
 	// Getters
