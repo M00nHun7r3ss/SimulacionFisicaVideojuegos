@@ -5,7 +5,7 @@ class FixedSpringForceGenerator : public ForceGenerator
 {
 
 public:
-    FixedSpringForceGenerator(PxVec3 fixed, float k, float restLength);
+    FixedSpringForceGenerator(PxVec3 fixed, Particle* p, float k, float restLength);
 
     virtual void updateForce(Particle* p, double dt) override;
 
@@ -17,6 +17,7 @@ public:
 
 private:
     PxVec3 _fixed;
+    Particle* _p;
     float _k;
     float _restLength;
 };

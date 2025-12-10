@@ -41,86 +41,88 @@ void Scene0::init()
 	RegisterRenderItem(_fixedObject);
 	_fixedObject->color = Vector4(0.2, 0.2, 0.5, 1.0);
 
-	// ---------- PARTICULAS ----------
-	a = new Particle(PxVec3(0, 40, 0), PxVec3(0, 0, 0), PxVec4(1, 0, 0, 1), PxVec3(0, 0, 0), 10, 0.1, 100, 1);
-	b = new Particle(PxVec3(10, 40, 0), PxVec3(0, 0, 0), PxVec4(0, 1, 0, 1), PxVec3(0, 0, 0), 1, 0.1, 100, 1);
-	a->setActive(true);
-	b->setActive(true);
-	//Para que funcione con sistemas de particulas
-	_particleSystem = new ParticleSystem();
-	_particleSystem->addParticle(a);
-	_particleSystem->addParticle(b);
-	_particleSystem->setPaused(false);
+	//// ---------- PARTICULAS ----------
+	//a = new Particle(PxVec3(0, 40, 0), PxVec3(0, 0, 0), PxVec4(1, 0, 0, 1), PxVec3(0, 0, 0), 10, 0.1, 100, 1);
+	//b = new Particle(PxVec3(10, 40, 0), PxVec3(0, 0, 0), PxVec4(0, 1, 0, 1), PxVec3(0, 0, 0), 1, 0.1, 100, 1);
+	//a->setActive(true);
+	//b->setActive(true);
+	////Para que funcione con sistemas de particulas
+	//_particleSystem = new ParticleSystem();
+	//_particleSystem->addParticle(a);
+	//_particleSystem->addParticle(b);
+	//_particleSystem->setPaused(false);
 
-	_aGenerator = new UniformParticleGenerator(PxVec3(0, 40, 0), 1,
-	PxVec3(0, 40, 0), PxVec3(0, 40, 0),
-	PxVec3(0.0, -10.0, 0.0), PxVec3(0.0, 10.0, 0.0));
-	_aGenerator->setProbability(1);
-	_particleSystem->addGenerator(_aGenerator);
+	//_aGenerator = new UniformParticleGenerator(PxVec3(0, 40, 0), 1,
+	//PxVec3(0, 40, 0), PxVec3(0, 40, 0),
+	//PxVec3(0.0, -10.0, 0.0), PxVec3(0.0, 10.0, 0.0));
+	//_aGenerator->setProbability(1);
+	//_particleSystem->addGenerator(_aGenerator);
 
-	_bGenerator = new UniformParticleGenerator(PxVec3(10, 40, 0), 1,
-		PxVec3(10, 40, 0), PxVec3(10, 40, 0),
-		PxVec3(0.0, -10.0, 0.0), PxVec3(0.0, 10.0, 0.0));
-	_bGenerator->setProbability(1);
-	_particleSystem->addGenerator(_bGenerator);
+	//_bGenerator = new UniformParticleGenerator(PxVec3(10, 40, 0), 1,
+	//	PxVec3(10, 40, 0), PxVec3(10, 40, 0),
+	//	PxVec3(0.0, -10.0, 0.0), PxVec3(0.0, 10.0, 0.0));
+	//_bGenerator->setProbability(1);
+	//_particleSystem->addGenerator(_bGenerator);
 
-	// ---------- MUELLE FIJO - PARTICULA ----------
-	_FixedSpringForce = new FixedSpringForceGenerator(_fixedPos, _kFixed, _restLengthFixed);
-	_particleSystem->addForceGenerator(_FixedSpringForce);
+	//// ---------- MUELLE FIJO - PARTICULA ----------
+	//_FixedSpringForce = new FixedSpringForceGenerator(_fixedPos, a, _kFixed, _restLengthFixed);
+	//_particleSystem->addForceGenerator(_FixedSpringForce);
 
-	// ---------- MUELLE PARTICULA - PARTICULA ----------
-	_SpringForce = new SpringForceGenerator(a, b, _k, 5);
-	_particleSystem->addForceGenerator(_SpringForce);
+	//// ---------- MUELLE PARTICULA - PARTICULA ----------
+	//_SpringForce = new SpringForceGenerator(a, b, _k, 5);
+	//_particleSystem->addForceGenerator(_SpringForce);
 
-	// ---------- GRAVEDAD ----------
-	_gravityForce = new GravityForce(PxVec3(0, -9.8, 0));
-	_particleSystem->addForceGenerator(_gravityForce);
+	//// ---------- GRAVEDAD ----------
+	//_gravityForce = new GravityForce(PxVec3(0, -9.8, 0));
+	//_particleSystem->addForceGenerator(_gravityForce);
 
 	 _lateralForce = new WindForce(PxVec3(20, 0, 0), 1.2, 0.5, 1, PxVec3(-100, -100, -100), PxVec3(100, 100, 100));
 
 	// - EJERCICIO OPCIONAL SLINKY -
-	//int count = 5;
-	//float separation = 3.0f;
+	int count = 5;
+	float separation = 10.0f;
 
-	//_particleSystem = new ParticleSystem();
+	_particleSystem = new ParticleSystem();
 
-	////Creamos las particulas
-	//for (int i = 0; i < count; i++) {
-	//	Particle* p = new Particle(
-	//		PxVec3(0, 50 - i * separation, 0),  
-	//		PxVec3(0, 0, 0),                    
-	//		PxVec4(1, 1, 0, 1),                 
-	//		PxVec3(0, 0, 0),             
-	//		1.0f,                            
-	//		0.1f,                           
-	//		100.0f,                             
-	//		1.0f);
-	//	p->setActive(true);
-	//	_slinky.push_back(p);
-	//	_particleSystem->addParticle(p);
-	//}
+	//Creamos las particulas
+	for (int i = 0; i < count; i++) {
+		Particle* p = new Particle(
+			PxVec3(0, _fixedPos.y + separation * i, 0),  
+			PxVec3(0, 0, 0),                    
+			PxVec4(1, 1, 0, 1),                 
+			PxVec3(0, 0, 0),             
+			1.0f,                            
+			0.1f,                           
+			100.0f,                             
+			1.0f);
+		p->setActive(true);
+		_slinky.push_back(p);
+		_particleSystem->addParticle(p);
+	}
 
-	//_particleSystem->setPaused(false);
+	_particleSystem->setPaused(false);
 
-	////Creamos los muelles
-	//float k = 80.0f;    
-	//float restLength = separation; 
+	//Creamos los muelles
+	// ---------- MUELLE FIJO - PARTICULA ----------
+	_FixedSpringForce = new FixedSpringForceGenerator(_fixedPos, _slinky[0], _kFixed, _restLengthFixed);
+	_particleSystem->addForceGenerator(_FixedSpringForce);
 
-	//for (int i = 0; i < count - 1; i++) {
-	//	SpringForceGenerator* spring = new SpringForceGenerator(
-	//		_slinky[i],
-	//		_slinky[i + 1],
-	//		k,
-	//		restLength
-	//	);
-	//	_particleSystem->addForceGenerator(spring);
-	//}
+	// ---------- MUELLE PARTICULA - PARTICULA ----------
+	for (int i = 0; i < count - 1; i++) {
+		SpringForceGenerator* spring = new SpringForceGenerator(
+			_slinky[i],
+			_slinky[i + 1],
+			_k,
+			_restLength
+		);
+		_particleSystem->addForceGenerator(spring);
+	}
 
-	////Gravedad
-	//_gravityForce = new GravityForce(PxVec3(0, -9.8, 0));
-	//_particleSystem->addForceGenerator(_gravityForce);
+	//Gravedad
+	_gravityForce = new GravityForce(PxVec3(0, -9.8, 0));
+	_particleSystem->addForceGenerator(_gravityForce);
 
-	//// - EJERCICIO OPCIONAL SLINKY -
+	// - EJERCICIO OPCIONAL SLINKY -
 }
 
 void Scene0::update(double t)
