@@ -78,4 +78,6 @@ private:
 	UniformParticleGenerator* _aGenerator;
 	UniformParticleGenerator* _bGenerator;
 
+	// - EJERCICIO OPCIONAL SLINKY -
+	std::vector<Particle*> _slinky;
 };
