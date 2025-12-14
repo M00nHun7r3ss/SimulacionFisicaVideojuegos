@@ -1,8 +1,6 @@
 #include "Scene.h"
 #include <iostream>
 
-#include "HierarchyParticleGenerator.h"
-
 void Scene::enterScene()
 {
 	init();
@@ -147,6 +145,7 @@ void Scene0::init()
 	//Altura del cubo
 	float objectSize = 2.0f;
 	//Creamos la geometria del objeto
+
 	PxGeometry* boxGeom = new PxBoxGeometry(objectSize /2.0f, objectSize / 2.0f, objectSize / 2.0f);
 	//Creamos la forma con la geometria
 	PxShape* boxShape = CreateShape(*boxGeom, gMaterial);
@@ -162,12 +161,12 @@ void Scene0::init()
 	_particleSystem = new ParticleSystem();
 	_floatingParticle = new Particle(
 		PxVec3(0, _waterHeight, 0),
-		PxVec3(0, 0, 0),      
-		PxVec4(1, 1, 1, 1),  
-		PxVec3(0, 0, 0),     
-		_mass,               
-		0.3f,               
-		100.0f,               
+		PxVec3(0, 0, 0),
+		PxVec4(1, 1, 1, 1),
+		PxVec3(0, 0, 0),
+		_mass,
+		0.3f,
+		100.0f,
 		1.0f
 	);
 	_floatingParticle->setActive(true);
@@ -181,10 +180,10 @@ void Scene0::init()
 	_volume = objectSize * objectSize * objectSize;
 	// Flotación
 	_floatingForce = new FloatingForce(
-		_waterHeight, 
-		objectSize,    
-		_volume,     
-		1000.0f        
+		_waterHeight,
+		objectSize,
+		_volume,
+		1000.0f
 	);
 	_particleSystem->addForceGenerator(_floatingForce);
 }
@@ -208,18 +207,7 @@ void Scene0::update(double t)
 
 void Scene0::cleanup()
 {
-	//// -------------------- PARTE DE LOS MUELLES --------------------
-	//delete _FixedSpringForce;
-	//_FixedSpringForce = NULL;
-
-	//delete _SpringForce;
-	//_SpringForce = NULL;
-
-	//delete _gravityForce;
-	//_gravityForce = NULL;
-
-	//delete _lateralForce;
-	//_lateralForce = NULL;
+	// -------------------- PARTE DE LOS MUELLES --------------------
 
 	//delete _particleSystem;
 	//_particleSystem = NULL;
@@ -229,12 +217,6 @@ void Scene0::cleanup()
 
 	//delete b;
 	//b = NULL;
-
-	////delete _aGenerator;
-	////_aGenerator = NULL;
-
-	////delete _bGenerator;
-	////_bGenerator = NULL;
 
 	//DeregisterRenderItem(_fixedObject);
 	//_fixedObject = nullptr;
@@ -247,8 +229,8 @@ void Scene0::cleanup()
 	//_slinky.clear();
 
 	//// -------------------- PARTE DE LOS MUELLES --------------------
-	
-	// -------------------- PARTE DE LOS MUELLES --------------------
+
+	// -------------------- PARTE DE FLOTACION --------------------
 	DeregisterRenderItem(_waterPlane);
 	_waterPlane = nullptr;
 
@@ -260,13 +242,6 @@ void Scene0::cleanup()
 
 	delete _particleSystem;
 	_particleSystem = nullptr;
-
-	delete _gravityForce;
-	_gravityForce = NULL;
-
-	delete _floatingForce;
-	_floatingForce = NULL;
-
 
 }
 
@@ -294,7 +269,8 @@ void Scene0::handleKey(unsigned char key, const PxTransform& camera)
 	//		_windTimer = 2.0;
 	//	}
 	//	break;
-		// -------------------- PARTE DE LOS FLOTACION --------------------
+		// -------------------- PARTE DE FLOTACION --------------------
+
 		//Bajar masa
 	case 'R':
 		_mass -= 100;
