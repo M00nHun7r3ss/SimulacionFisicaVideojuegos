@@ -5,9 +5,9 @@ class WindForce : public ForceGenerator
 {
 public:
 	//Constructora basica
-	WindForce(PxVec3& sWind, double k1 = 0.1, double k2 = 0.0,
-		const PxVec3& minArea = PxVec3(-100, -100, -100),
-		const PxVec3& maxArea = PxVec3(100, 100, 100));
+	//WindForce(PxVec3& sWind, double k1 = 0.1, double k2 = 0.0,
+	//	const PxVec3& minArea = PxVec3(-100, -100, -100),
+	//	const PxVec3& maxArea = PxVec3(100, 100, 100));
 
 	//Constructora opcional
 	WindForce(PxVec3& sWind, double density = 1.2, double dragCoef = 0.5,

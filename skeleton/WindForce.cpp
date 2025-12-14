@@ -1,9 +1,9 @@
 #include "WindForce.h"
 
-WindForce::WindForce(PxVec3& sWind, double k1, double k2, const PxVec3& minArea, const PxVec3& maxArea)
-	: _windSpeed(sWind), _k1(k1), _k2(k2), _areaMin(minArea), _areaMax(maxArea)
-{
-}
+//WindForce::WindForce(PxVec3& sWind, double k1, double k2, const PxVec3& minArea, const PxVec3& maxArea)
+//	: _windSpeed(sWind), _k1(k1), _k2(k2), _areaMin(minArea), _areaMax(maxArea)
+//{
+//}
 
 WindForce::WindForce(PxVec3& sWind, double density, double dragCoef, double area, const PxVec3& minArea, const PxVec3& maxArea)
 	: _windSpeed(sWind), _airDensity(density), _dragCoef(dragCoef), _area(area), _areaMin(minArea), _areaMax(maxArea)
