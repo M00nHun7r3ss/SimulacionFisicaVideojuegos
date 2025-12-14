@@ -63,9 +63,6 @@
     <ClCompile Include="SolidsGenerator.cpp">
       <Filter>SolidsRigid</Filter>
     </ClCompile>
-    <ClCompile Include="FloatingForce.cpp">
-      <Filter>Forces</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -133,9 +130,6 @@
     </ClInclude>
     <ClInclude Include="SolidsGenerator.h">
       <Filter>SolidsRigid</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatingForce.h">
-      <Filter>Forces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

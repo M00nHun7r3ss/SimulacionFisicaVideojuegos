@@ -62,9 +62,6 @@ private:
 	FixedSpringForceGenerator* _FixedSpringForce = NULL;
 	SpringForceGenerator* _SpringForce = NULL;
 	GravityForce* _gravityForce = NULL;
-	WindForce* _lateralForce = NULL;
-	bool _windActive;
-	double _windTimer;
 
 	//FIXED - PARTICLE
 	PxVec3 _fixedPos;

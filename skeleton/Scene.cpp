@@ -19,7 +19,6 @@ void Scene::exitScene()
 // Scene0, Scene1, Scene2 ... 
 
 // ---- SCENE 0 ----
-Scene0::Scene0(PxMaterial* material) : gMaterial(material), _fixedPos(PxVec3(0, 50, 0)), _kFixed(10), _restLengthFixed(5), _k(10), _restLength(5)
 {
 }
 

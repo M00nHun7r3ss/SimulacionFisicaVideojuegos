@@ -258,7 +258,6 @@
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="ExplosionForce.cpp" />
     <ClCompile Include="FixedSpringForceGenerator.cpp" />
-    <ClCompile Include="FloatingForce.cpp" />
     <ClCompile Include="GaussParticleGenerator.cpp" />
     <ClCompile Include="GravityForce.cpp" />
     <ClCompile Include="HierarchyParticleGenerator.cpp" />
@@ -284,7 +283,6 @@
     <ClInclude Include="core.hpp" />
     <ClInclude Include="ExplosionForce.h" />
     <ClInclude Include="FixedSpringForceGenerator.h" />
-    <ClInclude Include="FloatingForce.h" />
     <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="GaussParticleGenerator.h" />
     <ClInclude Include="GravityForce.h" />
