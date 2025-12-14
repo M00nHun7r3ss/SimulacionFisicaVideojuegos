@@ -12,6 +12,7 @@
 #include "WhirlwindForce.h" //Practica 3
 #include "FixedSpringForceGenerator.h" //Practica 4
 #include "SpringForceGenerator.h" //Practica 4
+#include "FloatingForce.h" //Practica 4
 
 
 class Scene
@@ -58,26 +59,99 @@ private:
 	//Practica 4
 	PxMaterial* gMaterial = NULL;
 
-	//Fuerzas
-	FixedSpringForceGenerator* _FixedSpringForce = NULL;
-	SpringForceGenerator* _SpringForce = NULL;
-	GravityForce* _gravityForce = NULL;
+	//// -------------------- PARTE DE LOS MUELLES --------------------
+	////Fuerzas
+	//FixedSpringForceGenerator* _FixedSpringForce = NULL;
+	//SpringForceGenerator* _SpringForce = NULL;
+	//GravityForce* _gravityForce = NULL;
+	//WindForce* _lateralForce = NULL;
+	//bool _windActive;
+	//double _windTimer;
 
-	//FIXED - PARTICLE
-	PxVec3 _fixedPos;
-	float _kFixed;
-	float _restLengthFixed;
-	RenderItem* _fixedObject = NULL;
-	Particle* a = NULL;
+	////FIXED - PARTICLE
+	//PxVec3 _fixedPos;
+	//float _kFixed;
+	//float _restLengthFixed;
+	//RenderItem* _fixedObject = NULL;
+	//Particle* a = NULL;
 
-	//PARTICLE - PARTICLE
-	float _k;
-	float _restLength;
-	Particle* b = NULL;
+	////PARTICLE - PARTICLE
+	//float _k;
+	//float _restLength;
+	//Particle* b = NULL;
+	//ParticleSystem* _particleSystem;
+
+	//// - EJERCICIO OPCIONAL SLINKY -
+	//std::vector<Particle*> _slinky;
+
+	// -------------------- PARTE DE FLOTACION --------------------
+	//Agua
+	RenderItem* _waterPlane = NULL;
+	float _waterHeight;
+	//Caja
+	RenderItem* _floatingBox = NULL;
+	Particle* _floatingParticle;
 	ParticleSystem* _particleSystem;
-	UniformParticleGenerator* _aGenerator;
-	UniformParticleGenerator* _bGenerator;
+	double _mass;
+	double _volume;
+	//Fuerzas
+	GravityForce* _gravityForce = NULL;
+	FloatingForce* _floatingForce = NULL;
+};
 
-	// - EJERCICIO OPCIONAL SLINKY -
-	std::vector<Particle*> _slinky;
+
+//ESCENA FINAL
+class Scene2 : public Scene
+{
+public:
+	Scene2(PxMaterial* material, PxPhysics* physics, PxScene* scene);
+	~Scene2() {}
+	void init() override;
+	void update(double t) override;
+	void cleanup() override;
+
+	void handleKey(unsigned char key, const PxTransform& camera) override;
+
+private:
+	//Practica 4
+	PxMaterial* gMaterial = NULL;
+
+	//// -------------------- PARTE DE LOS MUELLES --------------------
+	////Fuerzas
+	//FixedSpringForceGenerator* _FixedSpringForce = NULL;
+	//SpringForceGenerator* _SpringForce = NULL;
+	//GravityForce* _gravityForce = NULL;
+	//WindForce* _lateralForce = NULL;
+	//bool _windActive;
+	//double _windTimer;
+
+	////FIXED - PARTICLE
+	//PxVec3 _fixedPos;
+	//float _kFixed;
+	//float _restLengthFixed;
+	//RenderItem* _fixedObject = NULL;
+	//Particle* a = NULL;
+
+	////PARTICLE - PARTICLE
+	//float _k;
+	//float _restLength;
+	//Particle* b = NULL;
+	//ParticleSystem* _particleSystem;
+
+	//// - EJERCICIO OPCIONAL SLINKY -
+	//std::vector<Particle*> _slinky;
+
+	// -------------------- PARTE DE FLOTACION --------------------
+	//Agua
+	RenderItem* _waterPlane = NULL;
+	float _waterHeight;
+	//Caja
+	RenderItem* _floatingBox = NULL;
+	Particle* _floatingParticle;
+	ParticleSystem* _particleSystem;
+	double _mass;
+	double _volume;
+	//Fuerzas
+	GravityForce* _gravityForce = NULL;
+	FloatingForce* _floatingForce = NULL;
 };

@@ -22,19 +22,16 @@ void ParticleForceRegister::remove(Particle* p, ForceGenerator* fGen)
 
 	//Busca la particula
 	auto it = _forceRegister.find(p);
-	//Si no se ha acabado el registro
-	if (it != _forceRegister.end())
-	{
-		//Tomamos el segundo valor del map
-		std::vector<ForceGenerator*>& generators = it->second;
-		//Busca el concreto y lo borra
-		generators.erase(std::remove(generators.begin(), generators.end(), fGen), generators.end());
 
-		//Si dicha particula ya no tiene generadores de fuerza, quitamos la entrada relativa
-		if (generators.empty()) 
-		{
-			clearParticle(p);
-			}
+	//Si no la encuentra, sale
+	if (it == _forceRegister.end()) return;
+
+	//Tomamos el segundo valor del map
+	std::vector<ForceGenerator*>& generators = it->second;
+	//Si no se ha acabado el registro
+	std::vector<ForceGenerator*>::iterator genIt = std::find(generators.begin(), generators.end(), fGen);
+	if (genIt != generators.end()) {
+		generators.erase(genIt);
 	}
 
 }

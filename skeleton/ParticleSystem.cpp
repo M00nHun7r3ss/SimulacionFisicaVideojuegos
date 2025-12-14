@@ -24,6 +24,9 @@ ParticleSystem::ParticleSystem() : _useGravity(true), _paused(true)
 
 ParticleSystem::~ParticleSystem()
 {
+	//Vaciamos las fuerzas
+	_forceRegister.clearRegister();
+
 	//Vaciamos las particulas y las desactivamos
 	for (Particle* p : _particles)
 	{
@@ -40,8 +43,6 @@ ParticleSystem::~ParticleSystem()
 	}
 	_generators.clear();
 
-	//Vaciamos las fuerzas
-	clearForces();
 }
 
 void ParticleSystem::update(double t)
@@ -114,6 +115,19 @@ void ParticleSystem::addForceGenerator(ForceGenerator* fGen)
 	for (Particle* p : _particles)
 	{
 		_forceRegister.add(p, fGen);
+	}
+}
+
+void ParticleSystem::removeForceGenerator(ForceGenerator* fGen)
+{
+	if (!fGen) return;
+
+	//Eliminamos el generador de fuerzas a cada particula del sistema
+	for (Particle* p : _particles)
+	{
+		if (p) {
+			_forceRegister.remove(p, fGen);
+		}
 	}
 }
 
