@@ -11,6 +11,7 @@ using namespace physx;
 struct SolidData
 {
     PxRigidDynamic* solid;
+    RenderItem* render;
     double duration;
 };
 
@@ -30,7 +31,7 @@ public:
     void update(double t);
 
     // Aniadir elementos
-    void addSolid(PxRigidDynamic* solid, double duration);
+    void addSolid(PxRigidDynamic* solid, RenderItem* render, double duration);
     void addGenerator(SolidGenerator* g);
 
     // Gestionar fuerzas
@@ -54,8 +55,8 @@ public:
     void applyGravityState();
 
     //Para el render
-    void registerRenderItem(PxRigidDynamic* solid, RenderItem* item);
-    void deregisterRenderItem(PxRigidDynamic* solid);
+    //void registerRenderItem(PxRigidDynamic* solid, RenderItem* item);
+    //void deregisterRenderItem(PxRigidDynamic* solid);
 
 protected:
 

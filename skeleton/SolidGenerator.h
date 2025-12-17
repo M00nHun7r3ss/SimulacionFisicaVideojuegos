@@ -53,6 +53,7 @@ private:
     PxPhysics* gPhysics;
     SolidShape _shape; //Se usara para PxGeometry
     SolidMaterialType _materialType; //Se usara para PxMaterial
+    RenderItem* _render;
 
     PxVec3 _pos;
     double _duration;

@@ -342,7 +342,7 @@ void Scene1::init()
 	boxGen->setShape(SolidShape::BOX);
 	boxGen->setMaterial(SolidMaterialType::WOOD);
 	boxGen->setSpawnTime(1.0f);
-	boxGen->setDuration(20.0f);
+	boxGen->setDuration(2.0f);
 
 	_solidSystem->addGenerator(boxGen);
 

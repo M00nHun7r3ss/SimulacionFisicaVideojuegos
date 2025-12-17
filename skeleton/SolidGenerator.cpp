@@ -25,7 +25,7 @@ void SolidGenerator::generate(SolidSystem& system, double t)
         //Crea el solido
         PxRigidDynamic* solid = createSolid(system);
         //Lo aniade al sistema
-        system.addSolid(solid, _duration);
+        system.addSolid(solid, _render, _duration);
     }
 }
 
@@ -83,12 +83,8 @@ PxRigidDynamic* SolidGenerator::createSolid(SolidSystem& system)
     body->setLinearDamping(0.1f);
     body->setAngularDamping(0.05f);
 
-
     // RenderItem
-    RenderItem* item = new RenderItem(shape, body, color);
-    system.registerRenderItem(body, item);
-
-    shape->release();
+    _render = new RenderItem(shape, body, color);
 
     return body;
 }

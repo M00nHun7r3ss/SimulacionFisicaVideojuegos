@@ -16,10 +16,15 @@ SolidSystem::~SolidSystem()
     //Liberamos los solidos
     for (SolidData& s : _solids)
     {
+        if (s.render)
+        {
+            s.render->release();
+            s.render = nullptr;
+        }
+
         if (s.solid)
         {
-            deregisterRenderItem(s.solid);
-
+            //gScene->removeActor(*s.solid);
             s.solid->release();
             s.solid = nullptr;
         }
@@ -55,14 +60,19 @@ void SolidSystem::update(double t)
     }
 }
 
-void SolidSystem::addSolid(PxRigidDynamic* solid, double duration)
+void SolidSystem::addSolid(PxRigidDynamic* solid, RenderItem* render, double duration)
 {
     //Si no hay solido, no podemos hacer nada
     if (!solid) return;
 
+    SolidData s;
+    s.solid = solid;
+    s.render = render;
+    s.duration = duration;
+
 	//Pero si lo hay, aniadimos el solido al sistema
     gScene->addActor(*solid);
-    _solids.push_back({ solid, duration });
+    _solids.push_back(s);
 }
 
 void SolidSystem::addGenerator(SolidGenerator* g)
@@ -79,6 +89,13 @@ void SolidSystem::deleteDeadSolids(double t)
     //Recorre los solidos
     for (int i = 0; i < _solids.size(); )
     {
+        //Si ya no existe el actor en escena
+        if (!_solids[i].solid)
+        {
+            _solids.erase(_solids.begin() + i);
+            continue;
+        }
+
         //Reduce vida
         _solids[i].duration -= t;
 
@@ -91,9 +108,16 @@ void SolidSystem::deleteDeadSolids(double t)
             pos.x < -200.0f || pos.x > 200.0f)
         {
             //Los libera
-            deregisterRenderItem(_solids[i].solid);
+            if (_solids[i].render)
+            {
+                _solids[i].render->release();  
+                _solids[i].render = nullptr;
+            }
+
             gScene->removeActor(*_solids[i].solid);
             _solids[i].solid->release();
+            _solids[i].solid = nullptr;
+
             _solids.erase(_solids.begin() + i);
         }
         else
@@ -133,17 +157,17 @@ void SolidSystem::clearForces()
     _forceRegister.clearRegister();
 }
 
-void SolidSystem::registerRenderItem(PxRigidDynamic* solid, RenderItem* item) {
-    _renderMap[solid] = item;
-    RegisterRenderItem(item); 
-}
-
-void SolidSystem::deregisterRenderItem(PxRigidDynamic* solid) {
-    auto it = _renderMap.find(solid);
-    if (it != _renderMap.end())
-    {
-        DeregisterRenderItem(it->second);
-        delete it->second;
-        _renderMap.erase(it);
-    }
-}
+//void SolidSystem::registerRenderItem(PxRigidDynamic* solid, RenderItem* item) {
+//    _renderMap[solid] = item;
+//    RegisterRenderItem(item); 
+//}
+//
+//void SolidSystem::deregisterRenderItem(PxRigidDynamic* solid) {
+//    auto it = _renderMap.find(solid);
+//    if (it != _renderMap.end())
+//    {
+//        //DeregisterRenderItem(it->second);
+//        it->second->release();
+//        _renderMap.erase(it);
+//    }
+//}
