@@ -13,6 +13,10 @@
 #include "FixedSpringForceGenerator.h" //Practica 4
 #include "SpringForceGenerator.h" //Practica 4
 #include "FloatingForce.h" //Practica 4
+#include "SolidSystem.h" //Practica 5
+#include "SolidGenerator.h" //Practica 5
+#include "SWindForce.h" //Practica 5
+#include "TorqueForce.h" //Practica 5
 
 
 class Scene
@@ -97,9 +101,28 @@ private:
 	//Fuerzas
 	GravityForce* _gravityForce = NULL;
 	FloatingForce* _floatingForce = NULL;
-
 };
 
+class Scene1 : public Scene
+{
+public:
+	Scene1(PxMaterial* material, PxPhysics* physics, PxScene* scene);
+	~Scene1() {}
+	void init() override;
+	void update(double t) override;
+	void cleanup() override;
+
+	void handleKey(unsigned char key, const PxTransform& camera) override;
+
+private:
+	//Practica 5
+	PxMaterial* gMaterial = NULL;
+	PxPhysics* gPhysics = NULL;
+	PxScene* gScene = nullptr;
+	RenderItem* _groundSolid = NULL;
+
+	SolidSystem* _solidSystem;
+};
 
 //ESCENA FINAL
 class Scene2 : public Scene
@@ -113,47 +136,53 @@ public:
 
 	void handleKey(unsigned char key, const PxTransform& camera) override;
 
+	void shootFromCamera(Proyectil::ProyectilType type) override;
+	void shootFromPlace(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction) override;
+	//void shootEnemyCanon(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction);
+
+	void checkCollisionWithGround(Particle* p, PxVec3 floor);
+
+	inline PxVec3 getPlayerPos() const { return _playerParticle->getPos(); }
+
+
 private:
-	//Practica 4
+
+	// --- SOLIDOS RIGIDOS ---
 	PxMaterial* gMaterial = NULL;
+	PxPhysics* gPhysics = NULL;
+	PxScene* gScene = nullptr;
 
-	//// -------------------- PARTE DE LOS MUELLES --------------------
-	////Fuerzas
-	//FixedSpringForceGenerator* _FixedSpringForce = NULL;
-	//SpringForceGenerator* _SpringForce = NULL;
-	//GravityForce* _gravityForce = NULL;
-	//WindForce* _lateralForce = NULL;
-	//bool _windActive;
-	//double _windTimer;
+	// --- BASE --- // SOLIDO RIGIDO ESTATICO
+	RenderItem* _base = NULL;
+	RenderItem* _plat1 = NULL;
+	RenderItem* _plat2 = NULL;
+	RenderItem* _plat3 = NULL;
+	RenderItem* _plat4 = NULL;
 
-	////FIXED - PARTICLE
-	//PxVec3 _fixedPos;
-	//float _kFixed;
-	//float _restLengthFixed;
-	//RenderItem* _fixedObject = NULL;
-	//Particle* a = NULL;
+	// --- JUGADOR ---
+	Particle* _playerParticle;
+	ParticleSystem* _player;
+	int _points;
+	int _lives;
+	PxVec3 _playerDirection;
+	//Actuara como fuerza del movimiento del player en las distintas direcciones
+	WindForce* _movement = NULL;
+	bool _movementActive;
+	int _movementTimer;
 
-	////PARTICLE - PARTICLE
-	//float _k;
-	//float _restLength;
-	//Particle* b = NULL;
-	//ParticleSystem* _particleSystem;
+	// --- DISPAROS DEL JUGADOR ---
+	std::vector<Proyectil*> _proyectils;
 
-	//// - EJERCICIO OPCIONAL SLINKY -
-	//std::vector<Particle*> _slinky;
+	// --- FUERZAS GENERALES DE JUEGO
+	GravityForce* _gravity = NULL;
 
-	// -------------------- PARTE DE FLOTACION --------------------
-	//Agua
-	RenderItem* _waterPlane = NULL;
-	float _waterHeight;
-	//Caja
-	RenderItem* _floatingBox = NULL;
-	Particle* _floatingParticle;
-	ParticleSystem* _particleSystem;
-	double _mass;
-	double _volume;
-	//Fuerzas
-	GravityForce* _gravityForce = NULL;
-	FloatingForce* _floatingForce = NULL;
+	//// --- ENEMIGOS ---
+	//RenderItem* _windCanon = NULL;
+	//RenderItem* _fireCanon = NULL;
+	//// Sistemas de particulas
+	////Aire
+	//ParticleSystem* _airSystem = NULL;
+	////Fuego
+	//ParticleSystem* _fireSystem = NULL;
 
 };

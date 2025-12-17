@@ -200,7 +200,8 @@ void Scene0::update(double t)
 	//		_windActive = false;
 	//	}
 	//}
-	// -------------------- PARTE DE LOS MUELLES --------------------
+
+	// -------------------- PARTE DE FLOTABILIDAD --------------------
 	_particleSystem->update(t);
 	_floatingBox->transform = new PxTransform(_floatingParticle->getPos());
 }
@@ -230,7 +231,8 @@ void Scene0::cleanup()
 
 	//// -------------------- PARTE DE LOS MUELLES --------------------
 
-	// -------------------- PARTE DE FLOTACION --------------------
+	//// -------------------- PARTE DE FLOTABILIDAD --------------------
+
 	DeregisterRenderItem(_waterPlane);
 	_waterPlane = nullptr;
 
@@ -242,6 +244,7 @@ void Scene0::cleanup()
 
 	delete _particleSystem;
 	_particleSystem = nullptr;
+
 
 }
 
@@ -302,4 +305,286 @@ void Scene0::handleKey(unsigned char key, const PxTransform& camera)
 	default:
 		break;
 	}
+
 }
+
+Scene1::Scene1(PxMaterial* material, PxPhysics* physics, PxScene* scene) : gMaterial(material), gPhysics(physics), gScene(scene)
+{
+}
+
+void Scene1::init()
+{
+	// ----- SUELO -----
+	//Creamos un material
+	gMaterial = gPhysics->createMaterial(0.8f, 0.8f, 0.2f);
+	//Creamos el transform
+	PxTransform transform(PxVec3(0, -1, 0));
+	//Creamos el rigido estatico del suelo
+	PxRigidStatic* ground = gPhysics->createRigidStatic(transform);
+	//Con una forma de cubo fino
+	PxShape* shape = gPhysics->createShape(PxBoxGeometry(50, 1, 50), *gMaterial);
+	//Y se lo adjudicamos al solido rigido
+	ground->attachShape(*shape);
+	//Creamos el color
+	Vector4 color = Vector4(1.0, 0.5, 0.5, 1.0);
+	//Aniadimos el actor a la escena
+	gScene->addActor(*ground);
+	//Lo renderizamos
+	_groundSolid = new RenderItem(shape, ground, color);
+	shape->release();
+
+	// SOLIDOS DINAMICOS 
+	_solidSystem = new SolidSystem(gPhysics, gScene);
+
+	// ----- GENERADOR DE CAJAS -----
+	SolidGenerator* boxGen = new SolidGenerator(gPhysics);
+	boxGen->setPosition(PxVec3(0, 10, 0));
+	boxGen->setShape(SolidShape::BOX);
+	boxGen->setMaterial(SolidMaterialType::WOOD);
+	boxGen->setSpawnTime(1.0f);
+	boxGen->setDuration(20.0f);
+
+	_solidSystem->addGenerator(boxGen);
+
+	// ----- GENERADOR DE ESFERAS -----
+	SolidGenerator* sphereGen = new SolidGenerator(gPhysics);
+	sphereGen->setPosition(PxVec3(5, 15, 0));
+	sphereGen->setShape(SolidShape::SPHERE);
+	sphereGen->setMaterial(SolidMaterialType::RUBBER);
+	sphereGen->setSpawnTime(1.5f);
+	sphereGen->setDuration(20.0f);
+
+	_solidSystem->addGenerator(sphereGen);
+
+}
+
+void Scene1::update(double t)
+{
+	_solidSystem->update(t);
+}
+
+void Scene1::cleanup()
+{
+	delete _solidSystem;
+	_solidSystem = nullptr;
+
+	delete _groundSolid;
+	_groundSolid = nullptr;
+}
+
+void Scene1::handleKey(unsigned char key, const PxTransform& camera)
+{
+	switch (toupper(key))
+	{
+		//Quitamos y ponemos la gravedad
+	case 'G':
+		_solidSystem->setUseGravity(!_solidSystem->getUseGravity());
+		break;
+	}
+}
+
+Scene2::Scene2(PxMaterial* material, PxPhysics* physics, PxScene* scene) :
+	gMaterial(material), gPhysics(physics), gScene(scene),
+	_points(0), _lives(3),_movementActive(false)
+{
+	//Inicializamos 20 proyectiles para el player
+	for (int i = 0; i < 20; i++)
+	{
+		_proyectils.push_back(new Proyectil(
+			PxVec3(0, -500, 0),
+			PxVec3(0, 0, 0),
+			Vector4(0, 1, 0, 0),
+			PxVec3(0, -9.8f, 0)
+		));
+		_proyectils.back()->setActive(false);
+	}
+}
+
+void Scene2::init()
+{
+	// ----- SUELO -----
+	//Creamos un material
+	gMaterial = gPhysics->createMaterial(0.8f, 0.8f, 0.2f);
+	//Creamos el transform
+	PxTransform transform(PxVec3(0, -1, 0));
+	//Creamos el rigido estatico del suelo
+	PxRigidStatic* ground = gPhysics->createRigidStatic(transform);
+	//Con una forma de cubo fino
+	PxShape* shape = gPhysics->createShape(PxBoxGeometry(100, 1, 100), *gMaterial);
+	//Y se lo adjudicamos al solido rigido
+	ground->attachShape(*shape);
+	//Creamos el color
+	Vector4 color = Vector4(1.0, 0.5, 0.5, 1.0);
+	//Aniadimos el actor a la escena
+	gScene->addActor(*ground);
+	//Lo renderizamos
+	_base = new RenderItem(shape, ground, color);
+	RegisterRenderItem(_base);
+
+	// ----- JUGADOR -----
+	_playerParticle = new Particle(PxVec3(0.0, 1.0, 0.0), PxVec3(0.0, 0.0, 0.0),
+		Vector4(1.0, 0.0, 0.0, 1.0), PxVec3(0.0, 0.0, 0.0), 10.0, 0.999, 500.0, 1.0);
+	_playerParticle->setActive(true);
+	_player = new ParticleSystem();
+	_player->addParticle(_playerParticle);
+
+	// Su movimiento
+	_movement = new WindForce(_playerParticle->getDirection() * 100, 1.2, 0.5, 2, _playerParticle->getPos(), _playerParticle->getPos());
+
+	// Se ve afectado por la gravedad
+	_gravity = new GravityForce(PxVec3(0.0, -9.8, 0.0));
+	_player->addForceGenerator(_gravity);
+
+
+}
+
+void Scene2::update(double t)
+{
+	//Actualizamos al jugador
+	_player->update(t);
+
+	if (_movementActive) {
+		_movementTimer -= t;
+		if (_movementTimer <= 0) {
+			_player->removeForceGenerator(_movement);
+			_movementActive = false;
+		}
+	}
+
+	//Comprobamos las colisiones con el suelo
+	checkCollisionWithGround(_playerParticle, PxVec3(0, 0, 0));
+
+	//Actualizamos balas
+	for (Proyectil* p : _proyectils)
+	{
+		if (p->isActive())
+		{
+			p->integrate(t, 1); // SemiEuler
+			PxVec3 pos = p->getPos();
+			PxVec3 vel = p->getV();
+
+			// Desactivamos si esta fuera del mundo
+			if (pos.x > 150.0 || pos.x < -150.0 || pos.y < -150.0 || pos.y > 150.0 || p->getDuration() <= 0)
+			{
+				p->setActive(false);
+			}
+		}
+	}
+
+}
+
+void Scene2::cleanup()
+{
+	// Borrar pool de proyectiles
+	for (Proyectil* p : _proyectils) {
+		{
+			if (p->getRenderItem() != nullptr)
+			{
+				DeregisterRenderItem(p->getRenderItem());
+				delete p;
+			}
+		}
+	}
+	_proyectils.clear();
+
+	DeregisterRenderItem(_base);
+	_base = nullptr;
+}
+
+void Scene2::handleKey(unsigned char key, const PxTransform& camera)
+{
+	switch (toupper(key))
+	{
+		//Izquierda
+	case 'A':
+		_playerParticle->setPos(_playerParticle->getPos() + PxVec3(-0.1, 0.0, 0.0));
+		_playerParticle->setDirection(PxVec3(-1.0, 0.0, 0.0));
+
+	break;
+		//Derecha
+	case 'D':
+		_playerParticle->setPos(_playerParticle->getPos() + PxVec3(0.1, 0.0, 0.0));
+		_playerParticle->setDirection(PxVec3(1.0, 0.0, 0.0));
+	
+	break;
+		//Adelante
+	case 'W':
+		_playerParticle->setPos(_playerParticle->getPos() + PxVec3(0.0, 0.0, -0.1));
+		_playerParticle->setDirection(PxVec3(0.0, 0.0, -1.0));
+	break;
+
+		//Atras
+	case 'S':
+		_playerParticle->setPos(_playerParticle->getPos() + PxVec3(0.0, 0.0, 0.1));
+		_playerParticle->setDirection(PxVec3(0.0, 0.0, 1.0));
+
+	break;
+
+		//Salto
+	case 'Q':
+		_movement->setWindSpeed(PxVec3(0, 1, 0) * 150);
+	
+	break;
+
+	case 'E':
+		// disparar desde camara
+		shootFromCamera(Proyectil::ProyectilType::Bullet);
+		break;
+
+	case 'R':
+		//Disparar al frente
+		shootFromPlace(Proyectil::ProyectilType::Bullet, _playerParticle->getPos(), _playerParticle->getDirection());
+		break;
+	default:
+		break;
+	}
+
+	// Aniadimos la nueva fuerza
+	_player->addForceGenerator(_movement);
+	_movementActive = true;
+	_movementTimer = 0.2; 
+}
+
+void Scene2::shootFromCamera(Proyectil::ProyectilType type)
+{
+	for (Proyectil* p : _proyectils)
+	{
+		if (!p->isActive())
+		{
+			p->shootFromCamera(type);
+			break;
+		}
+	}
+}
+
+void Scene2::shootFromPlace(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction)
+{
+	for (Proyectil* p : _proyectils)
+	{
+		if (!p->isActive())
+		{
+			p->shootFromPlace(type, position, direction);
+			break;
+		}
+	}
+}
+
+void Scene2::checkCollisionWithGround(Particle* p, PxVec3 floor)
+{
+	//La altura del suelo
+	float groundY = floor.y;
+	float radius = p->getSize();
+
+	PxVec3 pos = p->getPos();
+	PxVec3 vel = p->getV();
+
+	// Miramos si esta dentro del suelo
+	if (pos.y - radius < groundY)
+	{
+		// La reposicionamos
+		pos.y = groundY + radius;
+		p->setPos(pos);
+
+	}
+}
+

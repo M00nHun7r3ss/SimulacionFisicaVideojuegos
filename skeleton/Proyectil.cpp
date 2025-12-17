@@ -42,8 +42,8 @@ void Proyectil::shootFromCamera(ProyectilType type)
 
 	//Desde la camara
 	setPos(GetCamera()->getTransform().p);
-	//Direccion de la camara
-	PxVec3 dir = PxVec3(GetCamera()->getDir());
+	//Direccion de la camara (Por disenio del juego, requiere que tire un poco mas arriba)
+	PxVec3 dir = PxVec3(GetCamera()->getDir() + PxVec3(0.0, .1, 0.0));
 
 	//Iniciamos la duracion
 	setDuration(5.0);

@@ -9,17 +9,14 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="callbacks.cpp" />
-    <ClCompile Include="ParticleForceRegister.cpp">
-      <Filter>Forces</Filter>
-    </ClCompile>
     <ClCompile Include="GravityForce.cpp">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClCompile>
     <ClCompile Include="WhirlwindForce.cpp">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClCompile>
     <ClCompile Include="WindForce.cpp">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClCompile>
     <ClCompile Include="GaussParticleGenerator.cpp">
       <Filter>Particles</Filter>
@@ -49,22 +46,37 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="ExplosionForce.cpp">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClCompile>
     <ClCompile Include="HierarchyParticleGenerator.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
     <ClCompile Include="SpringForceGenerator.cpp">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClCompile>
     <ClCompile Include="FixedSpringForceGenerator.cpp">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClCompile>
-    <ClCompile Include="SolidsGenerator.cpp">
+    <ClCompile Include="SolidGenerator.cpp">
       <Filter>SolidsRigid</Filter>
     </ClCompile>
     <ClCompile Include="FloatingForce.cpp">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSystem.cpp">
+      <Filter>SolidsRigid</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleForceRegister.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="SWindForce.cpp">
+      <Filter>SolidForces</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidForceRegister.cpp">
+      <Filter>SolidForces</Filter>
+    </ClCompile>
+    <ClCompile Include="TorqueForce.cpp">
+      <Filter>SolidForces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -78,19 +90,16 @@
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="ForceGenerator.h">
-      <Filter>Forces</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleForceRegister.h">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClInclude>
     <ClInclude Include="GravityForce.h">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClInclude>
     <ClInclude Include="WhirlwindForce.h">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClInclude>
     <ClInclude Include="WindForce.h">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClInclude>
     <ClInclude Include="GaussParticleGenerator.h">
       <Filter>Particles</Filter>
@@ -120,30 +129,45 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="ExplosionForce.h">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClInclude>
     <ClInclude Include="HierarchyParticleGenerator.h">
       <Filter>Particles</Filter>
     </ClInclude>
     <ClInclude Include="SpringForceGenerator.h">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClInclude>
     <ClInclude Include="FixedSpringForceGenerator.h">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
     </ClInclude>
-    <ClInclude Include="SolidsGenerator.h">
+    <ClInclude Include="SolidGenerator.h">
       <Filter>SolidsRigid</Filter>
     </ClInclude>
     <ClInclude Include="FloatingForce.h">
-      <Filter>Forces</Filter>
+      <Filter>ParticleForces</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSystem.h">
+      <Filter>SolidsRigid</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleForceRegister.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidForceRegister.h">
+      <Filter>SolidForces</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidForceGenerator.h">
+      <Filter>SolidForces</Filter>
+    </ClInclude>
+    <ClInclude Include="SWindForce.h">
+      <Filter>SolidForces</Filter>
+    </ClInclude>
+    <ClInclude Include="TorqueForce.h">
+      <Filter>SolidForces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
       <UniqueIdentifier>{d04b4f9f-5a69-465e-8070-25c6d0bcd3c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Forces">
-      <UniqueIdentifier>{c8570ab2-fee3-4aaa-919e-c59344cd540a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Particles">
       <UniqueIdentifier>{58c952d9-120d-48a5-9036-7c3a158014c2}</UniqueIdentifier>
@@ -153,6 +177,12 @@
     </Filter>
     <Filter Include="SolidsRigid">
       <UniqueIdentifier>{ac7ea985-c8c4-4e4a-bc72-960b92421e8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleForces">
+      <UniqueIdentifier>{c8570ab2-fee3-4aaa-919e-c59344cd540a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SolidForces">
+      <UniqueIdentifier>{572145b0-21cf-4f03-9e1a-86f6a51e8576}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

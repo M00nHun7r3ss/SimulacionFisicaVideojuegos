@@ -4,7 +4,7 @@
 #include <PxPhysicsAPI.h> //Para usar Vector3
 #include "Particle.h"
 #include "RenderUtils.hpp"
-#include "Vector3D.h" //TODO: cambiar luego
+
 using namespace physx;
 
 class ForceGenerator

@@ -21,7 +21,7 @@ void ParticleForceRegister::remove(Particle* p, ForceGenerator* fGen)
 	if (p == nullptr || fGen == nullptr) return;
 
 	//Busca la particula
-	auto it = _forceRegister.find(p);
+	std::map<Particle*, std::vector<ForceGenerator*>>::iterator it = _forceRegister.find(p);
 
 	//Si no la encuentra, sale
 	if (it == _forceRegister.end()) return;

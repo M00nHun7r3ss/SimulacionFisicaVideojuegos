@@ -21,6 +21,9 @@ public:
 	//Actualizacion de fuer<as
 	void updateForce(Particle* p, double t) override;
 
+	//Setters
+	inline void setWindSpeed(PxVec3 speed) { _windSpeed = speed; }
+
 protected:
 
 	PxVec3 _windSpeed; //velocidad del viento

@@ -2,7 +2,6 @@
 
 #include <PxPhysicsAPI.h> //Para usar Vector3
 #include "RenderUtils.hpp" //Para RenderItem
-#include "Vector3D.h" //TODO: cambiar luego
 #include <vector> //Para el vector de proyectiles
 #include "Particle.h" 
 

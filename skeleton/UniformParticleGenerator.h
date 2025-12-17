@@ -4,10 +4,13 @@
 class UniformParticleGenerator : public ParticleGenerator
 {
 public:
-    UniformParticleGenerator(PxVec3 pos, int nParticles, PxVec3 minPos, PxVec3 maxPos, PxVec3 minVel, PxVec3 maxVel);
+    //Constructora
+	UniformParticleGenerator(PxVec3 pos, int nParticles, PxVec3 minPos, PxVec3 maxPos, PxVec3 minVel, PxVec3 maxVel);
 
+    //Destructora
     ~UniformParticleGenerator() override;
 
+    //Genera particulas en el sistema
     void generateParticles(ParticleSystem& system, double t) override;
 
     //Getters

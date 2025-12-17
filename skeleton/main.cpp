@@ -50,6 +50,7 @@ ContactReportCallback gContactReportCallback;
 
 //GESTION DE ESCENAS
 SceneManager* gSceneManager = NULL;
+Scene2* gameScene = NULL;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -80,7 +81,10 @@ void initPhysics(bool interactive)
 	gSceneManager = new SceneManager();
 
 	//Las aniadimos en el manager
-	gSceneManager->addScene(new Scene0(gMaterial));
+	//gameScene = new Scene2(gMaterial, gPhysics, gScene);
+	//gSceneManager->addScene(gameScene);
+	//gSceneManager->addScene(new Scene0(gMaterial));
+	gSceneManager->addScene(new Scene1(gMaterial, gPhysics, gScene));
 
     // Activar la primera escena
     gSceneManager->setActive(0);
@@ -100,6 +104,18 @@ void stepPhysics(bool interactive, double t)
 
 	// Actualiza la escena activa
 	gSceneManager->update(t);
+
+	//Colocamos la camara para que siga al jugador. El jugador estará centrado en pantalla 
+	if (gSceneManager->getActiveScene() == gameScene)
+	{
+		//Camara 3era persona
+		PxVec3 offset(0, 25, 40);
+		GetCamera()->setEye(gameScene->getPlayerPos() + offset);
+
+		GetCamera()->setDir((gameScene->getPlayerPos() - GetCamera()->getEye()).getNormalized());
+
+	}
+
 
 }
 

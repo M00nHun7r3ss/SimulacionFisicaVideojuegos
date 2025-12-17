@@ -50,6 +50,8 @@ public:
 	physx::PxTransform	getTransform() const;
 
 	inline void setDir(physx::PxVec3 dir) { mDir = dir; }
+	inline void setEye(physx::PxVec3 eye) { mEye = eye; }
+
 private:
 	physx::PxVec3	mEye;
 	physx::PxVec3	mDir;
