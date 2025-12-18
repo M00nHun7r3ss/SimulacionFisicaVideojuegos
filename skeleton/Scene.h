@@ -45,91 +45,14 @@ public:
 // --- ESCENAS HIJAS ---
 // Para ver las anteriores practicas basta con volver a los commits concretos.
 //	Voy a dejar aqui solo las escenas en las que estoy trabajando
-// Scene0, Scene1, Scene2 ...
+// Scene0, Scene1, Scene0 ...
 
-//Practica 4
+//ESCENA FINAL
 class Scene0 : public Scene
 {
 public:
-	Scene0(PxMaterial* material);
+	Scene0(PxMaterial* material, PxPhysics* physics, PxScene* scene);
 	~Scene0() {}
-	void init() override;
-	void update(double t) override;
-	void cleanup() override;
-
-	void handleKey(unsigned char key, const PxTransform& camera) override;
-
-private:
-	//Practica 4
-	PxMaterial* gMaterial = NULL;
-
-	//// -------------------- PARTE DE LOS MUELLES --------------------
-	////Fuerzas
-	//FixedSpringForceGenerator* _FixedSpringForce = NULL;
-	//SpringForceGenerator* _SpringForce = NULL;
-	//GravityForce* _gravityForce = NULL;
-	//WindForce* _lateralForce = NULL;
-	//bool _windActive;
-	//double _windTimer;
-
-	////FIXED - PARTICLE
-	//PxVec3 _fixedPos;
-	//float _kFixed;
-	//float _restLengthFixed;
-	//RenderItem* _fixedObject = NULL;
-	//Particle* a = NULL;
-
-	////PARTICLE - PARTICLE
-	//float _k;
-	//float _restLength;
-	//Particle* b = NULL;
-	//ParticleSystem* _particleSystem;
-
-	//// - EJERCICIO OPCIONAL SLINKY -
-	//std::vector<Particle*> _slinky;
-
-	// -------------------- PARTE DE FLOTACION --------------------
-	//Agua
-	RenderItem* _waterPlane = NULL;
-	float _waterHeight;
-	//Caja
-	RenderItem* _floatingBox = NULL;
-	Particle* _floatingParticle;
-	ParticleSystem* _particleSystem;
-	double _mass;
-	double _volume;
-	//Fuerzas
-	GravityForce* _gravityForce = NULL;
-	FloatingForce* _floatingForce = NULL;
-};
-
-class Scene1 : public Scene
-{
-public:
-	Scene1(PxMaterial* material, PxPhysics* physics, PxScene* scene);
-	~Scene1() {}
-	void init() override;
-	void update(double t) override;
-	void cleanup() override;
-
-	void handleKey(unsigned char key, const PxTransform& camera) override;
-
-private:
-	//Practica 5
-	PxMaterial* gMaterial = NULL;
-	PxPhysics* gPhysics = NULL;
-	PxScene* gScene = nullptr;
-	RenderItem* _groundSolid = NULL;
-
-	SolidSystem* _solidSystem;
-};
-
-//ESCENA FINAL
-class Scene2 : public Scene
-{
-public:
-	Scene2(PxMaterial* material, PxPhysics* physics, PxScene* scene);
-	~Scene2() {}
 	void init() override;
 	void update(double t) override;
 	void cleanup() override;
@@ -138,11 +61,27 @@ public:
 
 	void shootFromCamera(Proyectil::ProyectilType type) override;
 	void shootFromPlace(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction) override;
-	//void shootEnemyCanon(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction);
+	void shootEnemyCanon(Proyectil::ProyectilType type, PxVec3 position, PxVec3 direction);
 
+	//CONDICIONES DE MUERTE
 	void checkCollisionWithGround(Particle* p, PxVec3 floor);
+	void checkCollisionWithWater(Particle* p);
+	bool checkCollisionWithBullet(Particle* player, Proyectil* bullet);
 
+	//CONDICIONES DE VICTORIA
+	bool checkCollisionWithCollectables(Particle* p, PxRigidDynamic* collectable);
+	bool checkCollisionBulletCollectables(Proyectil* bullet, PxRigidDynamic* collectable);
+
+	void checkEndGame(double t);
+
+	//Getters
 	inline PxVec3 getPlayerPos() const { return _playerParticle->getPos(); }
+	inline PxVec3 getPlayerFront() const { return _playerParticle->getFrontOrientation(); }
+	inline int getPlayerLives() const { return _lives; }
+	inline int getPlayerPoints() const { return _points; }
+	//Setters
+	inline void setPlayerPoints(int points) { _points += points; }
+	inline void setPlayerLives() { _lives -= 1; }
 
 
 private:
@@ -154,35 +93,119 @@ private:
 
 	// --- BASE --- // SOLIDO RIGIDO ESTATICO
 	RenderItem* _base = NULL;
-	RenderItem* _plat1 = NULL;
-	RenderItem* _plat2 = NULL;
-	RenderItem* _plat3 = NULL;
-	RenderItem* _plat4 = NULL;
+
+	void createBase();
+
+	// --- LAGO --- // FLOTABILIDAD
+	RenderItem* _lake = NULL;
+	float _waterHeight;
+	//Caja
+	RenderItem* _floatingBox1 = NULL;
+	RenderItem* _floatingBox2 = NULL;
+	RenderItem* _floatingBox3 = NULL;
+	RenderItem* _floatingBox4 = NULL;
+	RenderItem* _floatingBox5 = NULL;
+	Particle* _floatingParticle1;
+	Particle* _floatingParticle2;
+	Particle* _floatingParticle3;
+	Particle* _floatingParticle4;
+	Particle* _floatingParticle5;
+	ParticleSystem* _particleSystem;
+	double _objectSize;
+	double _mass;
+	double _volume;
+
+	void createLake();
+	void createWaterCube(PxVec3 position, Particle*& particle, RenderItem*& render);
+
+	// --- FUENTES DEL LAGO ---
+	ParticleSystem* _fountain1 = nullptr;
+	ParticleSystem* _fountain2 = nullptr;
+	ParticleSystem* _fountain3 = nullptr;
+	ParticleSystem* _fountain4 = nullptr;
+	GaussParticleGenerator* _f1gen = nullptr;
+	GaussParticleGenerator* _f2gen = nullptr;
+	GaussParticleGenerator* _f3gen = nullptr;
+	GaussParticleGenerator* _f4gen = nullptr;
+
+	void createFountain(PxVec3 position, ParticleSystem*& particleSystem, GaussParticleGenerator*& generator);
 
 	// --- JUGADOR ---
 	Particle* _playerParticle;
 	ParticleSystem* _player;
 	int _points;
 	int _lives;
-	PxVec3 _playerDirection;
-	//Actuara como fuerza del movimiento del player en las distintas direcciones
-	WindForce* _movement = NULL;
-	bool _movementActive;
-	int _movementTimer;
+
+	void createPlayer();
 
 	// --- DISPAROS DEL JUGADOR ---
 	std::vector<Proyectil*> _proyectils;
 
 	// --- FUERZAS GENERALES DE JUEGO
-	GravityForce* _gravity = NULL;
+	GravityForce* _gravity = NULL; //La gravedad se aplica al jugador y a los cubos del agua
+	WindForce* _wind = NULL; //El viento se aplica a la lluvia
+	FloatingForce* _floating = NULL; //Para los cubos sobre el agua
+	//ExplosionForce* _explosion1 = NULL; //Para los fuegos artificiales de la victoria
+	//ExplosionForce* _explosion2 = NULL; //Para los fuegos artificiales de la victoria
+	//ExplosionForce* _explosion3 = NULL; //Para los fuegos artificiales de la victoria
+	//ExplosionForce* _explosion4 = NULL; //Para los fuegos artificiales de la victoria
 
 	//// --- ENEMIGOS ---
-	//RenderItem* _windCanon = NULL;
-	//RenderItem* _fireCanon = NULL;
-	//// Sistemas de particulas
-	////Aire
-	//ParticleSystem* _airSystem = NULL;
-	////Fuego
-	//ParticleSystem* _fireSystem = NULL;
+	RenderItem* _enemyCannon1 = NULL;
+	RenderItem* _enemyCannon2 = NULL;
+	RenderItem* _enemyCannon3 = NULL;
+	RenderItem* _enemyCannon4 = NULL;
+	RenderItem* _enemyCannon5 = NULL;
+	RenderItem* _enemyCannon6 = NULL;
+	RenderItem* _enemyCannon7 = NULL;
+	RenderItem* _enemyCannon8 = NULL;
+
+	void createEnemy(PxVec3 position, RenderItem*& render);
+
+	// --- DISPAROS DE ENEMIGOS ---
+	std::vector<Proyectil*> _enemyProyectils;
+	double _enemyShootTimer[8];
+	double _enemyShootCooldown[8];
+
+	void enemyShoot(int index, PxVec3 position,	PxVec3 direction, double t);
+
+	// --- RECOLECTABLES ---
+	SolidSystem* _collectable1;
+	SolidSystem* _collectable2;
+	SolidSystem* _collectable3;
+	SolidSystem* _collectable4;
+	SolidSystem* _collectable5;
+	SolidSystem* _collectable6;
+	SolidSystem* _collectable7;
+	SolidSystem* _collectable8;
+	SolidSystem* _collectable9;
+
+	void createCollectables(SolidSystem*& sSystem, PxVec3 position);
+	void checkCollectables(SolidSystem* sSystem);
+	void checkBulletCollectables(SolidSystem* sSystem);
+
+	// --- LLUVIA ---
+	ParticleSystem* _rain = nullptr;
+	UniformParticleGenerator* _rainGen = nullptr;
+	bool _isRaining;
+
+	void createRain();
+
+	//// --- FUEGOS ARTIFICIALES ---
+	//ParticleSystem* _firework1 = nullptr;
+	//ParticleSystem* _firework2 = nullptr;
+	//ParticleSystem* _firework3 = nullptr;
+	//ParticleSystem* _firework4 = nullptr;
+	//UniformParticleGenerator* _fw1gen = nullptr;
+	//UniformParticleGenerator* _fw2gen = nullptr;
+	//UniformParticleGenerator* _fw3gen = nullptr;
+	//UniformParticleGenerator* _fw4gen = nullptr;
+	bool _victory;
+
+	//void createFirework(const PxVec3& position, ParticleSystem*& particleSystem, UniformParticleGenerator*& generator, const Vector4& color, ExplosionForce*& force);
+
+	// ---- CONDICIONES DE JUEGO ----
+	int _goalPoints; //Puntos objetivo de victoria
+	int _gameState; //0 - sigue jugando, 1 - ha ganado por llegar a puntos maximos, 2 - ha perdido por perder todas las vidas
 
 };

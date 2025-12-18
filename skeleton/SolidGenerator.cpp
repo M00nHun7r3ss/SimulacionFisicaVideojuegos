@@ -51,7 +51,7 @@ PxRigidDynamic* SolidGenerator::createSolid(SolidSystem& system)
         break;
     case SolidMaterialType::RUBBER:
         material = gPhysics->createMaterial(0.9f, 0.8f, 0.9f);
-        color = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
+        color = Vector4(1.0f, 1.0f, 0.0f, 1.0f);
         break;
     }
 

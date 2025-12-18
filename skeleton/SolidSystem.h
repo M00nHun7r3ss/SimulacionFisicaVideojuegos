@@ -44,6 +44,7 @@ public:
     inline int numGenerators() const { return _generators.size(); }
     inline bool getUseGravity() const { return _useGravity; }
     inline PxPhysics* getPhysics() const { return gPhysics; }
+    inline const std::vector<SolidData>& getSolids() const { return _solids; }
 
     // Setters
     inline void setUseGravity(bool newGravity) { _useGravity = newGravity; }
@@ -54,10 +55,6 @@ public:
     //Para la gravedad
     void applyGravityState();
 
-    //Para el render
-    //void registerRenderItem(PxRigidDynamic* solid, RenderItem* item);
-    //void deregisterRenderItem(PxRigidDynamic* solid);
-
 protected:
 
     //Gravedad por defecto
@@ -67,10 +64,7 @@ protected:
     std::vector<SolidGenerator*> _generators;
 
     PxPhysics* gPhysics = NULL;
-    PxScene* gScene = NULL;
-
-    //Para los renderItem de cada solido del sistema
-    std::map<PxRigidDynamic*, RenderItem*> _renderMap;
+    PxScene* gScene = NULL;;
 
     //Para gestionar las fuerzas
     SolidForceRegister _forceRegister;

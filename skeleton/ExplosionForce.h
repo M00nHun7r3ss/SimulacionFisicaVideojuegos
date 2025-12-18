@@ -18,7 +18,8 @@ protected:
 	PxVec3 _centerPos; //Centro de explosion
 	double _k; //intensidad
 	double _radius; //radio de accion
-	double _duration; //duracion de la explosion
+	double _duration;
+	double _elapsed;
 
 };
 

@@ -14,20 +14,8 @@
 //GESTION DE ESCENAS
 #include "SceneManager.h" 
 #include "Scene.h"
-//PRACTICA 0
-#include "Vector3D.h"
 //PRACTICA 1
 #include "Particle.h" 
-//PRACTICA 2
-#include "Proyectil.h" 
-#include "ParticleGenerator.h" 
-#include "GaussParticleGenerator.h" 
-#include "UniformParticleGenerator.h" 
-#include "ParticleSystem.h" 
-//PRACTICA 3
-#include "GravityForce.h"
-#include "WindForce.h" 
-#include "WhirlwindForce.h" 
 
 std::string display_text = "";
 
@@ -50,7 +38,10 @@ ContactReportCallback gContactReportCallback;
 
 //GESTION DE ESCENAS
 SceneManager* gSceneManager = NULL;
-Scene2* gameScene = NULL;
+Scene0* gameScene = NULL;
+
+int lives = 3;
+int points = 0;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -76,19 +67,25 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-
 	//Creamos escenas
 	gSceneManager = new SceneManager();
 
 	//Las aniadimos en el manager
-	//gameScene = new Scene2(gMaterial, gPhysics, gScene);
-	//gSceneManager->addScene(gameScene);
-	//gSceneManager->addScene(new Scene0(gMaterial));
-	gSceneManager->addScene(new Scene1(gMaterial, gPhysics, gScene));
+	gameScene = new Scene0(gMaterial, gPhysics, gScene);
+	gSceneManager->addScene(gameScene);
 
     // Activar la primera escena
     gSceneManager->setActive(0);
 
+	//Escribimos las vidas y los puntos por pantalla
+	if (gSceneManager->getActiveScene() == gameScene)
+	{
+		lives = gameScene->getPlayerLives();
+		points = gameScene->getPlayerPoints();
+		//Actualiza los textos de puntos y vida
+		drawText("Lives: " + std::to_string(lives), 5, 0);
+		drawText("Points: " + std::to_string(points), 30, 0);
+	}
 }
 
 
@@ -109,11 +106,23 @@ void stepPhysics(bool interactive, double t)
 	if (gSceneManager->getActiveScene() == gameScene)
 	{
 		//Camara 3era persona
-		PxVec3 offset(0, 25, 40);
+		PxVec3 offset(0, 5, 0);
 		GetCamera()->setEye(gameScene->getPlayerPos() + offset);
 
-		GetCamera()->setDir((gameScene->getPlayerPos() - GetCamera()->getEye()).getNormalized());
+		// Direccion hacia el jugador
+		PxVec3 toPlayer = (gameScene->getPlayerPos() - GetCamera()->getEye()).getNormalized();
 
+		// Peso de influencia de direcciones
+		double frontWeight = 0.7;   
+		double playerWeight = 0.3;
+
+		GetCamera()->setDir((gameScene->getPlayerFront() * frontWeight + toPlayer * playerWeight).getNormalized());
+
+		//Actualiza los textos de puntos y vida
+		lives = gameScene->getPlayerLives();
+		points = gameScene->getPlayerPoints();
+		drawText("Lives: " + std::to_string(lives), 5, 0);
+		drawText("Points: " + std::to_string(points), 30, 0);
 	}
 
 

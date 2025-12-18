@@ -45,6 +45,7 @@ public:
 	inline double getSize() { return _size; }
 	inline bool isActive() { return _active; }
 	inline PxVec3 getDirection() { return _direction; }
+	inline PxVec3 getFrontOrientation() { return _orientation.rotate(PxVec3(0, 0,-1)); }
 
 	//Setters
 	inline void setRenderItem(RenderItem* newRenderItem) { _renderItem = newRenderItem; }
@@ -83,6 +84,9 @@ public:
 	//Para quitar fuerzas al final del frame
 	void clearForce();
 
+	//Rotaciones
+	void rotateY(double angleRadians);
+
 private:
 
 	RenderItem* _renderItem;
@@ -96,6 +100,8 @@ private:
 	double _size; //tamanio en m
 	bool _active = false; //para saber si se esta usando
 	PxVec3 _direction; //Para determinar la orientacion para el disparo
+
+	PxQuat _orientation; //Para la orientacion del giro
 
 	PxVec3 _allForces; // Sumatorio de fuerzas en N
 

@@ -7,6 +7,9 @@ public:
     //Constructora
 	UniformParticleGenerator(PxVec3 pos, int nParticles, PxVec3 minPos, PxVec3 maxPos, PxVec3 minVel, PxVec3 maxVel);
 
+    //Constructora con color
+    UniformParticleGenerator(PxVec3 pos, int nParticles, PxVec3 minPos, PxVec3 maxPos, PxVec3 minVel, PxVec3 maxVel, Vector4 color);
+
     //Destructora
     ~UniformParticleGenerator() override;
 

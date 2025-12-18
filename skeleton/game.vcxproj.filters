@@ -48,9 +48,6 @@
     <ClCompile Include="ExplosionForce.cpp">
       <Filter>ParticleForces</Filter>
     </ClCompile>
-    <ClCompile Include="HierarchyParticleGenerator.cpp">
-      <Filter>Particles</Filter>
-    </ClCompile>
     <ClCompile Include="SpringForceGenerator.cpp">
       <Filter>ParticleForces</Filter>
     </ClCompile>
@@ -130,9 +127,6 @@
     </ClInclude>
     <ClInclude Include="ExplosionForce.h">
       <Filter>ParticleForces</Filter>
-    </ClInclude>
-    <ClInclude Include="HierarchyParticleGenerator.h">
-      <Filter>Particles</Filter>
     </ClInclude>
     <ClInclude Include="SpringForceGenerator.h">
       <Filter>ParticleForces</Filter>

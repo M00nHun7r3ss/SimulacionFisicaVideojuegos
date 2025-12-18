@@ -1,30 +1,31 @@
 #include "ExplosionForce.h"
 
 ExplosionForce::ExplosionForce(PxVec3& centerPos, double k, double radius, double duration) :
-_centerPos(centerPos), _k(k), _radius(radius), _duration(duration)
+_centerPos(centerPos), _k(k), _radius(radius), _duration(duration), _elapsed(0)
 {}
 
 void ExplosionForce::updateForce(Particle * p, double t)
 {
-    //Si no hay particula o esta inactiva, no hacemos nada
-    if (p == nullptr || !p->isActive()) return;
+	//Si no hay particula, no podemos seguir
+	if (!p || !p->isActive()) return;
 
-    //Veremos la distancia de la particula al centro
-    PxVec3 particlePos = p->getPos();
-    PxVec3 direction = particlePos - _centerPos;
+	//Avanzamos el tiempo
+	_elapsed += t;
+	//Si se termina, no podemos seguir
+	if (_elapsed > _duration) return;
 
-    //Si la particula esta fuera del radio no se vera afectada
-    if (direction.magnitude() > _radius) return;
+	//Direccion
+	PxVec3 dir = p->getPos() - _centerPos;
+	//Distancia
+	double dist = dir.magnitude();
 
-    //La explosion se disipa con el tiempo
-    double withTime = max(0.0, 1.0 - t / _duration);
+	//Correcion
+	if (dist <= 0.0001 || dist > _radius) return;
 
-    //La explosion sera mas fuerte cuanto mas cerca del centro
-    double withDistance = max(0.0, 1.0 - direction.magnitude() / _radius);
+	dir.normalize();
 
-    //Calculo de la fuerza
-    PxVec3 force = direction * (_k * withTime * withDistance);
+	//Calculamos la fuerza
+	double force = _k * (1.0 - dist / _radius);
 
-    //Aplicamos la fuerza
-    p->addForce(force);
+	p->addForce(dir * force);
 }

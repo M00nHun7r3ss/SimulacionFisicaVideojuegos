@@ -12,6 +12,17 @@ UniformParticleGenerator::UniformParticleGenerator(PxVec3 pos, int nParticles, P
 
 }
 
+UniformParticleGenerator::UniformParticleGenerator(PxVec3 pos, int nParticles, PxVec3 minPos, PxVec3 maxPos, PxVec3 minVel, PxVec3 maxVel, Vector4 color) :
+    _minPos(minPos), _maxPos(maxPos), _minVel(minVel), _maxVel(maxVel)
+{
+        _pos = pos;
+        _nParticles = nParticles;
+
+        _modelParticle = new Particle(PxVec3(0.0, 0.0, 0.0), PxVec3(0.0, 0.0, 0.0),
+            color, PxVec3(0.0, 0.0, 0.0), 1.0,
+            0.999, 5, 0.1);
+}
+
 UniformParticleGenerator::~UniformParticleGenerator()
 {
 }

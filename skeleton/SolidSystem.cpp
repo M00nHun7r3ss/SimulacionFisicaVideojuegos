@@ -5,7 +5,7 @@
 SolidSystem::SolidSystem(PxPhysics* physics, PxScene* scene) : gPhysics(physics), gScene(scene), _useGravity(true)
 {
 	// Reservamos espacio inicial
-    _solids.reserve(20);
+    _solids.reserve(1);
 }
 
 SolidSystem::~SolidSystem()
